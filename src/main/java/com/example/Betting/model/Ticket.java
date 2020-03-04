@@ -1,9 +1,13 @@
 package com.example.Betting.model;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,7 +24,6 @@ import lombok.NoArgsConstructor;
 public class Ticket {
 
 	@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	private float totalodd;
@@ -30,4 +33,11 @@ public class Ticket {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_id", referencedColumnName = "id")
 	private Transaction transaction;
+	
+	@ManyToMany
+	@JoinTable(
+	  name = "matches_per_ticket", 
+	  joinColumns = @JoinColumn(name = "ticket_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "odds_id"))
+	Set<Match> odds;
 }

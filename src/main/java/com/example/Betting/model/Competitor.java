@@ -15,20 +15,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name="user")
-public class User {
+@Table(name="competitor")
+public class Competitor {
 
 	@Id
 	private long id;
 
 	private String name;
-	
-	private String location;
-	
-	private int age;
 
-	private float money;
-
-	@OneToMany(mappedBy = "user")
-	private Set<Transaction> transaction;
+	private String sport;
+	
+	@OneToMany(mappedBy = "home")
+	private Set<Match> home_match;
+	
+	@OneToMany(mappedBy = "away")
+	private Set<Match> away_match;
 }

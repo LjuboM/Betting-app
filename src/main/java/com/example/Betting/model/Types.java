@@ -15,20 +15,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name="user")
-public class User {
+@Table(name="types")
+public class Types {
 
 	@Id
 	private long id;
 
 	private String name;
 	
-	private String location;
+	private String type1;
 	
-	private int age;
+	private String type2;
+	
+	private String type3;
+	
+	private String type4;
+	
+	private String type5;
+	
+	private String type6;
 
-	private float money;
-
-	@OneToMany(mappedBy = "user")
-	private Set<Transaction> transaction;
+	@OneToMany(mappedBy = "types")
+	private Set<Match> match;
 }
