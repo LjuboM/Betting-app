@@ -6,8 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +42,6 @@ public class Odds {
     @JoinColumn(name = "match_id")
 	private Match match;
 	
-	@ManyToMany(mappedBy = "odds")
-	Set<Ticket> ticket;
+	@OneToMany(mappedBy = "odds")
+	Set<TicketOdds> ticket_odds;
 }
