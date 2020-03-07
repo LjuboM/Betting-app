@@ -25,13 +25,9 @@ public class Match {
 	
 	private Instant match_date;
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "home_id")
-	private Competitor home;
+	private String home;
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "away_id")
-	private Competitor away;
+	private String away;
 	
 	@ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "types_id")

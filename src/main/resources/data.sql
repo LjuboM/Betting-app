@@ -9,7 +9,7 @@ insert into `transaction` (id, trans_date, type, money, user_id) values (5, '202
 
 insert into ticket (id, totalodd, possiblegain, transaction_id) values (1, 7.776, 311.4, 2)
 insert into ticket (id, totalodd, possiblegain, transaction_id) values (2, 7.25, 558.25, 5)
-insert into ticket (id, totalodd, possiblegain, transaction_id) values (3, 476, 5712.0, 4)
+insert into ticket (id, totalodd, possiblegain, transaction_id) values (3, 476.0, 5712.0, 4)
 
 insert into types (id, name, type1, type2, type3, type4, type5, type6) values (1, 'Football', '1', 'X', '2', '1X', 'X2', '12')
 insert into types (id, name, type1, type2, type3, type4, type5, type6) values (2, 'Basketball', '1X', 'X2', '>=200p', '<200p', '1H10', '2H10')
@@ -17,25 +17,14 @@ insert into types (id, name, type1, type2, type3, type4, type5, type6) values (3
 insert into types (id, name, type1, type2, type3, type4, type5, type6) values (4, 'Waterpolo', '1', 'X', '2', '>15e', '<15e', 'Canceled')
 insert into types (id, name, type1, type2, type3, type4, type5, type6) values (5, 'Boxing', '1', '2', 'Nockout', 'Full Match', 'Blood', 'No Blood')
 
-insert into competitor (id, name, sport) values (1, 'FC Barcelona', 'Football')
-insert into competitor (id, name, sport) values (2, 'Real Madrid C.F.', 'Football')
-insert into competitor (id, name, sport) values (3, 'Cibona', 'Basketball')
-insert into competitor (id, name, sport) values (4, 'Cedevita', 'Basketball')
-insert into competitor (id, name, sport) values (5, 'Rafael Nadal', 'Tennis')
-insert into competitor (id, name, sport) values (6, 'Roger Federer', 'Tennis')
-insert into competitor (id, name, sport) values (7, 'Mladost', 'Waterpolo')
-insert into competitor (id, name, sport) values (8, 'Jug', 'Waterpolo')
-insert into competitor (id, name, sport) values (9, 'Mike Tyson', 'Boxing')
-insert into competitor (id, name, sport) values (10, 'Muhammand Ali', 'Boxing')
-
-insert into match (id, match_date, home_id, away_id, types_id) values (1, '2020-02-20T17:00:00.000Z', 1, 2, 1)
-insert into match (id, match_date, home_id, away_id, types_id) values (2, '2020-02-21T17:00:00.000Z', 3, 4, 2)
-insert into match (id, match_date, home_id, away_id, types_id) values (3, '2020-02-22T17:00:00.000Z', 5, 6, 3)
-insert into match (id, match_date, home_id, away_id, types_id) values (4, '2020-02-23T17:00:00.000Z', 7, 8, 4)
-insert into match (id, match_date, home_id, away_id, types_id) values (5, '2020-02-24T17:00:00.000Z', 9, 10, 5)
+insert into match (id, match_date, home, away, types_id) values (1, '2020-02-20T17:00:00.000Z', 'FC Barcelona', 'Real Madrid C.F.', 1)
+insert into match (id, match_date, home, away, types_id) values (2, '2020-02-21T17:00:00.000Z', 'Cibona', 'Cedevita', 2)
+insert into match (id, match_date, home, away, types_id) values (3, '2020-02-22T17:00:00.000Z', 'Rafael Nadal', 'Roger Federer', 3)
+insert into match (id, match_date, home, away, types_id) values (4, '2020-02-23T17:00:00.000Z', 'Mladost', 'Jug', 4)
+insert into match (id, match_date, home, away, types_id) values (5, '2020-02-24T17:00:00.000Z', 'Mike Tyson', 'Muhammand Ali', 5)
 
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (1, 0, 1.8, 2.0, 2.8, 1.4, 1.8, 1.7, 1)
-insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (2, 0, 2.2, 2.4, 5, 1.4, 2.5, 2.8, 2)
+insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (2, 0, 2.2, 2.4, 5.0, 1.4, 2.5, 2.8, 2)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (3, 0, 2.0, 1.9, 1.4, 1.9, 1.8, 2.0, 3)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (4, 0, 2.2, 2.0, 1.9, 1.7, 2.4, 100.0, 4)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (5, 0, 2.1, 2.2, 3.0, 2.5, 1.05, 90.0, 5)
@@ -49,8 +38,3 @@ insert into ticket_odds (ticket_id, odds_id, odd, type) values (2,6, 2.9, '2')
 insert into ticket_odds (ticket_id, odds_id, odd, type) values (3,1, 1.7, '12')
 insert into ticket_odds (ticket_id, odds_id, odd, type) values (3,2, 2.8, '2H10')
 insert into ticket_odds (ticket_id, odds_id, odd, type) values (3,4, 100.0, 'Canceled')
-
-
-
-
-
