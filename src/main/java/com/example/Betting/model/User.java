@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class User {
 
 	private float money;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "user")
+	@JsonBackReference
 	private Set<Transaction> transaction;
 }

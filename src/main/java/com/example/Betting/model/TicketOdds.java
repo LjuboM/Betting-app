@@ -7,6 +7,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,11 +28,13 @@ public class TicketOdds {
     @ManyToOne
     @MapsId("ticket_id")
     @JoinColumn(name = "ticket_id")
+    @JsonBackReference
     Ticket ticket;
- 
+
     @ManyToOne
     @MapsId("odds_id")
     @JoinColumn(name = "odds_id")
+    @JsonManagedReference
     Odds odds;
  
     private float odd;

@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,9 +34,11 @@ public class Match {
 	
 	@ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "types_id")
+	@JsonManagedReference
 	private Types types;
 	
 	@OneToMany(mappedBy = "match")
+	@JsonBackReference
 	private Set<Odds> odds;
 
 }

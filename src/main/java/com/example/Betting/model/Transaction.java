@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,7 @@ public class Transaction {
 	@Id
 	private long id;
 	
-	private Instant trans_date;
+	private Instant transdate;
 	
 	//Type of transaction, 0 Represents adding money to account, 1 represents ticket payment
 	private boolean type;
@@ -33,8 +35,10 @@ public class Transaction {
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
+	@JsonBackReference
 	private User user;
 	
 	@OneToOne(mappedBy = "transaction")
+	@JsonBackReference
 	private Ticket ticket;
 }

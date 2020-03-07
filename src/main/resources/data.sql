@@ -1,11 +1,11 @@
 insert into user (id, name, location, age, money) values (1, 'Ljubo Mamic', 'Split', 24, 500.0)
 
 
-insert into `transaction` (id, trans_date, type, money, user_id) values (1, '2020-02-15T17:00:00.000Z', 0, 300, 1)
-insert into `transaction` (id, trans_date, type, money, user_id) values (2, '2020-02-16T17:00:00.000Z', 1, 40, 1)
-insert into `transaction` (id, trans_date, type, money, user_id) values (3, '2020-02-17T17:00:00.000Z', 0, 77, 1)
-insert into `transaction` (id, trans_date, type, money, user_id) values (4, '2020-02-18T17:00:00.000Z', 1, 12, 1)
-insert into `transaction` (id, trans_date, type, money, user_id) values (5, '2020-02-19T17:00:00.000Z', 1, 77, 1)
+insert into `transaction` (id, transdate, type, money, user_id) values (1, '2020-02-15T17:00:00.000Z', 0, 300, 1)
+insert into `transaction` (id, transdate, type, money, user_id) values (2, '2020-02-16T17:00:00.000Z', 1, 40, 1)
+insert into `transaction` (id, transdate, type, money, user_id) values (3, '2020-02-17T17:00:00.000Z', 0, 77, 1)
+insert into `transaction` (id, transdate, type, money, user_id) values (4, '2020-02-18T17:00:00.000Z', 1, 12, 1)
+insert into `transaction` (id, transdate, type, money, user_id) values (5, '2020-02-19T17:00:00.000Z', 1, 77, 1)
 
 insert into ticket (id, totalodd, possiblegain, transaction_id) values (1, 7.776, 311.4, 2)
 insert into ticket (id, totalodd, possiblegain, transaction_id) values (2, 7.25, 558.25, 5)

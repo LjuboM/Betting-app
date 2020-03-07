@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,9 +33,10 @@ public class Ticket {
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_id", referencedColumnName = "id")
+	@JsonManagedReference
 	private Transaction transaction;
 	
-	
 	@OneToMany(mappedBy = "ticket")
+	@JsonManagedReference
 	Set<TicketOdds> ticket_odds;
 }
