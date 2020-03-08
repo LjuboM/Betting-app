@@ -23,5 +23,5 @@ public class TransactionController {
 	@GetMapping("/transactions")
 	Collection<Transaction> transactions(){
 		return transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transdate"));
-			}
+	}
 }
