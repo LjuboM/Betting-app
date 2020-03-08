@@ -3,11 +3,13 @@ package com.example.Betting.model;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +19,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @Table(name="user")
 public class User {
 
 	@Id
+	//@JsonIdentityReference(alwaysAsId = true)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
 	private String name;
@@ -32,6 +37,6 @@ public class User {
 	private float money;
 
 	@OneToMany(mappedBy = "user")
-	@JsonBackReference
+	@JsonIgnore
 	private Set<Transaction> transaction;
 }

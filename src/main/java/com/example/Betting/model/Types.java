@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @Table(name="types")
 public class Types {
 
 	@Id
+	@JsonIdentityReference(alwaysAsId = true)
 	private long id;
 
 	private String name;

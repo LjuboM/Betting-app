@@ -4,13 +4,17 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +25,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @Table(name="ticket")
 public class Ticket {
 
 	@Id
+	//@JsonIdentityReference(alwaysAsId = true)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
 	private float totalodd;
@@ -33,10 +40,9 @@ public class Ticket {
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_id", referencedColumnName = "id")
-	@JsonManagedReference
 	private Transaction transaction;
 	
 	@OneToMany(mappedBy = "ticket")
-	@JsonManagedReference
+	@JsonBackReference
 	Set<TicketOdds> ticket_odds;
 }

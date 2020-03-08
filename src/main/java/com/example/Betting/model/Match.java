@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 public class Match {
 
 	@Id
+	@JsonIdentityReference(alwaysAsId = true)
 	private long id;
 	
 	private Instant match_date;
@@ -34,7 +35,7 @@ public class Match {
 	
 	@ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "types_id")
-	@JsonManagedReference
+	//@JsonManagedReference
 	private Types types;
 	
 	@OneToMany(mappedBy = "match")
