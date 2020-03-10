@@ -39,13 +39,11 @@ public class TransactionController {
 
 	//Add money to account: Add new transaction of type false and increment User's money.
 	@PostMapping(value="/transaction", consumes="application/json")
-	ResponseEntity<String> createExpense(@Valid @RequestBody Transaction transaction) throws URISyntaxException{
-		if(transaction.getMoney() < 1.0)
-		{
+	ResponseEntity<String> addMoneyToWallet(@Valid @RequestBody Transaction transaction) throws URISyntaxException{
+		if(transaction.getMoney() < 1.0) {
 	        return ResponseEntity.badRequest().body("You have to add at least 1 HRK to your account.");
 		}
-		else
-		{
+		else {
 			//Get User who added money to wallet.
 			Optional<User> user = userRepository.findById(transaction.getUser().getId());
 			float moneyInWallet = user.get().getMoney();
