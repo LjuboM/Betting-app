@@ -31,10 +31,10 @@ public class Transaction {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	private Instant transdate;
+	private Instant transactiondate;
 	
 	//Type of transaction, 0 Represents adding money to account, 1 represents ticket payment
-	private boolean type;
+	private boolean transactiontype;
 	
 	private float money;
 

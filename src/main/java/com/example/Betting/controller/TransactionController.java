@@ -34,7 +34,7 @@ public class TransactionController {
 
 	@GetMapping("/transactions")
 	Collection<Transaction> transactions(){
-		return transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transdate"));
+		return transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transactiondate"));
 			}
 
 	//Add money to account: Add new transaction of type false and increment User's money.
@@ -55,7 +55,7 @@ public class TransactionController {
 			userRepository.save(user.get());
 
 			//Set transaction to current time.
-			transaction.setTransdate(Instant.now());
+			transaction.setTransactiondate(Instant.now());
 			transactionRepository.save(transaction);
 			return ResponseEntity.ok("Succesfully added " + String.valueOf(addedMoney) + " HRK to your wallet.\nNow You have " + String.valueOf(incrementedMoney) + " HRK on your account.");
 		}

@@ -27,7 +27,7 @@ public class Match {
 	@JsonIdentityReference(alwaysAsId = true)
 	private long id;
 	
-	private Instant match_date;
+	private Instant matchdate;
 	
 	private String home;
 	

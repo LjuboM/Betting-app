@@ -29,7 +29,7 @@ public class Odds {
 	@JsonIdentityReference(alwaysAsId = true)
 	private long id;
 
-	private boolean type;
+	private String type;
 	
 	private float odd1;
 	
