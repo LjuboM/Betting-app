@@ -29,7 +29,6 @@ public class OddsController {
 		Instant currentTime = Instant.now();
 		odds.forEach(odd -> {
     		if(odd.getMatch().getMatchdate().compareTo(currentTime) < 1) {
-    	    	System.out.println(odd.getMatch().getMatchdate().compareTo(currentTime));
     	    	oldOdds.add(odd);
     		}
 		});

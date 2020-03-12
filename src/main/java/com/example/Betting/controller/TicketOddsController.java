@@ -82,6 +82,7 @@ public class TicketOddsController {
     	boolean specialOffer = false;
     	long specialOfferMatch = 1;
     	int iterator = 0;
+		Instant currentTime = Instant.now();
     	
     	for(TicketOdds ticketOdd : ticketOdds) {
 			matches[iterator] = ticketOdd.getOdds().getMatch().getId();
@@ -95,6 +96,10 @@ public class TicketOddsController {
     		}
     		else {
     	    	System.out.println("Invalid bet, more than one Special offer played!");
+    			return false;
+    		}
+    		if(ticketOdd.getOdds().getMatch().getMatchdate().compareTo(currentTime) < 1) {
+    	    	System.out.println("Invalid bet, too late, match already started!");
     			return false;
     		}
     		iterator++;
