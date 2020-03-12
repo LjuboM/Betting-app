@@ -75,9 +75,7 @@ public class TicketOddsController {
         return ResponseEntity.ok().body("Succesfully placed a bet!");
     }
     
-    
-    
-    
+    //Checks all constraints for a ticket.
     private boolean validateTicket(ArrayList<TicketOdds> ticketOdds){
     	float odds[] = new float[ticketOdds.size()];
     	Long matches[] = new Long[ticketOdds.size()];
