@@ -21,7 +21,7 @@ import com.example.Betting.service.UserService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
-public class UserTest {
+public class UserControllerTests {
  
     @Autowired
     private MockMvc mvc;
