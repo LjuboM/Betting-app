@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,27 +14,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Betting.model.TicketOdds;
+import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
-import com.example.Betting.repository.TicketOddsRepository;
-import com.example.Betting.repository.UserRepository;
+import com.example.Betting.service.TicketOddsService;
+import com.example.Betting.service.TransactionService;
+import com.example.Betting.service.UserService;
 
 
 @RestController
 @RequestMapping("/api")
 public class TicketOddsController {
-	private TicketOddsRepository ticketOddsRepository;
-	private UserRepository userRepository;
+	
+	@Autowired
+	private TicketOddsService ticketOddsService;
+	
+	@Autowired
+	private UserService userService;
 
-	public TicketOddsController(TicketOddsRepository ticketOddsRepository, UserRepository userRepository) {
-		super();
-		this.ticketOddsRepository = ticketOddsRepository;
-		this.userRepository = userRepository;
-	}
-
+	@Autowired
+	private TransactionService transactionService;
+	
 	//Show all played tickets.
 	@GetMapping("/tickets")
 	Collection<TicketOdds> getTickets(){
-		return ticketOddsRepository.findAll();
+		return ticketOddsService.findAllPlayedTickets();
 	}
 
 	//Play a ticket.
@@ -46,7 +50,8 @@ public class TicketOddsController {
     	TicketOdds first = ticketOdds.iterator().next();
 
 		//Get User who played ticket. 
-		Optional<User> user = userRepository.findById(first.getTicket().getTransaction().getUser().getId());
+		Optional<User> user = userService.findUserById(first.getTicket().getTransaction().getUser().getId());
+		
 		float moneyInWallet = user.get().getMoney();
 		float spentMoney = first.getTicket().getTransaction().getMoney();
 		
@@ -54,26 +59,27 @@ public class TicketOddsController {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
 
+		//Create transaction with current time of type true.
+		Transaction transaction = transactionService.createTransaction(first.getTicket().getTransaction(), true);
+		
 		//Spending money.
-		float changedMoneyInWallet = moneyInWallet - spentMoney;
-		user.get().setMoney(changedMoneyInWallet);
-		userRepository.save(user.get());
+		user = userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
 
-		//Transaction with current time of type true.
-		first.getTicket().getTransaction().setTransactiondate(Instant.now());
-		first.getTicket().getTransaction().setTransactiontype(true);
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
-		ticketOddsRepository.save(first);
+		ticketOddsService.creatTicketOddsPair(first);
         ticketOdds.iterator().next();
         
 	ticketOdds.iterator().forEachRemaining( ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(first.getTicket());
-		ticketOdd.getTicket().setTransaction(first.getTicket().getTransaction());
-        ticketOddsRepository.save(ticketOdd);
+		//ticketOdd.getTicket().setTransaction(first.getTicket().getTransaction());
+		ticketOddsService.creatTicketOddsPair(ticketOdd);
 	});
         return ResponseEntity.ok().body("Succesfully placed a bet!");
     }
+    
+    
+    
     
     //Checks all constraints for a ticket.
     private boolean validateTicket(ArrayList<TicketOdds> ticketOdds){
