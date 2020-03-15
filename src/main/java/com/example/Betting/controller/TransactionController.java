@@ -31,9 +31,10 @@ public class TransactionController {
 	UserService userService;
 
 	@GetMapping("/transactions")
-	Collection<Transaction> transactions(){
-		return transactionService.findAllTransactions();
-			}
+	ResponseEntity<?> transactions(){
+		Collection<Transaction> allTransactions = transactionService.findAllTransactions();
+		return ResponseEntity.status(HttpStatus.OK).body(allTransactions);
+	}
 
 	//Add money to account: Add new transaction of type false and increment User's money.
 	@PostMapping(value="/transaction", consumes="application/json")

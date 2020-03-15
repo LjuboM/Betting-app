@@ -21,7 +21,7 @@ public class OddsService {
 		Collection<Odds> odds = oddsRepository.findAll(Sort.by(Sort.Direction.DESC, "match.types.id"));
 		
 		//Filter by date, keep only matches that didn't occur yet.
-		Collection<Odds> oldOdds = new ArrayList();
+		Collection<Odds> oldOdds = new ArrayList<Odds>();
 		Instant currentTime = Instant.now();
 		odds.forEach(odd -> {
     		if(odd.getMatch().getMatchdate().compareTo(currentTime) < 1) {
