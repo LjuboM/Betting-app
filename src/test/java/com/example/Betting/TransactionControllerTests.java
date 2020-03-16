@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +21,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.Betting.controller.TransactionController;
 import com.example.Betting.model.Transaction;
+import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TransactionController.class)
@@ -41,8 +44,8 @@ public class TransactionControllerTests {
       throws Exception {
         
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 300, null, null ));
-    	transactions.add(new Transaction((long) 2, Instant.parse("2020-05-16T17:00:00Z"), true, (float) 40, null, null ));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 300, null, null));
+    	transactions.add(new Transaction((long) 2, Instant.parse("2020-05-16T17:00:00Z"), true, (float) 40, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -67,11 +70,11 @@ public class TransactionControllerTests {
     }
     
     @Test
-    public void whenGetTransactions_thenTransaction()
+    public void whenGetTransactions_thenReturnJson()
       throws Exception {
         
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 300, null, null ));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 300, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -99,4 +102,106 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[]"));
     }
+    
+    
+    @Test
+    public void givenTransaction_whenSetMoneyInWallet_thenReturnCreatedAndJson()
+      throws Exception {
+    	
+    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 600, null);
+        Transaction newTransaction = new Transaction((long) 1, null, false, (float) 300, ljubo, null);
+        
+    	given(userService.changeMoneyValueInWallet((long) 1, (float) 300, true)).willReturn(Optional.of(ljubo));
+    	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
+
+
+    	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
+          .content(asJsonString(newTransaction))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isCreated())
+          .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
+          		"    \"id\": 1,\r\n" + 
+          		"    \"transactiondate\": null,\r\n" + 
+          		"    \"transactiontype\": false,\r\n" + 
+          		"    \"money\": 300,\r\n" + 
+          		"    \"user\": {\r\n" + 
+          		"        \"id\": 1,\r\n" + 
+          		"        \"name\": \"Ljubo Mamic\",\r\n" + 
+          		"        \"location\": \"Split\",\r\n" + 
+          		"        \"age\": 24,\r\n" + 
+          		"        \"money\": 600\r\n" + 
+          		"    }\r\n" + 
+          		"}"));
+    }
+
+    @Test
+    public void givenTransactionWithEnoughMoneyValue_whenSetMoneyInWallet_thenReturnCreatedAndJson()
+      throws Exception {
+    	
+    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 301, null);
+        Transaction newTransaction = new Transaction((long) 1, null, false, (float) 1, ljubo, null);
+        
+    	given(userService.changeMoneyValueInWallet((long) 1, (float) 1, true)).willReturn(Optional.of(ljubo));
+    	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
+
+
+    	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
+          .content(asJsonString(newTransaction))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isCreated())
+          .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
+          		"    \"id\": 1,\r\n" + 
+          		"    \"transactiondate\": null,\r\n" + 
+          		"    \"transactiontype\": false,\r\n" + 
+          		"    \"money\": 1,\r\n" + 
+          		"    \"user\": {\r\n" + 
+          		"        \"id\": 1,\r\n" + 
+          		"        \"name\": \"Ljubo Mamic\",\r\n" + 
+          		"        \"location\": \"Split\",\r\n" + 
+          		"        \"age\": 24,\r\n" + 
+          		"        \"money\": 301\r\n" + 
+          		"    }\r\n" + 
+          		"}"));
+    }
+    
+    @Test
+    public void givenTransactionWithLowMoneyValue_whenSetMoneyInWallet_thenReturnBadRequest()
+      throws Exception {
+    	
+    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
+        Transaction newTransaction = new Transaction((long) 1, null, false, (float) 0, ljubo, null);
+
+    	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
+          .content(asJsonString(newTransaction))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().string("You have to add at least 1 HRK to your account."));
+    }
+    
+    @Test
+    public void givenTransactionWithNegativeMoneyValue_whenSetMoneyInWallet_thenReturnBadRequest()
+      throws Exception {
+    	
+    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
+        Transaction newTransaction = new Transaction((long) -1, null, false, (float) 0, ljubo, null);
+
+    	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
+          .content(asJsonString(newTransaction))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().string("You have to add at least 1 HRK to your account."));
+    }  
+    
+
+    public static String asJsonString(final Transaction transaction) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(transaction);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
+    }
+    
 }
