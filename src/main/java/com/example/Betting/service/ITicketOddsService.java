@@ -8,5 +8,5 @@ public interface ITicketOddsService {
 	
 	Collection<TicketOdds> findAllPlayedTickets();
 	
-	TicketOdds creatTicketOddsPair(TicketOdds ticketOdd);
+	TicketOdds createTicketOddsPair(TicketOdds ticketOdd);
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,10 +35,10 @@ public class TicketOddsController {
 	@Autowired
 	private TransactionService transactionService;
 	
-	//Show all played tickets.
 	@GetMapping("/tickets")
-	Collection<TicketOdds> getTickets(){
-		return ticketOddsService.findAllPlayedTickets();
+	ResponseEntity<?> getTickets(){
+		Collection<TicketOdds> allTicketOdds = ticketOddsService.findAllPlayedTickets();
+		return ResponseEntity.status(HttpStatus.OK).body(allTicketOdds);
 	}
 
 	//Play a ticket.
@@ -66,14 +67,14 @@ public class TicketOddsController {
 		user = userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
 
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
-		ticketOddsService.creatTicketOddsPair(first);
+		ticketOddsService.createTicketOddsPair(first);
         ticketOdds.iterator().next();
         
 	ticketOdds.iterator().forEachRemaining( ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(first.getTicket());
 		//ticketOdd.getTicket().setTransaction(first.getTicket().getTransaction());
-		ticketOddsService.creatTicketOddsPair(ticketOdd);
+		ticketOddsService.createTicketOddsPair(ticketOdd);
 	});
         return ResponseEntity.ok().body("Succesfully placed a bet!");
     }
@@ -136,3 +137,4 @@ public class TicketOddsController {
 		return true;
     }
 }
+//Should I add check if 2 same matches are played regardless it's type?

@@ -29,7 +29,7 @@ public class TransactionController {
 	UserService userService;
 
 	@GetMapping("/transactions")
-	ResponseEntity<?> transactions(){
+	ResponseEntity<?> getTransactions(){
 		Collection<Transaction> allTransactions = transactionService.findAllTransactions();
 		return ResponseEntity.status(HttpStatus.OK).body(allTransactions);
 	}

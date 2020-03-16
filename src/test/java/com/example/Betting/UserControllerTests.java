@@ -30,7 +30,7 @@ public class UserControllerTests {
     private UserService userService;
  
     @Test
-    public void givenUserId_whenGetUsers_thenReturnIsOkAndJson()
+    public void givenUserId_whenGetUsers_thenOkAndUser()
       throws Exception {
          
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 500, null);
@@ -50,7 +50,7 @@ public class UserControllerTests {
     }
     
     @Test
-    public void givenUserId_whenGetUsers_thenReturnIsBadRequest()
+    public void givenUserId_whenGetUsers_thenBadRequest()
       throws Exception {
 
         given(userService.findUserById((long) 2)).willReturn(Optional.empty());

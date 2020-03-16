@@ -25,6 +25,8 @@ import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TransactionController.class)
@@ -70,7 +72,7 @@ public class TransactionControllerTests {
     }
     
     @Test
-    public void whenGetTransactions_thenReturnJson()
+    public void whenGetTransactions_thenTransacton()
       throws Exception {
         
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
@@ -105,11 +107,11 @@ public class TransactionControllerTests {
     
     
     @Test
-    public void givenTransaction_whenSetMoneyInWallet_thenReturnCreatedAndJson()
+    public void givenTransaction_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
     	
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 600, null);
-        Transaction newTransaction = new Transaction((long) 1, null, false, (float) 300, ljubo, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 300, ljubo, null);
         
     	given(userService.changeMoneyValueInWallet((long) 1, (float) 300, true)).willReturn(Optional.of(ljubo));
     	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
@@ -121,7 +123,7 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.status().isCreated())
           .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
           		"    \"id\": 1,\r\n" + 
-          		"    \"transactiondate\": null,\r\n" + 
+          		"    \"transactiondate\": \"2020-05-15T17:00:00Z\",\r\n" +
           		"    \"transactiontype\": false,\r\n" + 
           		"    \"money\": 300,\r\n" + 
           		"    \"user\": {\r\n" + 
@@ -135,11 +137,11 @@ public class TransactionControllerTests {
     }
 
     @Test
-    public void givenTransactionWithEnoughMoneyValue_whenSetMoneyInWallet_thenReturnCreatedAndJson()
+    public void givenTransactionWithEnoughMoneyValue_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
     	
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 301, null);
-        Transaction newTransaction = new Transaction((long) 1, null, false, (float) 1, ljubo, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 1, ljubo, null);
         
     	given(userService.changeMoneyValueInWallet((long) 1, (float) 1, true)).willReturn(Optional.of(ljubo));
     	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
@@ -151,7 +153,7 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.status().isCreated())
           .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
           		"    \"id\": 1,\r\n" + 
-          		"    \"transactiondate\": null,\r\n" + 
+          		"    \"transactiondate\": \"2020-05-15T17:00:00Z\",\r\n" +
           		"    \"transactiontype\": false,\r\n" + 
           		"    \"money\": 1,\r\n" + 
           		"    \"user\": {\r\n" + 
@@ -165,11 +167,11 @@ public class TransactionControllerTests {
     }
     
     @Test
-    public void givenTransactionWithLowMoneyValue_whenSetMoneyInWallet_thenReturnBadRequest()
+    public void givenTransactionWithLowMoneyValue_whenSetMoneyInWallet_thenBadRequest()
       throws Exception {
     	
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) 1, null, false, (float) 0, ljubo, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 0, ljubo, null);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -179,11 +181,11 @@ public class TransactionControllerTests {
     }
     
     @Test
-    public void givenTransactionWithNegativeMoneyValue_whenSetMoneyInWallet_thenReturnBadRequest()
+    public void givenTransactionWithNegativeMoneyValue_whenSetMoneyInWallet_thenBadRequest()
       throws Exception {
     	
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) -1, null, false, (float) 0, ljubo, null);
+        Transaction newTransaction = new Transaction((long) -1, Instant.parse("2020-05-15T17:00:00Z"), false, (float) 0, ljubo, null);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -192,16 +194,17 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.content().string("You have to add at least 1 HRK to your account."));
     }  
     
-
     public static String asJsonString(final Transaction transaction) {
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonContent = mapper.writeValueAsString(transaction);
-            return jsonContent;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        
+      try {
+          final ObjectMapper mapper = new ObjectMapper();
+          JavaTimeModule module = new JavaTimeModule();
+          mapper.registerModule(module);
+          mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+          final String jsonContent = mapper.writeValueAsString(transaction);
+          return jsonContent;
+      } catch (Exception e) {
+          throw new RuntimeException(e);
+      }
     }
     
 }

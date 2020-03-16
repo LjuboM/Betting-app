@@ -19,7 +19,7 @@ public class TicketOddsService {
 		return ticketOddsRepository.findAll();
 	}
 	
-	public void creatTicketOddsPair(TicketOdds ticketOdd) {
+	public void createTicketOddsPair(TicketOdds ticketOdd) {
 		ticketOddsRepository.save(ticketOdd);
 	}
 	
