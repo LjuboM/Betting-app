@@ -76,7 +76,7 @@ public class TicketOddsController {
 		//ticketOdd.getTicket().setTransaction(first.getTicket().getTransaction());
 		ticketOddsService.createTicketOddsPair(ticketOdd);
 	});
-        return ResponseEntity.ok().body("Succesfully placed a bet!");
+        return ResponseEntity.ok().body("Successfully placed a bet!");
     }
     
     //Checks all constraints for a ticket.

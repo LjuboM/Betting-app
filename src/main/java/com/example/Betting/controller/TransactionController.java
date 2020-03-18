@@ -2,6 +2,7 @@ package com.example.Betting.controller;
 
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Betting.model.Transaction;
+import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
 
@@ -41,8 +43,9 @@ public class TransactionController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You have to add at least 1 HRK to your account.");
 		}
 		else {
-			userService.changeMoneyValueInWallet(transaction.getUser().getId(), transaction.getMoney(), true);
+			Optional<User> user = userService.changeMoneyValueInWallet(transaction.getUser().getId(), transaction.getMoney(), true);
 			Transaction newTransaction = transactionService.createTransaction(transaction, false);
+			newTransaction.setUser(user.get());
 			return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);
 		}
 	}
