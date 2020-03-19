@@ -48,7 +48,7 @@ public class TicketOddsControllerTests {
     
     @MockBean
     private TransactionService transactionService;
-
+    
     @Test
     public void whenGetTickets_thenArrayOfTicketOdds()
       throws Exception {
@@ -56,6 +56,7 @@ public class TicketOddsControllerTests {
     	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
+    	
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
@@ -169,6 +170,8 @@ public class TicketOddsControllerTests {
       throws Exception {
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
+        Instant matchDate = Instant.now().plusSeconds(60);
+        
     	User ljuboBeforeBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore, null);
     	User ljuboAfterBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 1, null, true, (float) spentMoney, ljuboAfterBet, null);
@@ -178,10 +181,8 @@ public class TicketOddsControllerTests {
     	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
 
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
-    	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2021-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
@@ -193,14 +194,17 @@ public class TicketOddsControllerTests {
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
-          .andExpect(MockMvcResultMatchers.content().string("Succesfully placed a bet!"));
+          .andExpect(MockMvcResultMatchers.content().string("Successfully placed a bet!"));
     }
     
     @Test
     public void givenPairOfBasicTicketOdds_whenPlayingTicket_thenOk()
       throws Exception {
+    	
         float moneyInWalletBefore = 400;
         float spentMoney = 200;
+        Instant matchDate = Instant.now().plusSeconds(60);
+
     	User ljuboBeforeBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore, null);
     	User ljuboAfterBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 1, null, true, (float) spentMoney, ljuboAfterBet, null);
@@ -210,11 +214,8 @@ public class TicketOddsControllerTests {
     	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
 
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
-    	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
-
 
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
@@ -223,7 +224,7 @@ public class TicketOddsControllerTests {
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
-          .andExpect(MockMvcResultMatchers.content().string("Succesfully placed a bet!"));
+          .andExpect(MockMvcResultMatchers.content().string("Successfully placed a bet!"));
     }
     
     @Test
@@ -232,6 +233,8 @@ public class TicketOddsControllerTests {
     	
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
+        Instant matchDate = Instant.now().plusSeconds(60);
+        
     	User ljuboBeforeBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore, null);
     	User ljuboAfterBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 1, null, true, (float) spentMoney, ljuboAfterBet, null);
@@ -242,12 +245,12 @@ public class TicketOddsControllerTests {
 
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
     	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2021-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	Match thirdMatch = new Match((long) 3, Instant.parse("2021-02-17T17:00:00.000Z"), "Rogger Federer", "Rafael Nadal", null, null);
-    	Match fourthMatch = new Match((long) 4, Instant.parse("2021-02-18T17:00:00.000Z"), "Hajduk", "Dinamo", null, null);
-    	Match fifthMatch = new Match((long) 5, Instant.parse("2021-02-19T17:00:00.000Z"), "Rijeka", "Osijek", null, null);
-    	Match sixthMatch = new Match((long) 6, Instant.parse("2021-02-22T17:00:00.000Z"), "Solin", "Kastela", null, null);
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
+    	Match thirdMatch = new Match((long) 3, matchDate, "Rogger Federer", "Rafael Nadal", null, null);
+    	Match fourthMatch = new Match((long) 4, matchDate, "Hajduk", "Dinamo", null, null);
+    	Match fifthMatch = new Match((long) 5, matchDate, "Rijeka", "Osijek", null, null);
+    	Match sixthMatch = new Match((long) 6, matchDate, "Solin", "Kastela", null, null);
     	
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
@@ -268,24 +271,22 @@ public class TicketOddsControllerTests {
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
-          .andExpect(MockMvcResultMatchers.content().string("Succesfully placed a bet!"));
+          .andExpect(MockMvcResultMatchers.content().string("Successfully placed a bet!"));
     }
     
     @Test
     public void givenArrayOfTicketOdds_whenPlayingTicketWithNotEnoughMoney_thenBadRequest()
       throws Exception {
-        
+    	
+        Instant matchDate = Instant.now().plusSeconds(60);
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 500, null);
 
-        Transaction newTransaction = new Transaction((long) 1, null, true, (float) 600, ljubo, null);
-        
         given(userService.findUserById((long) 1)).willReturn(Optional.of(ljubo));
 
+        Transaction newTransaction = new Transaction((long) 1, null, true, (float) 600, ljubo, null);
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
-    	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2021-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
@@ -306,6 +307,8 @@ public class TicketOddsControllerTests {
     	
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
+        Instant matchDate = Instant.now().plusSeconds(60);
+        
     	User ljuboBeforeBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore, null);
     	User ljuboAfterBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 1, null, true, (float) spentMoney, ljuboAfterBet, null);
@@ -315,10 +318,8 @@ public class TicketOddsControllerTests {
     	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
 
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
-    	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2021-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 1, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
@@ -336,8 +337,11 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithMoreSpecialOffers_thenBadRequest()
       throws Exception {
+    	
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
+        Instant matchDate = Instant.now().plusSeconds(60);
+        
     	User ljuboBeforeBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore, null);
     	User ljuboAfterBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 1, null, true, (float) spentMoney, ljuboAfterBet, null);
@@ -348,12 +352,12 @@ public class TicketOddsControllerTests {
 
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
     	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2021-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	Match thirdMatch = new Match((long) 3, Instant.parse("2021-02-17T17:00:00.000Z"), "Rogger Federer", "Rafael Nadal", null, null);
-    	Match fourthMatch = new Match((long) 4, Instant.parse("2021-02-18T17:00:00.000Z"), "Hajduk", "Dinamo", null, null);
-    	Match fifthMatch = new Match((long) 5, Instant.parse("2021-02-19T17:00:00.000Z"), "Rijeka", "Osijek", null, null);
-    	Match sixthMatch = new Match((long) 6, Instant.parse("2021-02-22T17:00:00.000Z"), "Solin", "Kastela", null, null);
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
+    	Match thirdMatch = new Match((long) 3, matchDate, "Rogger Federer", "Rafael Nadal", null, null);
+    	Match fourthMatch = new Match((long) 4, matchDate, "Hajduk", "Dinamo", null, null);
+    	Match fifthMatch = new Match((long) 5, matchDate, "Rijeka", "Osijek", null, null);
+    	Match sixthMatch = new Match((long) 6, matchDate, "Solin", "Kastela", null, null);
     	
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
@@ -380,8 +384,11 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithSameMatchAsSpecialOfferAndBasicOffer_thenBadRequest()
       throws Exception {
+    	
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
+        Instant matchDate = Instant.now().plusSeconds(60);
+        
     	User ljuboBeforeBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore, null);
     	User ljuboAfterBet = new User(1, "Ljubo Mamic", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 1, null, true, (float) spentMoney, ljuboAfterBet, null);
@@ -392,11 +399,11 @@ public class TicketOddsControllerTests {
 
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
     	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2021-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	Match thirdMatch = new Match((long) 3, Instant.parse("2021-02-17T17:00:00.000Z"), "Rogger Federer", "Rafael Nadal", null, null);
-    	Match fourthMatch = new Match((long) 4, Instant.parse("2021-02-18T17:00:00.000Z"), "Hajduk", "Dinamo", null, null);
-    	Match fifthMatch = new Match((long) 5, Instant.parse("2021-02-19T17:00:00.000Z"), "Rijeka", "Osijek", null, null);
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
+    	Match thirdMatch = new Match((long) 3, matchDate, "Rogger Federer", "Rafael Nadal", null, null);
+    	Match fourthMatch = new Match((long) 4, matchDate, "Hajduk", "Dinamo", null, null);
+    	Match fifthMatch = new Match((long) 5, matchDate, "Rijeka", "Osijek", null, null);
     	
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
@@ -423,18 +430,16 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfTicketOdds_whenPlayingTicketWithOutdateMatch_thenBadRequest()
       throws Exception {
-        
+    	
+        Instant matchDate = Instant.now().minusSeconds(60);
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 500, null);
 
-        Transaction newTransaction = new Transaction((long) 1, null, true, (float) 200, ljubo, null);
-        
         given(userService.findUserById((long) 1)).willReturn(Optional.of(ljubo));
 
+        Transaction newTransaction = new Transaction((long) 1, null, true, (float) 200, ljubo, null);
     	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
-    	
-    	Match firstMatch = new Match((long) 1, Instant.parse("2021-02-15T17:00:00.000Z"), "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, Instant.parse("2020-02-16T17:00:00.000Z"), "Jug", "Mladost", null, null);
-    	
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
 

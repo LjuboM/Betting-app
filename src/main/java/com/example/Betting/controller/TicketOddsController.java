@@ -52,28 +52,24 @@ public class TicketOddsController {
 
 		//Get User who played ticket. 
 		Optional<User> user = userService.findUserById(first.getTicket().getTransaction().getUser().getId());
-		
 		float moneyInWallet = user.get().getMoney();
 		float spentMoney = first.getTicket().getTransaction().getMoney();
 		
 		if(spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
-
 		//Create transaction with current time of type true.
 		Transaction transaction = transactionService.createTransaction(first.getTicket().getTransaction(), true);
-		
 		//Spending money.
 		user = userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
-
+		
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
 		ticketOddsService.createTicketOddsPair(first);
         ticketOdds.iterator().next();
         
-	ticketOdds.iterator().forEachRemaining( ticketOdd -> {
+        ticketOdds.iterator().forEachRemaining( ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(first.getTicket());
-		//ticketOdd.getTicket().setTransaction(first.getTicket().getTransaction());
 		ticketOddsService.createTicketOddsPair(ticketOdd);
 	});
         return ResponseEntity.ok().body("Successfully placed a bet!");
@@ -122,12 +118,10 @@ public class TicketOddsController {
     				biggerOddsCount++;
     			}
     		}
-    		
         	if(specialOfferMatchOccurrences > 1) {
             	System.out.println("Invalid bet, played the same match in special offer and basic type!");
             	return false;
         	}
-        	
         	if(biggerOddsCount < 5) {
             	System.out.println("Invalid bet, you have to play at least 5 basic odds that are 1.10 or bigger!");
             	return false;
