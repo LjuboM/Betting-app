@@ -29,3 +29,26 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### React
+# dependencies
+betting-frontend/node_modules
+betting-frontend//.pnp
+betting-frontend/.pnp.js
+
+# testing
+betting-frontend//coverage
+
+# production
+betting-frontend//build
+
+# misc
+betting-frontend/.DS_Store
+betting-frontend/.env.local
+betting-frontend/.env.development.local
+betting-frontend/.env.test.local
+betting-frontend/.env.production.local
+
+betting-frontend/npm-debug.log*
+betting-frontend/yarn-debug.log*
+betting-frontend/yarn-error.log*
