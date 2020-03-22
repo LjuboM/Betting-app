@@ -18,8 +18,50 @@ code {
   flex-direction: row;
   text-align: center;
   background-color: rgb(173, 16, 26);
-  height:50px;
-  padding-left:10px;
-  padding-right:10px;
+  height:60px;
+  padding: 17px;
   justify-content: space-between;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+   /* top: 0 for stickines... */
+}
+
+li {
+  float: left;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 5px 20px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+  color:white;
+}
+
+li a:hover {
+  color:white;
+  text-decoration: none;
+}
+
+.active {
+  background-color: grey;
+  pointer-events: none; 
+  cursor: default;
 }
