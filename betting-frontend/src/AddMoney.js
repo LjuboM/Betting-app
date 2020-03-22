@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
-import { Button } from 'reactstrap';
+import { Button, Alert } from 'reactstrap';
 
 
 class AddMoney extends Component {
@@ -8,10 +8,12 @@ class AddMoney extends Component {
         super(props)
   
         this.state = { 
-          transaction : this.emptyTransaction
+          transaction : this.emptyTransaction,
+          isHidden: true
          }
          this.handleAddingMoney= this.handleAddingMoney.bind(this);
          this.handleMoneyInput= this.handleMoneyInput.bind(this);
+         this.handleKeyDown= this.handleKeyDown.bind(this);
     }
     emptyTransaction = {
         "type": false,
@@ -19,7 +21,7 @@ class AddMoney extends Component {
         "user": { "id": 1 }
     }
 
-    async handleAddingMoney(event){
+    async handleAddingMoney(){
         const transaction = this.state.transaction;
         if(transaction.money >= 1 && transaction.money.toString().search(/\./) === -1){
             await fetch(`/api/transaction`, {
@@ -32,10 +34,11 @@ class AddMoney extends Component {
               });
             this.props.history.push("/transactions");
             this.props.increaseMoney(transaction.money);
-
         }
         else{
-            console.log("You have to use positive integer values!");
+            this.setState({
+                isHidden: false
+            })
         }
     }
 
@@ -47,13 +50,24 @@ class AddMoney extends Component {
         this.setState({transaction});
     }
 
+    handleKeyDown(event){
+        if (event.key === 'Enter') {
+            this.handleAddingMoney();
+        }
+    }
     render() { 
-        return ( 
-        <InputGroup style={{margin:"15px", width:"50%"}}>
+        return (
+        <div>
+          <InputGroup style={{margin:"15px", width:"50%"}}>
             <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
-            <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput}/>
+            <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput} onKeyDown={this.handleKeyDown}/>
             <InputGroupAddon addonType="append"><Button color="primary" onClick={this.handleAddingMoney}>Add Money</Button></InputGroupAddon>
           </InputGroup>
+          {!this.state.isHidden && 
+          <Alert color="danger">
+            Only positive integer values higher than 1 are accepted!
+          </Alert>}
+        </div>
         );
     }
 }

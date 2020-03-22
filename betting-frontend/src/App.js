@@ -27,7 +27,6 @@ class App extends Component {
   }
 
   increaseMoneyValue(addedMoney){
-    console.log(`addedMoney value is:${addedMoney}`);
     let newUserState = this.state.User;
     newUserState.money = parseInt(newUserState.money) + parseInt(addedMoney);
     this.setState({User : newUserState});
