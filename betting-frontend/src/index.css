@@ -21,6 +21,9 @@ code {
   height:60px;
   padding: 17px;
   justify-content: space-between;
+  position: -webkit-sticky;    /*Safari */
+  position: sticky;
+  top: 0;
 }
 
 ul {
@@ -29,9 +32,9 @@ ul {
   padding: 0;
   overflow: hidden;
   background-color: #333;
-  position: -webkit-sticky; /* Safari */
+  position: -webkit-sticky;    /*Safari */
   position: sticky;
-   /* top: 0 for stickines... */
+  top: 60px;
 }
 
 li {

@@ -11,19 +11,19 @@ import LogOut from './LogOut';
 
 function App() {
   return (
-    <div className="App">
-      <Header/>
-      <NavBar/>
-      <Router>
-          <Switch>
-              <Route path='/' component={PlayTicket}/>
-              <Route path='/tickets' component={Tickets}/>
-              <Route path='/transactions' component={Transactions}/>
-              <Route path='/addMoney' component={AddMoney}/>
-              <Route path='/logOut' component={LogOut}/>
-          </Switch>
-      </Router>
-    </div>
+    <Router>
+      <div className="App">
+        <Header/>
+        <NavBar/>
+        <Switch>
+            <Route path='/' exact={true} component={PlayTicket}/>
+            <Route path='/tickets' exact={true} component={Tickets}/>
+            <Route path='/transactions' exact={true} component={Transactions}/>
+            <Route path='/addMoney' exact={true} component={AddMoney}/>
+            <Route path='/logOut' exact={true} component={LogOut}/>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

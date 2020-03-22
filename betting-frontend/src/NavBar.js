@@ -7,7 +7,6 @@ class NavBar extends Component {
     state = {  }
     render() {
         return (
-          <Router>
               <ul>
                 <li><NavLink exact activeClassName="active" to="/">Play Ticket</NavLink></li>
                 <li><NavLink activeClassName="active" to="/tickets">Tickets</NavLink></li>
@@ -15,7 +14,6 @@ class NavBar extends Component {
                 <li><NavLink activeClassName="active" to="/addMoney">Add money</NavLink></li>
                 <li style={{float:"right"}}><NavLink  activeClassName="active" to="/logOut">Log out</NavLink></li>
               </ul>
-          </Router>
          );
     }
 }
