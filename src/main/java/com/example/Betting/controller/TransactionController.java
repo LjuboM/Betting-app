@@ -42,6 +42,9 @@ public class TransactionController {
 		if(transaction.getMoney() < 1.0) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You have to add at least 1 HRK to your account.");
 		}
+		else if(transaction.getMoney() == (int)transaction.getMoney()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You can only add money as integer value.");
+		}
 		else {
 			Optional<User> user = userService.changeMoneyValueInWallet(transaction.getUser().getId(), transaction.getMoney(), true);
 			Transaction newTransaction = transactionService.createTransaction(transaction, false);

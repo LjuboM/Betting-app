@@ -19,16 +19,16 @@ public class UserService {
         return userRepository.findById(id);
     }
     
-    public Optional<User> changeMoneyValueInWallet(Long id, float transactionMoney, boolean adding){
+    public Optional<User> changeMoneyValueInWallet(Long id, int transactionMoney, boolean adding){
     	Optional<User> user = findUserById(id);
-		float moneyInWallet = user.get().getMoney();
-		float newMoneyValue;
+		int moneyInWallet = user.get().getMoney();
+		int newMoneyValue;
 		//Increment money.
 		if(adding) {
-			newMoneyValue = transactionMoney + moneyInWallet;
+			newMoneyValue = transactionMoney + (int) moneyInWallet;
 		}
 		else {
-			newMoneyValue = moneyInWallet - transactionMoney;
+			newMoneyValue = (int) moneyInWallet - transactionMoney;
 		}
 		
 		user.get().setMoney(newMoneyValue);

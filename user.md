@@ -22,7 +22,7 @@ Only one user in application, with ID of 1...
     "name": "John Doe",
     "location": "Corona Quarantine",
     "age": 21,
-    "money": 2020.0
+    "money": 2020
 }
 ```
 ## Error Response

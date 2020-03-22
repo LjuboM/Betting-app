@@ -36,7 +36,7 @@ public class Transaction {
 	//Type of transaction, 0 Represents adding money to account, 1 represents ticket payment
 	private boolean transactiontype;
 	
-	private float money;
+	private int money;
 
 	@ManyToOne(cascade=CascadeType.DETACH)
     @JoinColumn(name = "user_id")

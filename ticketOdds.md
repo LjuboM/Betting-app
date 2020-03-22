@@ -30,13 +30,13 @@ Used for retrieving all information about all played tickets.
                 "id": 2,
                 "transactiondate": "2020-02-16T17:00:00Z",
                 "transactiontype": true,
-                "money": 40.0,
+                "money": 40,
                 "user": {
                     "id": 1,
                     "name": "Ljubo Mamic",
                     "location": "Split",
                     "age": 24,
-                    "money": 22720.0
+                    "money": 22720
                 }
             }
         },
@@ -153,7 +153,7 @@ Used for retrieving all information about all played tickets.
             "totalodd": 7.776,
             "possiblegain": 311.4,
             "transaction": {
-                "money": 10.0,
+                "money": 10,
                     "user": {
                     "id": 1
                 }
@@ -175,7 +175,7 @@ Used for retrieving all information about all played tickets.
             "totalodd": 7.776,
             "possiblegain": 311.4,
             "transaction": {
-                "money": 10.0,
+                "money": 10,
                     "user": {
                     "id": 1
                 }
@@ -197,7 +197,7 @@ Used for retrieving all information about all played tickets.
             "totalodd": 7.776,
             "possiblegain": 311.4,
             "transaction": {
-                "money": 10.0,
+                "money": 10,
                     "user": {
                     "id": 1
                 }

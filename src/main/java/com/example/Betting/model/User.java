@@ -34,7 +34,7 @@ public class User {
 	
 	private int age;
 
-	private float money;
+	private int money;
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
