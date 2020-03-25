@@ -35,8 +35,8 @@ public class TicketOddsController {
 	@Autowired
 	private TransactionService transactionService;
 	
-	@GetMapping("/tickets")
-	ResponseEntity<?> getTickets(){
+	@GetMapping("/ticketOdds")
+	ResponseEntity<?> getTicketOdds(){
 		Collection<TicketOdds> allTicketOdds = ticketOddsService.findAllPlayedTickets();
 		return ResponseEntity.status(HttpStatus.OK).body(allTicketOdds);
 	}

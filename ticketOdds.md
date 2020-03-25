@@ -1,11 +1,11 @@
 # TicketOdds
 
-Used for retrieving all information about all played tickets.
+Used for retrieving all information about played tickets and for playing a ticket.
 
-* GET /api/tickets
+* GET /api/ticketOdds
 * POST /api/ticket
 #
-**URL** ``` /api/tickets ```
+**URL** ``` /api/ticketOdds ```
 
 **METHOD** ``` GET ```
 
@@ -22,7 +22,6 @@ Used for retrieving all information about all played tickets.
         "@id": 1,
         "id": 1,
         "ticket": {
-            "@id": 2,
             "id": 1,
             "totalodd": 7.776,
             "possiblegain": 311.4,
@@ -32,11 +31,11 @@ Used for retrieving all information about all played tickets.
                 "transactiontype": true,
                 "money": 40,
                 "user": {
-                    "id": 1,
-                    "name": "Ljubo Mamic",
-                    "location": "Split",
-                    "age": 24,
-                    "money": 22720
+				    "id": 1,
+				    "name": "John Doe",
+				    "location": "Corona Quarantine",
+				    "age": 21,
+				    "money": 2020
                 }
             }
         },
@@ -70,9 +69,26 @@ Used for retrieving all information about all played tickets.
         "type": "1"
     },
     {
-        "@id": 3,
+        "@id": 2,
         "id": 2,
-        "ticket": 2,
+        "ticket": {
+            "id": 1,
+            "totalodd": 7.776,
+            "possiblegain": 311.4,
+            "transaction": {
+                "id": 2,
+                "transactiondate": "2020-02-16T17:00:00Z",
+                "transactiontype": true,
+                "money": 40,
+                "user": {
+				    "id": 1,
+				    "name": "John Doe",
+				    "location": "Corona Quarantine",
+				    "age": 21,
+				    "money": 2020
+                }
+            }
+        },
         "odds": {
             "id": 2,
             "type": "Basic",
@@ -101,39 +117,6 @@ Used for retrieving all information about all played tickets.
         },
         "odd": 2.4,
         "type": "X2"
-    },
-    {
-        "@id": 4,
-        "id": 3,
-        "ticket": 2,
-        "odds": {
-            "id": 3,
-            "type": "Basic",
-            "odd1": 2.0,
-            "odd2": 1.9,
-            "odd3": 1.4,
-            "odd4": 1.9,
-            "odd5": 1.8,
-            "odd6": 2.0,
-            "match": {
-                "id": 3,
-                "matchdate": "2020-02-22T17:00:00Z",
-                "home": "Rafael Nadal",
-                "away": "Roger Federer",
-                "types": {
-                    "id": 3,
-                    "name": "Tennis",
-                    "type1": "1",
-                    "type2": "2",
-                    "type3": ">23.5g",
-                    "type4": "<23.5g",
-                    "type5": ">=2.5h",
-                    "type6": "<2.5h"
-                }
-            }
-        },
-        "odd": 1.8,
-        "type": ">=2.5h"
     }
 ]
 ```

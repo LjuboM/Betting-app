@@ -62,7 +62,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
     	given(ticketOddsService.findAllPlayedTickets()).willReturn(ticketOdds);
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/tickets")
+        mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds")
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[\r\n" + 
@@ -70,7 +70,6 @@ public class TicketOddsControllerTests {
           		"        \"@id\": 1,\r\n" + 
           		"        \"id\": 1,\r\n" + 
           		"        \"ticket\": {\r\n" + 
-          		"            \"@id\": 2,\r\n" + 
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
           		"            \"possiblegain\": 400,\r\n" + 
@@ -91,9 +90,14 @@ public class TicketOddsControllerTests {
           		"        \"type\": \"1\"\r\n" + 
           		"    },\r\n" + 
           		"    {\r\n" + 
-          		"        \"@id\": 3,\r\n" + 
+          		"        \"@id\": 2,\r\n" + 
           		"        \"id\": 2,\r\n" + 
-          		"        \"ticket\": 2,\r\n" + 
+          		"        \"ticket\": {\r\n" + 
+          		"            \"id\": 1,\r\n" + 
+          		"            \"totalodd\": 4,\r\n" + 
+          		"            \"possiblegain\": 400,\r\n" + 
+          		"            \"transaction\": null\r\n" + 
+          		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
           		"            \"id\": 1,\r\n" + 
           		"            \"type\": \"Basic\",\r\n" + 
@@ -122,15 +126,14 @@ public class TicketOddsControllerTests {
 
     	given(ticketOddsService.findAllPlayedTickets()).willReturn(ticketOdds);
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/tickets")
+        mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds")
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[\r\n" + 
           		"    {\r\n" + 
           		"        \"@id\": 1,\r\n" + 
           		"        \"id\": 1,\r\n" + 
-          		"        \"ticket\": {\r\n" + 
-          		"            \"@id\": 2,\r\n" + 
+          		"        \"ticket\": {\r\n" +  
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
           		"            \"possiblegain\": 400,\r\n" + 
@@ -159,7 +162,7 @@ public class TicketOddsControllerTests {
 
     	given(ticketOddsService.findAllPlayedTickets()).willReturn(Collections.emptyList());
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/tickets")
+        mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds")
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[]"));
