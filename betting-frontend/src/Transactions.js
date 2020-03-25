@@ -28,7 +28,7 @@ class Transactions extends Component {
             return (<div>Loading...</div>);
 
         return ( 
-            <Table striped>
+            <Table striped >
             <thead>
               <tr>
                 <th>#</th>
@@ -40,12 +40,12 @@ class Transactions extends Component {
             {
             Transactions.map( transaction =>
                 <tbody key={transaction.id} className={transaction.transactiontype}>
-                <tr>
-                <th scope="row" >{transaction.id}</th>
-                <td>{transaction.transactiondate}</td>
-                <td>{transaction.transactiontype}</td>
-                <td>{transaction.money}</td>
-                </tr>
+                    <tr>
+                        <th scope="row" >{transaction.id}</th>
+                        <td>{transaction.transactiondate}</td>
+                        <td>{transaction.transactiontype}</td>
+                        <td>{transaction.money}</td>
+                    </tr>
                 </tbody>
             )
             }
