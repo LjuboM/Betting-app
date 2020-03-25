@@ -50,7 +50,7 @@ public class TicketOddsControllerTests {
     private TransactionService transactionService;
     
     @Test
-    public void whenGetTickets_thenArrayOfTicketOdds()
+    public void whenGetTicketOdds_thenArrayOfTicketOdds()
       throws Exception {
         
     	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
@@ -116,7 +116,7 @@ public class TicketOddsControllerTests {
     }
     
     @Test
-    public void whenGetTickets_thenTicketOdds()
+    public void whenGetTicketOdds_thenTicketOdds()
       throws Exception {
         
     	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
@@ -157,7 +157,7 @@ public class TicketOddsControllerTests {
     }
     
     @Test
-    public void whenGetTickets_thenNoTicketOdds()
+    public void whenGetTicketOdds_thenNoTicketOdds()
       throws Exception {
 
     	given(ticketOddsService.findAllPlayedTickets()).willReturn(Collections.emptyList());
