@@ -66,5 +66,23 @@ li a:hover {
 }
 
 .Ticket {
-  background-color:#dadada;
+    background-color:#dadada;
+}
+
+.ticketView {
+  background-color:#dae0e5a1;
+  cursor: default;
+}
+.ticketView:hover {
+  background-color: #b8d5eca1;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
 }

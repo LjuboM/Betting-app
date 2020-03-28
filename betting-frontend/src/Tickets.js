@@ -7,8 +7,10 @@ class Tickets extends Component {
 
         this.state = { 
             isLoading : true,
-            Tickets : []
+            Tickets : [],
+            TicketOdds : []
          }
+         this.showPairs= this.showPairs.bind(this);
     }
     
     fetchTickets = () => {
@@ -18,36 +20,31 @@ class Tickets extends Component {
           .catch(error => console.log(error)); 
       };
 
-      componentDidMount(){
+    componentDidMount(){
         this.fetchTickets()
     }
 
+    showPairs(ticketId){
+        const ticketViewOpened = this.state.TicketOdds.some(ticketOdd => ticketOdd.ticket.id === ticketId);
 
-        // const ticketOddsResponse = await fetch('/api/ticketOdds');
-        // const ticketOddsBody = await ticketOddsResponse.json();
-
-        // for (const ticket of ticketsBody){
-        //     let temporaryTicketOdds = [];
-        //     for (const ticketOdd of ticketOddsBody){
-        //         if( ticket.id === ticketOdd.ticket.id){
-        //             temporaryTicketOdds = temporaryTicketOdds.concat(
-        //                 {
-        //                     id : ticketOdd.id,
-        //                     odd : ticketOdd.odd,
-        //                     type : ticketOdd.type,
-        //                     home : ticketOdd.odds.match.home,
-        //                     away : ticketOdd.odds.match.away,
-        //                     matchTime : ticketOdd.odds.match.matchdate,
-        //                 }
-        //             );
-        //         }
-        //     }
-        //     ticket.ticketOdds = temporaryTicketOdds;
-        // }
-
+        if(ticketViewOpened){
+            let updatedTicketOdds = [...this.state.TicketOdds].filter(ticketOdd => ticketOdd.ticket.id !== ticketId);
+            this.setState({TicketOdds : updatedTicketOdds});
+        }
+        else{
+            fetch('/api/ticketOdds/' + ticketId, {})
+            .then(body => body.json())
+            .then(body => {
+                const modifiedBody = this.state.TicketOdds.concat(body);
+                return modifiedBody;
+            })
+              .then(body => this.setState({TicketOdds : body , isLoading: false}))
+              .catch(error => console.log(error)); 
+        }
+    }
 
     render() {
-        const {Tickets, isLoading} = this.state;
+        const {Tickets, TicketOdds, isLoading} = this.state;
 
         if(isLoading) 
             return (<div>Loading...</div>);
@@ -55,37 +52,29 @@ class Tickets extends Component {
         return ( 
             <div>
             {
-            Tickets.map( ticket =>
-                <Table key={ticket.id}>
-                    <thead style={{backgroundColor:"#dae0e5a1"}}>
+            Tickets.map( ticketInfo =>
+                <Table key={ticketInfo.id}>
+                    <thead className={"ticketView"} onClick={this.showPairs.bind(this, ticketInfo.id)}>
                         <tr>
-                            <th># {ticket.id}</th>
-                            <th>Date</th>
-                            <th></th>
-                            <th>Possible Gain</th>
-                            <th>Bet</th>
-                            <th>Total Odd</th>
+                            <td className={"noselect"}><b># {ticketInfo.id}</b></td>
+                            <td className={"noselect"}><b>{ticketInfo.transaction.transactiondate}</b></td>
+                            <td className={"noselect"}></td>
+                            <td className={"noselect"}>Possible Gain: <b>{ticketInfo.possiblegain} HRK</b></td>
+                            <td className={"noselect"}>Bet: <b>{ticketInfo.transaction.money} HRK</b></td>
+                            <td className={"noselect"}>Total Odd: <b>{ticketInfo.totalodd}</b></td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style={{backgroundColor:"#dae0e5a1"}}>
-                            <td></td>
-                            <td>{ticket.transaction.transactiondate}</td>
-                            <td></td>
-                            <td>{ticket.possiblegain}</td>
-                            <td>{ticket.transaction.money} HRK</td>
-                            <td>{ticket.totalodd}</td>
-                        </tr>
-                    {/* {ticket.ticketOdds.map(ticketOdd =>
-                        <tr key={ticketOdd.id}>
+                    {TicketOdds.filter(ticketOdd => ticketOdd.ticket.id === ticketInfo.id).map( ticketOddWithSportType =>
+                        <tr key={ticketOddWithSportType.id}>
                             <th scope="row" ></th>
-                            <td>{ticketOdd.home}</td>
-                            <td>{ticketOdd.away}</td>
-                            <td>{ticketOdd.matchTime}</td>
-                            <td>{ticketOdd.type}</td>
-                            <td>{ticketOdd.odd}</td>
+                            <td>{ticketOddWithSportType.odds.match.home}</td>
+                            <td>{ticketOddWithSportType.odds.match.away}</td>
+                            <td>{ticketOddWithSportType.odds.match.matchdate}</td>
+                            <td>{ticketOddWithSportType.type}</td>
+                            <td>{ticketOddWithSportType.odd}</td>
                         </tr>
-                        )} */}
+                        )}
                     </tbody>
                 </Table>
             )

@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 
 class Transactions extends Component {
-    state = { 
-        isLoading : true,
-        Transactions : []
-     }
+     constructor(props){
+        super(props)
+  
+        this.state = { 
+            isLoading : true,
+            Transactions : []
+         }
+    }
 
      fetchTransactions = () => {
         fetch('/api/transactions', {})
