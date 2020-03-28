@@ -23,4 +23,8 @@ public class TicketOddsService {
 		ticketOddsRepository.save(ticketOdd);
 	}
 	
+	public Collection<TicketOdds> findAllPlayedPairsByTicketId(long ticketId){
+		return ticketOddsRepository.findAllByTicket_id(ticketId);
+	}
+	
 }

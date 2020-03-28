@@ -9,4 +9,6 @@ public interface ITicketOddsService {
 	Collection<TicketOdds> findAllPlayedTickets();
 	
 	TicketOdds createTicketOddsPair(TicketOdds ticketOdd);
+	
+	Collection<TicketOdds> findAllPlayedPairsByTicketId(long ticketId);
 }

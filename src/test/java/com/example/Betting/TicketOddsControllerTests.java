@@ -169,6 +169,130 @@ public class TicketOddsControllerTests {
     }
     
     @Test
+    public void whengetMatchPairsByTicketId_thenArrayOfTicketOdds()
+        throws Exception {
+    	
+    	long ticketId = 1;
+    	
+    	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
+    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
+    	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
+    	
+    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
+    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
+    	
+        given(ticketOddsService.findAllPlayedPairsByTicketId(ticketId)).willReturn(ticketOdds);
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds/{ticketId}", ticketId)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().json("[\r\n" + 
+              		"    {\r\n" + 
+              		"        \"@id\": 1,\r\n" + 
+              		"        \"id\": 1,\r\n" + 
+              		"        \"ticket\": {\r\n" + 
+              		"            \"id\": 1,\r\n" + 
+              		"            \"totalodd\": 4,\r\n" + 
+              		"            \"possiblegain\": 400,\r\n" + 
+              		"            \"transaction\": null\r\n" + 
+              		"        },\r\n" + 
+              		"        \"odds\": {\r\n" + 
+              		"            \"id\": 1,\r\n" + 
+              		"            \"type\": \"Basic\",\r\n" + 
+              		"            \"odd1\": 2,\r\n" + 
+              		"            \"odd2\": 3,\r\n" + 
+              		"            \"odd3\": 2,\r\n" + 
+              		"            \"odd4\": 4,\r\n" + 
+              		"            \"odd5\": 2,\r\n" + 
+              		"            \"odd6\": 4,\r\n" + 
+              		"            \"match\": null\r\n" + 
+              		"        },\r\n" + 
+              		"        \"odd\": 2,\r\n" + 
+              		"        \"type\": \"1\"\r\n" + 
+              		"    },\r\n" + 
+              		"    {\r\n" + 
+              		"        \"@id\": 2,\r\n" + 
+              		"        \"id\": 2,\r\n" + 
+              		"        \"ticket\": {\r\n" + 
+              		"            \"id\": 1,\r\n" + 
+              		"            \"totalodd\": 4,\r\n" + 
+              		"            \"possiblegain\": 400,\r\n" + 
+              		"            \"transaction\": null\r\n" + 
+              		"        },\r\n" + 
+              		"        \"odds\": {\r\n" + 
+              		"            \"id\": 1,\r\n" + 
+              		"            \"type\": \"Basic\",\r\n" + 
+              		"            \"odd1\": 2,\r\n" + 
+              		"            \"odd2\": 2,\r\n" + 
+              		"            \"odd3\": 2,\r\n" + 
+              		"            \"odd4\": 2,\r\n" + 
+              		"            \"odd5\": 3,\r\n" + 
+              		"            \"odd6\": 3,\r\n" + 
+              		"            \"match\": null\r\n" + 
+              		"        },\r\n" + 
+              		"        \"odd\": 2,\r\n" + 
+              		"        \"type\": \"X2\"\r\n" + 
+              		"    }\r\n" + 
+              		"]"));
+        } 
+    
+    @Test
+    public void whengetMatchPairsByTicketId_thenTicketOdds()
+        throws Exception {
+    	
+    	long ticketId = 1;
+    	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
+    	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
+    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
+    	
+        given(ticketOddsService.findAllPlayedPairsByTicketId(ticketId)).willReturn(ticketOdds);
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds/{ticketId}", ticketId)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().json("[\r\n" + 
+              		"    {\r\n" + 
+              		"        \"@id\": 1,\r\n" + 
+              		"        \"id\": 1,\r\n" + 
+              		"        \"ticket\": {\r\n" +  
+              		"            \"id\": 1,\r\n" + 
+              		"            \"totalodd\": 4,\r\n" + 
+              		"            \"possiblegain\": 400,\r\n" + 
+              		"            \"transaction\": null\r\n" + 
+              		"        },\r\n" + 
+              		"        \"odds\": {\r\n" + 
+              		"            \"id\": 1,\r\n" + 
+              		"            \"type\": \"Basic\",\r\n" + 
+              		"            \"odd1\": 2,\r\n" + 
+              		"            \"odd2\": 3,\r\n" + 
+              		"            \"odd3\": 2,\r\n" + 
+              		"            \"odd4\": 4,\r\n" + 
+              		"            \"odd5\": 2,\r\n" + 
+              		"            \"odd6\": 4,\r\n" + 
+              		"            \"match\": null\r\n" + 
+              		"        },\r\n" + 
+              		"        \"odd\": 2,\r\n" + 
+              		"        \"type\": \"1\"\r\n" + 
+              		"    }\r\n" + 
+              		"]"));
+        } 
+    
+    @Test
+    public void whengetMatchPairsByTicketId_thenNoTicketOdds()
+        throws Exception {
+    	
+    	long ticketId = 1;
+        given(ticketOddsService.findAllPlayedPairsByTicketId(ticketId)).willReturn(Collections.emptyList());
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds/{ticketId}", ticketId)
+           .contentType(MediaType.APPLICATION_JSON))
+           .andExpect(MockMvcResultMatchers.status().isOk())
+           .andExpect(MockMvcResultMatchers.content().json("[]"));
+        }
+        
+    @Test
     public void givenArrayOfBasicTicketOdds_whenPlayingTicket_thenOk()
       throws Exception {
         int moneyInWalletBefore = 200;
