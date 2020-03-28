@@ -6,20 +6,30 @@ class Transactions extends Component {
         isLoading : true,
         Transactions : []
      }
-     async componentDidMount(){
-        const response=await fetch('/api/transactions');
-        const body = await response.json();
-        for (const transaction of body){
-            if(transaction.transactiontype === true){
-            transaction.transactiontype="Ticket";
-            transaction.money = "-" + transaction.money;
-            }
-            else{
-                transaction.transactiontype="Added money";
-            }
-        }
-        this.setState({Transactions : body , isLoading: false});
 
+     fetchTransactions = () => {
+        fetch('/api/transactions', {})
+        .then(body => body.json())
+        .then(body => {
+            let modifiedBody = body;
+            modifiedBody.map( transaction => {
+                if(transaction.transactiontype === true){
+                    transaction.transactiontype="Ticket";
+                    transaction.money = "-" + transaction.money;
+                }
+                else{
+                    transaction.transactiontype="Added money";
+                }
+                return transaction;
+            })
+            return modifiedBody;
+        })
+          .then(body => this.setState({Transactions : body , isLoading: false}))
+          .catch(error => console.log(error)); 
+      };
+
+      componentDidMount(){
+        this.fetchTransactions()
     }
 
     render() {

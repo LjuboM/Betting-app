@@ -21,7 +21,7 @@ insert into match (id, matchdate, home, away, types_id) values (1, '2020-02-20T1
 insert into match (id, matchdate, home, away, types_id) values (2, '2020-02-21T17:00:00.000Z', 'Cibona', 'Cedevita', 2)
 insert into match (id, matchdate, home, away, types_id) values (3, '2020-02-22T17:00:00.000Z', 'Rafael Nadal', 'Roger Federer', 3)
 insert into match (id, matchdate, home, away, types_id) values (4, '2020-03-23T17:00:00.000Z', 'Mladost', 'Jug', 4)
-insert into match (id, matchdate, home, away, types_id) values (5, '2020-05-24T17:00:00.000Z', 'Mike Tyson', 'Muhammand Ali', 5)
+insert into match (id, matchdate, home, away, types_id) values (5, '2020-05-24T17:00:00.000Z', 'Mike Tyson', 'Muhammad Ali', 5)
 
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (1, 'Basic', 1.8, 2.0, 2.8, 1.4, 1.8, 1.7, 1)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (2, 'Basic', 2.2, 2.4, 5.0, 1.4, 2.5, 2.8, 2)

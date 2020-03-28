@@ -20,11 +20,16 @@ class App extends Component {
      this.increaseMoneyValue= this.increaseMoneyValue.bind(this);
 }
 
-  async componentDidMount(){
-    const response = await fetch('/api/user/1');
-    const body = await response.json();
-    this.setState({User : body});
-  }
+  fetchUser = () => {
+    fetch('/api/user/1', {})
+    .then(body => body.json())
+      .then(body => this.setState({User : body , isLoading: false}))
+      .catch(error => console.log(error)); 
+  };
+
+  componentDidMount(){
+    this.fetchUser()
+}
 
   increaseMoneyValue(addedMoney){
     let newUserState = this.state.User;
