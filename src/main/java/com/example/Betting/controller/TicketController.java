@@ -21,7 +21,7 @@ public class TicketController {
 	
 
 	@GetMapping("/tickets")
-	ResponseEntity<?> getTransactions(){
+	ResponseEntity<?> getTickets(){
 		Collection<Ticket> allTickets = ticketService.findAllTickets();
 		return ResponseEntity.status(HttpStatus.OK).body(allTickets);
 	}

@@ -3,6 +3,7 @@ package com.example.Betting.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Betting.model.Ticket;
@@ -14,7 +15,7 @@ public class TicketService {
 	private TicketRepository ticketRepository;
 	
 	public Collection<Ticket> findAllTickets(){
-		return ticketRepository.findAll();
+		return ticketRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 	}
 	
 }
