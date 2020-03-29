@@ -90,3 +90,25 @@ li a:hover {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */
 }
+
+#newTicket{
+  display:block;
+  background-color: grey;
+  grid-area: "newTicket";
+}
+
+#oddsOffer{
+  display:block;
+  grid-area: "oddsOffer";
+}
+
+@supports (display: grid) {
+  @media screen and (min-width: 1000px) {
+      #playTicketContainer {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          grid-template-areas: 
+              "oddsOffer  newTicket";
+      }
+  }
+}

@@ -8,13 +8,9 @@ export const ExportableContext = MyContext.Consumer
 
 // Then create a provider Component
 class MyProvider extends Component {
-  constructor(props){
-    super(props)
-
-    this.state = { 
+    state = { 
       User : []
      }
-}
   fetchUser = () => {
     fetch('/api/user/1', {})
     .then(body => body.json())

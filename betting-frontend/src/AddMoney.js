@@ -33,7 +33,6 @@ class AddMoney extends Component {
                 body : JSON.stringify(transaction),
               });
             this.props.history.push("/transactions");
-//            this.props.increaseMoney(transaction.money);
         }
         else{
             this.setState({

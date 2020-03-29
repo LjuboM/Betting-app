@@ -6,9 +6,9 @@ class PlayTicket extends Component {
     state = {  }
     render() { 
         return (
-                <div className="playTicketContainer">
-                    <OddsOffer/>
-                    <NewTicket/>                
+                <div id="playTicketContainer">
+                    <OddsOffer id="oddsOffer"/>
+                    <NewTicket/> 
                 </div>
         );
     }
