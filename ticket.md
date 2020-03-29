@@ -1,4 +1,4 @@
-# Transaction
+# Ticket
 
 Used for retrieving information about tickets.
 
