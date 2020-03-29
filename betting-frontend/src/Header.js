@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-
+import { ExportableContext } from './providers/MyProvider';
 
 class Header extends Component {
-    state = {
-    }
-
     render() { 
         return (
-        <div id="header">
-            <p><b>Betting App</b></p>
-            <p>{this.props.userName} | {this.props.moneyInWallet} HRK</p>
-        </div>
+        <ExportableContext>
+            {(value) => (
+                <div id="header">
+                    <p><b>Betting App</b></p>
+                    <p> {value.state.User.name} | {value.state.User.money} HRK</p>
+                </div>
+            )}
+        </ExportableContext>
         )
     }
 }

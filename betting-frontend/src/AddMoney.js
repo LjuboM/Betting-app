@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import { Button, Alert } from 'reactstrap';
-
+import { ExportableContext } from './providers/MyProvider';
 
 class AddMoney extends Component {
     constructor(props){
         super(props)
   
         this.state = { 
-          transaction : this.emptyTransaction,
+          Transaction : this.emptyTransaction,
           isHidden: true
          }
          this.handleAddingMoney= this.handleAddingMoney.bind(this);
@@ -22,7 +22,7 @@ class AddMoney extends Component {
     }
 
     async handleAddingMoney(){
-        const transaction = this.state.transaction;
+        const transaction = this.state.Transaction;
         if(transaction.money >= 1 && transaction.money.toString().search(/\./) === -1){
             await fetch(`/api/transaction`, {
                 method : 'POST',
@@ -33,7 +33,7 @@ class AddMoney extends Component {
                 body : JSON.stringify(transaction),
               });
             this.props.history.push("/transactions");
-            this.props.increaseMoney(transaction.money);
+//            this.props.increaseMoney(transaction.money);
         }
         else{
             this.setState({
@@ -45,9 +45,9 @@ class AddMoney extends Component {
     handleMoneyInput(event){
         const target= event.target;
         const money= target.value;
-        let transaction={...this.state.transaction};
+        let transaction={...this.state.Transaction};
         transaction.money = money;
-        this.setState({transaction});
+        this.setState({Transaction: transaction});
     }
 
     handleKeyDown(event){
@@ -55,18 +55,24 @@ class AddMoney extends Component {
             this.handleAddingMoney();
         }
     }
-    render() { 
+    render() {
+      const {Transaction} = this.state;
         return (
         <div>
-          <InputGroup style={{margin:"15px", width:"50%"}}>
-            <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
-            <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput} onKeyDown={this.handleKeyDown}/>
-            <InputGroupAddon addonType="append"><Button color="primary" onClick={this.handleAddingMoney}>Add Money</Button></InputGroupAddon>
-          </InputGroup>
+          <ExportableContext>
+            {(value) => (
+              <InputGroup style={{margin:"15px", width:"50%"}}>
+                <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
+                <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput} onKeyDown={this.handleKeyDown}/>
+                <InputGroupAddon addonType="append"><Button color="primary" onClick={() => { this.handleAddingMoney(); value.increaseMoneyValue(Transaction.money);}}>Add Money</Button></InputGroupAddon>
+              </InputGroup>
+            )}
+          </ExportableContext>
           {!this.state.isHidden && 
           <Alert color="danger">
             Only positive integer values higher than 1 are accepted!
           </Alert>}
+
         </div>
         );
     }

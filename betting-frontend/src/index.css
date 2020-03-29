@@ -65,13 +65,17 @@ li a:hover {
   cursor: default;
 }
 
+.playTicketContainer{
+  
+}
+
 .Ticket {
     background-color:#dadada;
 }
 
 .ticketView {
   background-color:#dae0e5a1;
-  cursor: default;
+  cursor: pointer;
 }
 .ticketView:hover {
   background-color: #b8d5eca1;

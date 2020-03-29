@@ -1,5 +1,3 @@
-
-
 package com.example.Betting;
 
 import static org.mockito.BDDMockito.given;
