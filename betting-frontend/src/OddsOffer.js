@@ -47,7 +47,7 @@ class OddsOffer extends Component {
                    {(value) => (
                         Types.map( TypesPerSport =>
                             <Table striped responsive key={TypesPerSport.id}>
-                            <thead>
+                            <thead id={TypesPerSport.name}>
                                 <tr>
                                     <th>{TypesPerSport.name}</th>
                                     <th></th>

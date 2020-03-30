@@ -27,9 +27,11 @@ class MyProvider extends Component {
                 state: this.state
                 ,
                   increaseMoneyValue: (addedMoney) => {
-                    let newUserState = this.state.User;
-                    newUserState.money = parseInt(newUserState.money) + parseInt(addedMoney);
-                    this.setState({User : newUserState});
+                    if(addedMoney >= 1 && addedMoney.toString().search(/\./) === -1 && addedMoney.toString().search(/e/) === -1){
+                      let newUserState = this.state.User;
+                      newUserState.money = parseInt(newUserState.money) + parseInt(addedMoney);
+                      this.setState({User : newUserState});
+                  }
                   }
               }}>
                 {this.props.children}

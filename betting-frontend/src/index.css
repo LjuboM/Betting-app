@@ -91,15 +91,35 @@ li a:hover {
                                   supported by Chrome, Opera and Firefox */
 }
 
+#oddsOffer{
+  display:block;
+  grid-area: "oddsOffer";
+}
+
+#Football{
+  background-color: #0080006e;
+}
+
+#Basketball{
+  background-color: #ffa500ab;
+}
+
+#Tennis{
+  background-color: #ddff005e;
+}
+
+#Waterpolo{
+  background-color: #0077ff5c;
+}
+
+#Boxing{
+  background-color: #ff004040;
+}
+
 #newTicket{
   display:block;
   background-color: grey;
   grid-area: "newTicket";
-}
-
-#oddsOffer{
-  display:block;
-  grid-area: "oddsOffer";
 }
 
 @supports (display: grid) {

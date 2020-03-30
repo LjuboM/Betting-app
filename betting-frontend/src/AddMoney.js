@@ -23,7 +23,7 @@ class AddMoney extends Component {
 
     async handleAddingMoney(){
         const transaction = this.state.Transaction;
-        if(transaction.money >= 1 && transaction.money.toString().search(/\./) === -1){
+        if(transaction.money >= 1 && transaction.money.toString().search(/\./) === -1 && transaction.money.toString().search(/e/) === -1){
             await fetch(`/api/transaction`, {
                 method : 'POST',
                 headers : {
