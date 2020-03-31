@@ -64,32 +64,32 @@ class OddsOffer extends Component {
                                 {
                                 Odds.filter( specialOfferOdds => specialOfferOdds.match.types.name === TypesPerSport.name && specialOfferOdds.type === "Special offer")
                                 .map( specialOfferOdd =>                             
-                                    <tr key={specialOfferOdd.id}>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.match.home}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.match.away}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.match.matchdate}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.odd1}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.odd2}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.odd3}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.odd4}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.odd5}</td>
-                                        <td style={{color:"blue"}}>{specialOfferOdd.odd6}</td>
+                                    <tr style={{color:"blue"}} key={specialOfferOdd.id}>
+                                        <td>{specialOfferOdd.match.home}</td>
+                                        <td>{specialOfferOdd.match.away}</td>
+                                        <td>{specialOfferOdd.match.matchdate}</td>
+                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>{specialOfferOdd.odd1}</button></td>
+                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd2, TypesPerSport.type2, specialOfferOdd)}>{specialOfferOdd.odd2}</button></td>
+                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd3, TypesPerSport.type3, specialOfferOdd)}>{specialOfferOdd.odd3}</button></td>
+                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd4, TypesPerSport.type4, specialOfferOdd)}>{specialOfferOdd.odd4}</button></td>
+                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd5, TypesPerSport.type5, specialOfferOdd)}>{specialOfferOdd.odd5}</button></td>
+                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd6, TypesPerSport.type6, specialOfferOdd)}>{specialOfferOdd.odd6}</button></td>
                                     </tr>
                                 )
                                 }
                                 {
-                                Odds.filter( specialOfferOdds => specialOfferOdds.match.types.name === TypesPerSport.name && specialOfferOdds.type === "Basic")
-                                .map( specialOfferOdd =>                             
-                                    <tr key={specialOfferOdd.id}>
-                                        <td>{specialOfferOdd.match.home}</td>
-                                        <td>{specialOfferOdd.match.away}</td>
-                                        <td>{specialOfferOdd.match.matchdate}</td>
-                                        <td>{specialOfferOdd.odd1}</td>
-                                        <td>{specialOfferOdd.odd2}</td>
-                                        <td>{specialOfferOdd.odd3}</td>
-                                        <td>{specialOfferOdd.odd4}</td>
-                                        <td>{specialOfferOdd.odd5}</td>
-                                        <td>{specialOfferOdd.odd6}</td>
+                                Odds.filter( basicOfferOdds => basicOfferOdds.match.types.name === TypesPerSport.name && basicOfferOdds.type === "Basic")
+                                .map( basicOfferOdd =>                             
+                                    <tr key={basicOfferOdd.id}>
+                                        <td>{basicOfferOdd.match.home}</td>
+                                        <td>{basicOfferOdd.match.away}</td>
+                                        <td>{basicOfferOdd.match.matchdate}</td>
+                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>{basicOfferOdd.odd1}</button></td>
+                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd2, TypesPerSport.type2, basicOfferOdd)}>{basicOfferOdd.odd2}</button></td>
+                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd3, TypesPerSport.type3, basicOfferOdd)}>{basicOfferOdd.odd3}</button></td>
+                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd4, TypesPerSport.type4, basicOfferOdd)}>{basicOfferOdd.odd4}</button></td>
+                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd5, TypesPerSport.type5, basicOfferOdd)}>{basicOfferOdd.odd5}</button></td>
+                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd6, TypesPerSport.type6, basicOfferOdd)}>{basicOfferOdd.odd6}</button></td>
                                     </tr>
                                 )
                                 }

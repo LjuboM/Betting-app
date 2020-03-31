@@ -118,7 +118,7 @@ li a:hover {
 
 #newTicket{
   display:block;
-  background-color: grey;
+  /* background-color: lightgray; */
   grid-area: "newTicket";
 }
 

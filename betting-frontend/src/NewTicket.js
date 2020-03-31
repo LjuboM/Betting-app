@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import { Button, Alert } from 'reactstrap';
+import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import { ExportableContext } from './providers/MyProvider';
 
 class NewTicket extends Component {
@@ -8,7 +9,8 @@ class NewTicket extends Component {
         super(props)
   
         this.state = { 
-          TicketOdds : this.emptyTicketOdds
+          TicketOdds : this.emptyTicketOdds,
+          isHidden : true
          }
          this.handlePlayingTicket= this.handlePlayingTicket.bind(this);
     }
@@ -20,7 +22,7 @@ class NewTicket extends Component {
             "transaction": {
                 "money": 1,
                     "user": {
-                    "id": 1
+                        "id": 1
                 }
             }
         },
@@ -36,6 +38,10 @@ class NewTicket extends Component {
         "type": "1"
         }
     ]
+
+    // this.setState({
+    //     isHidden: false
+    // })
 
     async handlePlayingTicket(){
         const TicketOdds = this.state.TicketOdds;
@@ -56,21 +62,47 @@ class NewTicket extends Component {
             <div id="newTicket">
             <ExportableContext>
                 {(value) => (
-                <Table striped >
-                    <thead>
-                    <tr>
-                        <th>Select all</th>
-                        <th>Delete all</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <React.Fragment>
+                    <Table striped >
+                        <thead>
                         <tr>
-                            <th scope="row" >...</th>
-                            <td>...</td>
+                            <th>Select all</th>
+                            <th>...</th>
+                            <th>...</th>
+                            <th>Delete all</th>
                         </tr>
-                    </tbody>
-                    <Button color="primary" onClick={() => { this.handlePlayingTicket(); value.increaseMoneyValue(-1); }}>Place a Bet</Button>
-                </Table>
+                        </thead>
+                        {value.state.NewTicket.map( pair =>
+                        <tbody key={pair.odds.id}>
+                            <tr>
+                                <td scope="row" >{pair.odds.match.home}</td>
+                                <td>{pair.odds.match.away}</td>
+                                <td>{pair.odds.type}</td>
+                                <td>{pair.odd}</td>
+                            </tr>
+                        </tbody>
+                        )}
+                        <tbody>
+                            <tr style={{backgroundColor:"white"}}>
+                                <td>Possible Gain: {value.state.possibleGain.toFixed(2)} HRK</td>
+                                <td></td>
+                                <td></td>
+                                <td style={{color:"blue"}}>{value.state.totalOdd.toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <div>
+                        <InputGroup style={{margin:"15px", width:"96%"}}>
+                            <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
+                                <Input placeholder="Amount" min={1} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
+                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { this.handlePlayingTicket(); value.increaseMoneyValue(-1); }}> Place a Bet </Button> </InputGroupAddon>
+                        </InputGroup>
+                        {!this.state.isHidden && 
+                        <Alert color="danger">
+                        Only positive integer values higher than 1 are accepted!
+                        </Alert>}
+                    </div>
+                </React.Fragment>
                 )}
             </ExportableContext>
             </div>
