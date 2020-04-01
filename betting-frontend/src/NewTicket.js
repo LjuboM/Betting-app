@@ -12,7 +12,6 @@ class NewTicket extends Component {
           TicketOdds : this.emptyTicketOdds,
           isHidden : true
          }
-         this.handlePlayingTicket= this.handlePlayingTicket.bind(this);
     }
     emptyTicketOdds = [
         {
@@ -43,19 +42,6 @@ class NewTicket extends Component {
     //     isHidden: false
     // })
 
-    async handlePlayingTicket(){
-        const TicketOdds = this.state.TicketOdds;
-        await fetch(`/api/ticket`, {
-            method : 'POST',
-            headers : {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body : JSON.stringify(TicketOdds),
-        });
-        const newLocal = "/transactions";
-    }
-
     render() { 
         // const {TicketOdds} = this.state;
         return (
@@ -77,15 +63,15 @@ class NewTicket extends Component {
                             <tr>
                                 <td scope="row" >{pair.odds.match.home}</td>
                                 <td>{pair.odds.match.away}</td>
-                                <td>{pair.odds.type}</td>
+                                <td>{pair.type}</td>
                                 <td>{pair.odd}</td>
                             </tr>
                         </tbody>
                         )}
                         <tbody>
                             <tr style={{backgroundColor:"white"}}>
+                                <td>Money: {value.state.money}</td>
                                 <td>Possible Gain: {value.state.possibleGain.toFixed(2)} HRK</td>
-                                <td></td>
                                 <td></td>
                                 <td style={{color:"blue"}}>{value.state.totalOdd.toFixed(2)}</td>
                             </tr>
@@ -95,7 +81,7 @@ class NewTicket extends Component {
                         <InputGroup style={{margin:"15px", width:"96%"}}>
                             <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
                                 <Input placeholder="Amount" min={1} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
-                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { this.handlePlayingTicket(); value.increaseMoneyValue(-1); }}> Place a Bet </Button> </InputGroupAddon>
+                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.playTicket(); value.changeMoneyValue(-value.state.money); }}> Place a Bet </Button> </InputGroupAddon>
                         </InputGroup>
                         {!this.state.isHidden && 
                         <Alert color="danger">

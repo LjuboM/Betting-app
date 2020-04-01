@@ -63,7 +63,7 @@ class AddMoney extends Component {
               <InputGroup style={{margin:"15px", width:"50%"}}>
                 <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
                 <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput} onKeyDown={this.handleKeyDown}/>
-                <InputGroupAddon addonType="append"><Button color="primary" onClick={() => { this.handleAddingMoney(); value.increaseMoneyValue(Transaction.money);}}>Add Money</Button></InputGroupAddon>
+                <InputGroupAddon addonType="append"><Button color="primary" onClick={() => { this.handleAddingMoney(); value.changeMoneyValue(Transaction.money);}}>Add Money</Button></InputGroupAddon>
               </InputGroup>
             )}
           </ExportableContext>

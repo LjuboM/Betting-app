@@ -8,18 +8,40 @@ export const ExportableContext = MyContext.Consumer
 
 // Then create a provider Component
 class MyProvider extends Component {
-    state = { 
+
+  constructor(props){
+    super(props)
+    this.state = { 
       User : [],
       NewTicket : [],
       totalOdd : 1,
       possibleGain : 0,
       money : 0
      }
+     this.createNewTicket= this.createNewTicket.bind(this);
+     this.refreshTicket= this.refreshTicket.bind(this);
+}
 
+async createNewTicket(finalTicket){
+  console.log(finalTicket);
+  await fetch(`/api/ticket`, {
+      method : 'POST',
+      headers : {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(finalTicket),
+  });
+  this.refreshTicket();
+}
+
+  refreshTicket(){
+    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: 0})
+  }
   fetchUser = () => {
     fetch('/api/user/1', {})
     .then(body => body.json())
-    .then(body => this.setState({User : body , isLoading: false}))
+    .then(body => this.setState({User : body}))
     .catch(error => console.log(error)); 
   };
   
@@ -31,7 +53,7 @@ class MyProvider extends Component {
             <MyContext.Provider value={{
                 state: this.state
                 ,
-                  increaseMoneyValue: (addedMoney) => {
+                  changeMoneyValue: (addedMoney) => {
                     if(addedMoney >= 1 && addedMoney.toString().search(/\./) === -1 && addedMoney.toString().search(/e/) === -1){
                       let newUserState = this.state.User;
                       newUserState.money = parseInt(newUserState.money) + parseInt(addedMoney);
@@ -39,17 +61,28 @@ class MyProvider extends Component {
                     }
                   },
                   addPair: (odd, type, Odds) => {
-                    //check if pair already exists
-                    //replace it if it exists
-                    //if not add it:
+                    let finalNewTicket = this.state.NewTicket;
                     let newTotalOdd = this.state.totalOdd * odd;
-                    let newPossibleGain = this.state.money * newTotalOdd;
-                    let ticketContruction = {
+
+                    //check if we already bet on that match
+                    let pairAlreadyExists = finalNewTicket.filter(pair => pair.odds.match.id === Odds.match.id);
+                    //Divide total odd with odd from match that we are removing
+                    pairAlreadyExists.map( pair => {
+                      newTotalOdd = newTotalOdd / pair.odd;
+                    })
+
+                    if(pairAlreadyExists.length>0){
+                      finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id);
+
+                    }
+
+                    const newPossibleGain = this.state.money * newTotalOdd;
+                    const newPair = {
                       "odds": Odds,
                       "odd": odd,
                       "type": type
                     };
-                      this.setState({ NewTicket: [...this.state.NewTicket, ticketContruction], totalOdd: newTotalOdd, possibleGain: newPossibleGain})
+                      this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain})
                   },
                   handleBetMoneyInput: (event) =>{
                     const target= event.target;
@@ -62,22 +95,27 @@ class MyProvider extends Component {
                     }
                   },
                   playTicket: () => {
-                    //Calculate total odd
-                    //calculate possibleGain
-                    //money?
-
-
-                    let ticketInfo = {
-                      "totalodd": 1, //?
-                      "possiblegain": 1, //?
-                      "transaction": {
-                          "money": 1, //?
-                          "user": {
-                            "id": 1
+                    let finalNewTicket = [];
+                    //ADD TICKET VALIDATION!!!
+                    this.state.NewTicket.map( ticketOdd => {
+                      finalNewTicket = [...finalNewTicket, 
+                        ticketOdd = {
+                        "ticket": {
+                          "totalodd": this.state.totalOdd,
+                          "possiblegain": this.state.possibleGain,
+                          "transaction": {
+                              "money": this.state.money,
+                                  "user": {
+                                  "id": 1
+                              }
                           }
-                      }
-                    }
-
+                        },
+                        "odds": ticketOdd.odds,
+                        "odd": ticketOdd.odd,
+                        "type": ticketOdd.type
+                        }]
+                    })
+                    this.createNewTicket(finalNewTicket);
                   }
               }}>
                 {this.props.children}

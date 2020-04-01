@@ -96,6 +96,11 @@ li a:hover {
   grid-area: "oddsOffer";
 }
 
+.oddsOfferFakeButton:hover{
+  background-color: lightgray;
+  cursor: pointer;
+}
+
 #Football{
   background-color: #0080006e;
 }

@@ -68,12 +68,12 @@ class OddsOffer extends Component {
                                         <td>{specialOfferOdd.match.home}</td>
                                         <td>{specialOfferOdd.match.away}</td>
                                         <td>{specialOfferOdd.match.matchdate}</td>
-                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>{specialOfferOdd.odd1}</button></td>
-                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd2, TypesPerSport.type2, specialOfferOdd)}>{specialOfferOdd.odd2}</button></td>
-                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd3, TypesPerSport.type3, specialOfferOdd)}>{specialOfferOdd.odd3}</button></td>
-                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd4, TypesPerSport.type4, specialOfferOdd)}>{specialOfferOdd.odd4}</button></td>
-                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd5, TypesPerSport.type5, specialOfferOdd)}>{specialOfferOdd.odd5}</button></td>
-                                        <td><button onClick={ () => value.addPair(specialOfferOdd.odd6, TypesPerSport.type6, specialOfferOdd)}>{specialOfferOdd.odd6}</button></td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>{specialOfferOdd.odd1}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(specialOfferOdd.odd2, TypesPerSport.type2, specialOfferOdd)}>{specialOfferOdd.odd2}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(specialOfferOdd.odd3, TypesPerSport.type3, specialOfferOdd)}>{specialOfferOdd.odd3}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(specialOfferOdd.odd4, TypesPerSport.type4, specialOfferOdd)}>{specialOfferOdd.odd4}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(specialOfferOdd.odd5, TypesPerSport.type5, specialOfferOdd)}>{specialOfferOdd.odd5}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(specialOfferOdd.odd6, TypesPerSport.type6, specialOfferOdd)}>{specialOfferOdd.odd6}</td>
                                     </tr>
                                 )
                                 }
@@ -84,12 +84,12 @@ class OddsOffer extends Component {
                                         <td>{basicOfferOdd.match.home}</td>
                                         <td>{basicOfferOdd.match.away}</td>
                                         <td>{basicOfferOdd.match.matchdate}</td>
-                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>{basicOfferOdd.odd1}</button></td>
-                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd2, TypesPerSport.type2, basicOfferOdd)}>{basicOfferOdd.odd2}</button></td>
-                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd3, TypesPerSport.type3, basicOfferOdd)}>{basicOfferOdd.odd3}</button></td>
-                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd4, TypesPerSport.type4, basicOfferOdd)}>{basicOfferOdd.odd4}</button></td>
-                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd5, TypesPerSport.type5, basicOfferOdd)}>{basicOfferOdd.odd5}</button></td>
-                                        <td><button onClick={ () => value.addPair(basicOfferOdd.odd6, TypesPerSport.type6, basicOfferOdd)}>{basicOfferOdd.odd6}</button></td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>{basicOfferOdd.odd1}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(basicOfferOdd.odd2, TypesPerSport.type2, basicOfferOdd)}>{basicOfferOdd.odd2}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(basicOfferOdd.odd3, TypesPerSport.type3, basicOfferOdd)}>{basicOfferOdd.odd3}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(basicOfferOdd.odd4, TypesPerSport.type4, basicOfferOdd)}>{basicOfferOdd.odd4}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(basicOfferOdd.odd5, TypesPerSport.type5, basicOfferOdd)}>{basicOfferOdd.odd5}</td>
+                                        <td className="oddsOfferFakeButton" onClick={ () => value.addPair(basicOfferOdd.odd6, TypesPerSport.type6, basicOfferOdd)}>{basicOfferOdd.odd6}</td>
                                     </tr>
                                 )
                                 }
