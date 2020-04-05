@@ -59,8 +59,12 @@ public class TicketOddsController {
 
 		//Get User who played ticket. 
 		Optional<User> user = userService.findUserById(first.getTicket().getTransaction().getUser().getId());
-		float moneyInWallet = user.get().getMoney();
-		float spentMoney = first.getTicket().getTransaction().getMoney();
+		int moneyInWallet = user.get().getMoney();
+		int spentMoney = first.getTicket().getTransaction().getMoney();
+		
+		if(spentMoney < 1) {
+			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
+		}
 		
 		if(spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");

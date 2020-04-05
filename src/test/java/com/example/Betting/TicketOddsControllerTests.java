@@ -169,7 +169,7 @@ public class TicketOddsControllerTests {
     }
     
     @Test
-    public void whengetMatchPairsByTicketId_thenArrayOfTicketOdds()
+    public void whenGetMatchPairsByTicketId_thenArrayOfTicketOdds()
         throws Exception {
     	
     	long ticketId = 1;
@@ -238,7 +238,7 @@ public class TicketOddsControllerTests {
         } 
     
     @Test
-    public void whengetMatchPairsByTicketId_thenTicketOdds()
+    public void whenGetMatchPairsByTicketId_thenTicketOdds()
         throws Exception {
     	
     	long ticketId = 1;
@@ -280,7 +280,7 @@ public class TicketOddsControllerTests {
         } 
     
     @Test
-    public void whengetMatchPairsByTicketId_thenNoTicketOdds()
+    public void whenGetMatchPairsByTicketId_thenNoTicketOdds()
         throws Exception {
     	
     	long ticketId = 1;
@@ -426,6 +426,33 @@ public class TicketOddsControllerTests {
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().string("You don't have enough money in your wallet."));
+    }
+    
+    @Test
+    public void givenArrayOfTicketOdds_whenPlayingTicketWithNotEnoughBetMoney_thenBadRequest()
+      throws Exception {
+    	
+        Instant matchDate = Instant.now().plusSeconds(60);
+    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 500, null);
+
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(ljubo));
+
+        Transaction newTransaction = new Transaction((long) 1, null, true,  0, ljubo, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
+    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
+    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
+    	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
+
+    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
+    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
+    	
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+          .content(asJsonString(ticketOdds))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().string("You have to bet at least 1 HRK"));
     }
     
     @Test
