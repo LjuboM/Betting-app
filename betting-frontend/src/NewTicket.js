@@ -61,7 +61,7 @@ class NewTicket extends Component {
                         {value.state.NewTicket.map( pair =>
                         <tbody key={pair.odds.id}>
                             <tr>
-                                <td scope="row" >{pair.odds.match.home}</td>
+                                <td>{pair.odds.match.home}</td>
                                 <td>{pair.odds.match.away}</td>
                                 <td>{pair.type}</td>
                                 <td>{pair.odd}</td>

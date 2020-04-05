@@ -101,6 +101,13 @@ li a:hover {
   cursor: pointer;
 }
 
+.selectedPair{
+  background-color: #eefbff !important;
+}
+.selectedTypeOfPair{
+  background-color: #b5d5de !important;
+}
+
 #Football{
   background-color: #0080006e;
 }

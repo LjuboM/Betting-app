@@ -69,6 +69,7 @@ async createNewTicket(finalTicket){
                     //Divide total odd with odd from match that we are removing
                     pairAlreadyExists.map( pair => {
                       newTotalOdd = newTotalOdd / pair.odd;
+                      return null;
                     })
 
                     if(pairAlreadyExists.length>0){
@@ -114,8 +115,15 @@ async createNewTicket(finalTicket){
                         "odd": ticketOdd.odd,
                         "type": ticketOdd.type
                         }]
-                    })
+                    return null;
+                  })
                     this.createNewTicket(finalNewTicket);
+                  },
+                  isPairSelected: (oddId) => {
+                    return this.state.NewTicket.some(pair => pair.odds.id === oddId);
+                  },
+                  isOddTypeOfPairSelected: (oddId, oddTypeValue) => {
+                    return this.state.NewTicket.some(pair => pair.odds.id === oddId && pair.type === oddTypeValue);
                   }
               }}>
                 {this.props.children}
