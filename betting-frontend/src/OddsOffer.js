@@ -69,27 +69,27 @@ class OddsOffer extends Component {
                                         <td>{specialOfferOdd.match.away}</td>
                                         <td>{specialOfferOdd.match.matchdate}</td>
                                         <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>
+                                            onClick={ () => value.modifyPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>
                                             {specialOfferOdd.odd1}
                                          </td>
                                         <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type2) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(specialOfferOdd.odd2, TypesPerSport.type2, specialOfferOdd)}>
+                                            onClick={ () => value.modifyPair(specialOfferOdd.odd2, TypesPerSport.type2, specialOfferOdd)}>
                                             {specialOfferOdd.odd2}
                                          </td>
                                         <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type3) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(specialOfferOdd.odd3, TypesPerSport.type3, specialOfferOdd)}>
+                                            onClick={ () => value.modifyPair(specialOfferOdd.odd3, TypesPerSport.type3, specialOfferOdd)}>
                                             {specialOfferOdd.odd3}
                                          </td>
                                         <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type4) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(specialOfferOdd.odd4, TypesPerSport.type4, specialOfferOdd)}>
+                                            onClick={ () => value.modifyPair(specialOfferOdd.odd4, TypesPerSport.type4, specialOfferOdd)}>
                                             {specialOfferOdd.odd4}
                                          </td>
                                         <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type5) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(specialOfferOdd.odd5, TypesPerSport.type5, specialOfferOdd)}>
+                                            onClick={ () => value.modifyPair(specialOfferOdd.odd5, TypesPerSport.type5, specialOfferOdd)}>
                                             {specialOfferOdd.odd5}
                                          </td>
                                         <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type6) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(specialOfferOdd.odd6, TypesPerSport.type6, specialOfferOdd)}>
+                                            onClick={ () => value.modifyPair(specialOfferOdd.odd6, TypesPerSport.type6, specialOfferOdd)}>
                                             {specialOfferOdd.odd6}
                                          </td>
                                     </tr>
@@ -103,27 +103,27 @@ class OddsOffer extends Component {
                                         <td>{basicOfferOdd.match.away}</td>
                                         <td>{basicOfferOdd.match.matchdate}</td>
                                         <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>
+                                            onClick={ () => value.modifyPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>
                                                 {basicOfferOdd.odd1}
                                         </td>
                                         <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type2) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
-                                            onClick={ () => value.addPair(basicOfferOdd.odd2, TypesPerSport.type2, basicOfferOdd)}>
+                                            onClick={ () => value.modifyPair(basicOfferOdd.odd2, TypesPerSport.type2, basicOfferOdd)}>
                                             {basicOfferOdd.odd2}
                                         </td>
                                         <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type3) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
-                                            onClick={ () => value.addPair(basicOfferOdd.odd3, TypesPerSport.type3, basicOfferOdd)}>
+                                            onClick={ () => value.modifyPair(basicOfferOdd.odd3, TypesPerSport.type3, basicOfferOdd)}>
                                             {basicOfferOdd.odd3}
                                         </td>
                                         <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type4) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
-                                            onClick={ () => value.addPair(basicOfferOdd.odd4, TypesPerSport.type4, basicOfferOdd)}>
+                                            onClick={ () => value.modifyPair(basicOfferOdd.odd4, TypesPerSport.type4, basicOfferOdd)}>
                                             {basicOfferOdd.odd4}
                                         </td>
                                         <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type5) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
-                                            onClick={ () => value.addPair(basicOfferOdd.odd5, TypesPerSport.type5, basicOfferOdd)}>
+                                            onClick={ () => value.modifyPair(basicOfferOdd.odd5, TypesPerSport.type5, basicOfferOdd)}>
                                             {basicOfferOdd.odd5}
                                         </td>
                                         <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type6) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
-                                            onClick={ () => value.addPair(basicOfferOdd.odd6, TypesPerSport.type6, basicOfferOdd)}>
+                                            onClick={ () => value.modifyPair(basicOfferOdd.odd6, TypesPerSport.type6, basicOfferOdd)}>
                                             {basicOfferOdd.odd6}
                                         </td>
                                     </tr>

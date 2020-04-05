@@ -38,12 +38,7 @@ class NewTicket extends Component {
         }
     ]
 
-    // this.setState({
-    //     isHidden: false
-    // })
-
     render() { 
-        // const {TicketOdds} = this.state;
         return (
             <div id="newTicket">
             <ExportableContext>
@@ -72,24 +67,24 @@ class NewTicket extends Component {
                         )}
                         <tbody>
                             <tr style={{backgroundColor:"white"}}>
-                                <td>Money: {value.state.money}</td>
-                                <td>Possible Gain: {value.state.possibleGain.toFixed(2)} HRK</td>
+                                <td>Money: <b>{value.state.money}</b></td>
+                                <td>Possible Gain: <b>{value.state.possibleGain.toFixed(2)}</b> HRK</td>
                                 <td></td>
                                 <td></td>
-                                <td style={{color:"blue"}}>{value.state.totalOdd.toFixed(2)}</td>
+                                <td style={{color:"blue"}}><b>{value.state.totalOdd.toFixed(2)}</b></td>
                             </tr>
                         </tbody>
                     </Table>
+                    {!value.state.isHidden && 
+                        <Alert color="danger">
+                            {value.state.allertMessage}
+                    </Alert>}
                     <div>
                         <InputGroup style={{margin:"15px", width:"96%"}}>
                             <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
                                 <Input placeholder="Amount" min={1} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
                             <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.playTicket(); value.changeMoneyValue(value.state.money, false); }}> Place a Bet </Button> </InputGroupAddon>
                         </InputGroup>
-                        {!this.state.isHidden && 
-                        <Alert color="danger">
-                        Only positive integer values higher than 1 are accepted!
-                        </Alert>}
                     </div>
                 </React.Fragment>
                 )}
