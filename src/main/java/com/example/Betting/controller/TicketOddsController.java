@@ -38,7 +38,7 @@ public class TicketOddsController {
 	
 	@GetMapping("/ticketOdds")
 	ResponseEntity<?> getTicketOdds(){
-		Collection<TicketOdds> allTicketOdds = ticketOddsService.findAllPlayedTickets();
+		Collection<TicketOdds> allTicketOdds = ticketOddsService.findAllPlayedTicketPairs();
 		return ResponseEntity.status(HttpStatus.OK).body(allTicketOdds);
 	}
 	

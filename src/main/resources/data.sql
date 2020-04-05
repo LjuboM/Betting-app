@@ -24,7 +24,7 @@ insert into match (id, matchdate, home, away, types_id) values (3, '2021-03-23T1
 insert into match (id, matchdate, home, away, types_id) values (4, '2021-05-24T17:00:00.000Z', 'Mike Tyson', 'Muhammad Ali', 4)
 insert into match (id, matchdate, home, away, types_id) values (5, '2021-02-27T16:00:00.000Z', 'Valencia', 'Real Betis', 0)
 insert into match (id, matchdate, home, away, types_id) values (6, '2021-02-17T19:30:00.000Z', 'Atletico Madrid', 'Osasuna', 0)
-insert into match (id, matchdate, home, away, types_id) values (7, '2021-02-22T17:00:00.000Z', 'Novak Djokovic', 'Marin Cilic', 2)
+insert into match (id, matchdate, home, away, types_id) values (7, '2021-02-22T16:00:00.000Z', 'Novak Djokovic', 'Marin Cilic', 2)
 insert into match (id, matchdate, home, away, types_id) values (8, '2021-03-21T17:00:00.000Z', 'Chicago Bulls', 'Orlando Magic', 3)
 
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (0, 'Basic', 1.8, 2.0, 2.8, 1.4, 1.8, 1.7, 0)

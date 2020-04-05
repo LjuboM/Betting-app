@@ -18,7 +18,7 @@ public class OddsService {
 	private OddsRepository oddsRepository;
 	
 	public Collection<Odds> findAllSortedOdds(){
-		Collection<Odds> odds = oddsRepository.findAll(Sort.by(Sort.Direction.DESC, "match.types.id"));
+		Collection<Odds> odds = oddsRepository.findAll(Sort.by(Sort.Direction.ASC, "match.matchdate"));
 		
 		//Filter by date, keep only matches that didn't occur yet.
 		Collection<Odds> oldOdds = new ArrayList<Odds>();

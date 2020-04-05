@@ -3,6 +3,7 @@ package com.example.Betting.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.Betting.model.TicketOdds;
@@ -15,8 +16,8 @@ public class TicketOddsService {
 	private TicketOddsRepository ticketOddsRepository;
 	
 	
-	public Collection<TicketOdds> findAllPlayedTickets(){
-		return ticketOddsRepository.findAll();
+	public Collection<TicketOdds> findAllPlayedTicketPairs(){
+		return ticketOddsRepository.findAll(Sort.by(Sort.Direction.DESC, "odds.match.matchdate"));
 	}
 	
 	public void createTicketOddsPair(TicketOdds ticketOdd) {

@@ -60,7 +60,7 @@ public class TicketOddsControllerTests {
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
-    	given(ticketOddsService.findAllPlayedTickets()).willReturn(ticketOdds);
+    	given(ticketOddsService.findAllPlayedTicketPairs()).willReturn(ticketOdds);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds")
           .contentType(MediaType.APPLICATION_JSON))
@@ -124,7 +124,7 @@ public class TicketOddsControllerTests {
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
 
-    	given(ticketOddsService.findAllPlayedTickets()).willReturn(ticketOdds);
+    	given(ticketOddsService.findAllPlayedTicketPairs()).willReturn(ticketOdds);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds")
           .contentType(MediaType.APPLICATION_JSON))
@@ -160,7 +160,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenNoTicketOdds()
       throws Exception {
 
-    	given(ticketOddsService.findAllPlayedTickets()).willReturn(Collections.emptyList());
+    	given(ticketOddsService.findAllPlayedTicketPairs()).willReturn(Collections.emptyList());
 
         mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds")
           .contentType(MediaType.APPLICATION_JSON))
