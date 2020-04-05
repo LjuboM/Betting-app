@@ -16,7 +16,7 @@ class MyProvider extends Component {
       NewTicket : [],
       totalOdd : 1,
       possibleGain : 0,
-      money : 0
+      money : ''
      }
      this.createNewTicket= this.createNewTicket.bind(this);
      this.refreshTicket= this.refreshTicket.bind(this);
@@ -36,7 +36,7 @@ async createNewTicket(finalTicket){
 }
 
   refreshTicket(){
-    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: 0})
+    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: ''})
   }
   fetchUser = () => {
     fetch('/api/user/1', {})
@@ -53,10 +53,15 @@ async createNewTicket(finalTicket){
             <MyContext.Provider value={{
                 state: this.state
                 ,
-                  changeMoneyValue: (addedMoney) => {
-                    if(addedMoney >= 1 && addedMoney.toString().search(/\./) === -1 && addedMoney.toString().search(/e/) === -1){
+                  changeMoneyValue: (newMoneyValue, addingMoney) => {
+                    if(newMoneyValue >= 1 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1){
                       let newUserState = this.state.User;
-                      newUserState.money = parseInt(newUserState.money) + parseInt(addedMoney);
+                      if(addingMoney){
+                        newUserState.money = parseInt(newUserState.money) + parseInt(newMoneyValue);
+                      }
+                      else{
+                        newUserState.money = parseInt(newUserState.money) - parseInt(newMoneyValue);
+                      }
                       this.setState({User : newUserState});
                     }
                   },
@@ -66,16 +71,30 @@ async createNewTicket(finalTicket){
 
                     //check if we already bet on that match
                     let pairAlreadyExists = finalNewTicket.filter(pair => pair.odds.match.id === Odds.match.id);
+
+                    //check if we already bet one special match
+                    let specialMatchAlreadyExists = finalNewTicket.filter(pair => pair.odds.type === "Special offer" && Odds.type === "Special offer");                    
+
                     //Divide total odd with odd from match that we are removing
                     pairAlreadyExists.map( pair => {
                       newTotalOdd = newTotalOdd / pair.odd;
-                      return null;
+                      return pair;
                     })
 
-                    if(pairAlreadyExists.length>0){
+                    if(pairAlreadyExists.length > 0){
                       finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id);
-
                     }
+
+                    //Divide total odd with odd from match that we are removing
+                    specialMatchAlreadyExists.map( pair => {
+                      console.log("already special match");
+                      newTotalOdd = newTotalOdd / pair.odd;
+                      return pair;
+                    })
+
+                    if(specialMatchAlreadyExists.length > 0){
+                      finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id).filter(pair => pair.odds.type !== "Special offer" && Odds.type === "Special offer");
+                    }                    
 
                     const newPossibleGain = this.state.money * newTotalOdd;
                     const newPair = {
@@ -97,7 +116,7 @@ async createNewTicket(finalTicket){
                   },
                   playTicket: () => {
                     let finalNewTicket = [];
-                    //ADD TICKET VALIDATION!!!
+                    //ADD TICKET VALIDATION!!! money etc
                     this.state.NewTicket.map( ticketOdd => {
                       finalNewTicket = [...finalNewTicket, 
                         ticketOdd = {
@@ -124,6 +143,21 @@ async createNewTicket(finalTicket){
                   },
                   isOddTypeOfPairSelected: (oddId, oddTypeValue) => {
                     return this.state.NewTicket.some(pair => pair.odds.id === oddId && pair.type === oddTypeValue);
+                  },
+                  deleteNewTicket: () =>{
+                    this.refreshTicket();
+                  },
+                  deletePair: (oddId, odd) => {
+                    let newPossibleGain = 0;
+                    let newMoneyValue = this.state.money;
+                    const newTotalOdd = this.state.totalOdd / odd;
+                    newPossibleGain = this.state.money * newTotalOdd;
+                    if(newTotalOdd === 1.00){
+                      newPossibleGain = 0;
+                      newMoneyValue = '';
+                    }
+                    const finalNewTicket = this.state.NewTicket.filter(pair => pair.odds.id !== oddId);
+                    this.setState({ NewTicket: finalNewTicket, totalOdd: newTotalOdd, possibleGain: newPossibleGain, money: newMoneyValue})
                   }
               }}>
                 {this.props.children}

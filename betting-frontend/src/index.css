@@ -17,7 +17,7 @@ code {
   display:flex;
   flex-direction: row;
   text-align: center;
-  background-color: rgb(173, 16, 26);
+  background-color:#087a9a;
   height:60px;
   padding: 17px;
   justify-content: space-between;
@@ -31,7 +31,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: #343a40;
   position: -webkit-sticky;    /*Safari */
   position: sticky;
   top: 60px;
@@ -134,6 +134,11 @@ li a:hover {
   grid-area: "newTicket";
 }
 
+.delete{
+  color: red;
+  background-color :#dee2e6;
+  cursor: pointer;
+}
 @supports (display: grid) {
   @media screen and (min-width: 1000px) {
       #playTicketContainer {

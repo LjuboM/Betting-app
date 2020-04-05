@@ -52,15 +52,17 @@ class NewTicket extends Component {
                     <Table striped >
                         <thead>
                         <tr>
-                            <th>Select all</th>
-                            <th>...</th>
-                            <th>...</th>
-                            <th>Delete all</th>
+                            <th>New Ticket</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th className={"delete"} onClick={ () => value.deleteNewTicket()}>Delete all</th>
                         </tr>
                         </thead>
                         {value.state.NewTicket.map( pair =>
                         <tbody key={pair.odds.id}>
                             <tr>
+                                <td className={"delete"} onClick={ () => value.deletePair(pair.odds.id, pair.odd)} ><b>X</b></td>
                                 <td>{pair.odds.match.home}</td>
                                 <td>{pair.odds.match.away}</td>
                                 <td>{pair.type}</td>
@@ -73,6 +75,7 @@ class NewTicket extends Component {
                                 <td>Money: {value.state.money}</td>
                                 <td>Possible Gain: {value.state.possibleGain.toFixed(2)} HRK</td>
                                 <td></td>
+                                <td></td>
                                 <td style={{color:"blue"}}>{value.state.totalOdd.toFixed(2)}</td>
                             </tr>
                         </tbody>
@@ -81,7 +84,7 @@ class NewTicket extends Component {
                         <InputGroup style={{margin:"15px", width:"96%"}}>
                             <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
                                 <Input placeholder="Amount" min={1} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
-                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.playTicket(); value.changeMoneyValue(-value.state.money); }}> Place a Bet </Button> </InputGroupAddon>
+                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.playTicket(); value.changeMoneyValue(value.state.money, false); }}> Place a Bet </Button> </InputGroupAddon>
                         </InputGroup>
                         {!this.state.isHidden && 
                         <Alert color="danger">
