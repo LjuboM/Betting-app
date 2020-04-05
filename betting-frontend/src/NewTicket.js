@@ -77,7 +77,7 @@ class NewTicket extends Component {
                     </Table>
                     {!value.state.isHidden && 
                         <Alert color="danger">
-                            {value.state.allertMessage}
+                            {value.state.alertMessage}
                     </Alert>}
                     <div>
                         <InputGroup style={{margin:"15px", width:"96%"}}>

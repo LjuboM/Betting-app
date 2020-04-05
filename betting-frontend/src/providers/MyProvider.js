@@ -22,6 +22,7 @@ class MyProvider extends Component {
      }
      this.createNewTicket= this.createNewTicket.bind(this);
      this.refreshTicket= this.refreshTicket.bind(this);
+     this.removePair= this.removePair.bind(this);
 }
 
 async createNewTicket(finalTicket){
@@ -36,6 +37,27 @@ async createNewTicket(finalTicket){
   });
   this.refreshTicket();
 }
+
+  removePair(oddId, odd){
+    let isAlertNotNeeded = this.state.isHidden;
+    let newAlertMessage = this.state.alertMessage;
+    let newPossibleGain = 0;
+    let newMoneyValue = this.state.money;
+    const newTotalOdd = this.state.totalOdd / odd;
+    newPossibleGain = this.state.money * newTotalOdd;
+    if(newTotalOdd === 1.00){
+      newPossibleGain = 0;
+      newMoneyValue = '';
+    }
+    //check if constraint is no longer needed
+    if(this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && this.state.NewTicket.filter(pair => pair.odds.id === oddId && pair.odds.type === "Special offer").length >= 1){
+      isAlertNotNeeded = true;
+      newAlertMessage = '';
+    }
+
+    const finalNewTicket = this.state.NewTicket.filter(pair => pair.odds.id !== oddId);
+    this.setState({ NewTicket: finalNewTicket, totalOdd: newTotalOdd, possibleGain: newPossibleGain, money: newMoneyValue, isHidden: isAlertNotNeeded, alertMessage : newAlertMessage})
+  }
 
   refreshTicket(){
     this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: '', isHidden : true, alertMessage : ''})
@@ -72,29 +94,13 @@ async createNewTicket(finalTicket){
                     let newTotalOdd = this.state.totalOdd
                     let isAlertNotNeeded = this.state.isHidden;
                     let newAlertMessage = this.state.alertMessage;
+
                     //check if we already bet on that exat odd, if yes, remove it from NewTicket
                     let oddAlreadyExists = finalNewTicket.filter(pair => pair.odds.id === Odds.id && pair.type === type);
 
-                    oddAlreadyExists.map( pair => {
-                      newTotalOdd = newTotalOdd / pair.odd;
-                      return pair;
-                    })
-
                     if(oddAlreadyExists.length > 0){
-                        let newMoneyValue = this.state.money;
-                        let newPossibleGain = newMoneyValue * newTotalOdd;
-                        finalNewTicket = this.state.NewTicket.filter(pair => pair.odds.id !== Odds.id);
-                        if(newTotalOdd === 1.00){
-                          newMoneyValue = '';
-                          newPossibleGain = 0;
-                        }
-                        //check if constraint is no longer needed
-                        if(this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && Odds.type === "Special offer"){
-                          isAlertNotNeeded = true;
-                        }
-                        this.setState({ NewTicket: finalNewTicket, totalOdd: newTotalOdd, possibleGain: newPossibleGain, money: newMoneyValue, isHidden: isAlertNotNeeded, alertMessage : newAlertMessage})
+                      this.removePair(Odds.id, odd);
                     }
-                    
                     else{
                         newTotalOdd = newTotalOdd * odd;
 
@@ -126,6 +132,7 @@ async createNewTicket(finalTicket){
                         //check if constraint is no longer needed
                         if( specialMatchAlreadyExists.length === 0 && this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && finalNewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length >= 4 && odd >= 1.10){
                           isAlertNotNeeded = true;
+                          newAlertMessage = '';
                         }
 
                         const newPossibleGain = this.state.money * newTotalOdd;
@@ -134,7 +141,7 @@ async createNewTicket(finalTicket){
                           "odd": odd,
                           "type": type
                         };
-                          this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, isHidden: isAlertNotNeeded })
+                          this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, isHidden: isAlertNotNeeded, alertMessage: newAlertMessage })
                     }
                   },
                   handleBetMoneyInput: (event) =>{
@@ -160,6 +167,7 @@ async createNewTicket(finalTicket){
                     const moneyValue =  this.state.money;
 
                     if(moneyValue < 1 || moneyValue.toString().search(/\./) !== -1 || moneyValue.toString().search(/e/) !== -1 || moneyValue === ''){
+                      console.log("Money not enough");
                       this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
                     }
                     else if( this.state.NewTicket.filter(pair => pair.odds.type === "Special offer").length === 1 && this.state.NewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length < 5){
@@ -198,24 +206,7 @@ async createNewTicket(finalTicket){
                     this.refreshTicket();
                   },
                   deletePair: (oddId, odd) => {
-                    let isAlertNotNeeded = this.state.isHidden;
-                    let newAlertMessage = this.state.alertMessage;
-                    let newPossibleGain = 0;
-                    let newMoneyValue = this.state.money;
-                    const newTotalOdd = this.state.totalOdd / odd;
-                    newPossibleGain = this.state.money * newTotalOdd;
-                    if(newTotalOdd === 1.00){
-                      newPossibleGain = 0;
-                      newMoneyValue = '';
-                    }
-                    //check if constraint is no longer needed
-                    if(this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && this.state.NewTicket.filter(pair => pair.odds.id === oddId && pair.odds.type === "Special offer").length >= 1){
-                      newAlertMessage = '';
-                      isAlertNotNeeded = true;
-                    }
-
-                    const finalNewTicket = this.state.NewTicket.filter(pair => pair.odds.id !== oddId);
-                    this.setState({ NewTicket: finalNewTicket, totalOdd: newTotalOdd, possibleGain: newPossibleGain, money: newMoneyValue, isHidden: isAlertNotNeeded, alertMessage : newAlertMessage})
+                    this.removePair(oddId, odd);
                   }
               }}>
                 {this.props.children}
