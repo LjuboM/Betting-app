@@ -26,7 +26,6 @@ class MyProvider extends Component {
 }
 
 async createNewTicket(finalTicket){
-  console.log(finalTicket);
   await fetch(`/api/ticket`, {
       method : 'POST',
       headers : {
@@ -75,10 +74,10 @@ async createNewTicket(finalTicket){
     render() { 
         return ( 
             <MyContext.Provider value={{
-                state: this.state
-                ,
+                state: this.state,
+
                   changeMoneyValue: (newMoneyValue, addingMoney) => {
-                    if(newMoneyValue >= 1 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1){
+                    if(newMoneyValue >= 1 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1 && (newMoneyValue <= this.state.User.money || addingMoney)){
                       let newUserState = this.state.User;
                       if(addingMoney){
                         newUserState.money = parseInt(newUserState.money) + parseInt(newMoneyValue);
@@ -89,6 +88,7 @@ async createNewTicket(finalTicket){
                       this.setState({User : newUserState});
                     }
                   },
+
                   modifyPair: (odd, type, Odds) => {
                     let finalNewTicket = this.state.NewTicket;
                     let newTotalOdd = this.state.totalOdd
@@ -116,11 +116,10 @@ async createNewTicket(finalTicket){
                           finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id);
                         }
 
-                        //check if we already bet one special match
+                        //check if we already bet on one special match
                         let specialMatchAlreadyExists = finalNewTicket.filter(pair => pair.odds.type === "Special offer" && Odds.type === "Special offer");                    
                         
                         specialMatchAlreadyExists.map( pair => {
-                          console.log("already special match");
                           newTotalOdd = newTotalOdd / pair.odd;
                           return pair;
                         })
@@ -130,7 +129,12 @@ async createNewTicket(finalTicket){
                         }                    
 
                         //check if constraint is no longer needed
-                        if( specialMatchAlreadyExists.length === 0 && this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && finalNewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length >= 4 && odd >= 1.10){
+                        if( specialMatchAlreadyExists.length === 0 && (pairAlreadyExists.length > 0 || (this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && finalNewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length >= 4 && odd >= 1.10)) ){
+                          isAlertNotNeeded = true;
+                          newAlertMessage = '';
+                        }
+
+                        if(this.state.alertMessage === 'You have to add Matches for betting!'){
                           isAlertNotNeeded = true;
                           newAlertMessage = '';
                         }
@@ -144,6 +148,7 @@ async createNewTicket(finalTicket){
                           this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, isHidden: isAlertNotNeeded, alertMessage: newAlertMessage })
                     }
                   },
+
                   handleBetMoneyInput: (event) =>{
                     const target= event.target;
                     const newMoneyValue = target.value;
@@ -152,7 +157,15 @@ async createNewTicket(finalTicket){
                     if(this.state.NewTicket.length > 0){
                       if(newMoneyValue >= 1 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1){
                         const newPossibleGainValue = newMoneyValue * this.state.totalOdd;
-                        this.setState({possibleGain: newPossibleGainValue, money : newMoneyValue, isHidden : true, alertMessage : ''});
+                        if(newMoneyValue > this.state.User.money){
+                          this.setState({possibleGain: newPossibleGainValue, money : newMoneyValue, isHidden : false, alertMessage : "You don't have enough money in your account!"});
+                        }
+                        else{
+                          this.setState({possibleGain: newPossibleGainValue, money : newMoneyValue, isHidden : true, alertMessage : ''});
+                        }
+                      }
+                      else if(newMoneyValue === ""){
+                        this.setState({possibleGain: 0, money : 0, isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
                       }
                       else{
                         this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
@@ -162,13 +175,16 @@ async createNewTicket(finalTicket){
                       this.setState({isHidden : false, alertMessage : 'You have to add Matches for betting!'});
                     }
                   },
+
                   playTicket: () => {
                     let finalNewTicket = [];
                     const moneyValue =  this.state.money;
 
                     if(moneyValue < 1 || moneyValue.toString().search(/\./) !== -1 || moneyValue.toString().search(/e/) !== -1 || moneyValue === ''){
-                      console.log("Money not enough");
                       this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
+                    }
+                    else if( moneyValue > this.state.User.money){
+                      this.setState({isHidden : false, alertMessage : "You don't have enough money in your account!"});
                     }
                     else if( this.state.NewTicket.filter(pair => pair.odds.type === "Special offer").length === 1 && this.state.NewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length < 5){
                       this.setState({isHidden : false, alertMessage : 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!'});
@@ -196,15 +212,19 @@ async createNewTicket(finalTicket){
                       this.createNewTicket(finalNewTicket);
                     }
                   },
+
                   isPairSelected: (oddId) => {
                     return this.state.NewTicket.some(pair => pair.odds.id === oddId);
                   },
+
                   isOddTypeOfPairSelected: (oddId, oddTypeValue) => {
                     return this.state.NewTicket.some(pair => pair.odds.id === oddId && pair.type === oddTypeValue);
                   },
+
                   deleteNewTicket: () =>{
                     this.refreshTicket();
                   },
+
                   deletePair: (oddId, odd) => {
                     this.removePair(oddId, odd);
                   }
