@@ -36,10 +36,17 @@ class NewTicket extends Component {
                         <tbody>
                             <tr style={{backgroundColor:"white"}}>
                                 <td>Money: <b>{value.state.money}</b></td>
-                                <td>Possible Gain: <b>{value.state.possibleGain.toFixed(2)}</b> HRK</td>
+                                <td>Gain: <b>{(value.state.possibleGain - value.state.tax).toFixed(2)}</b> HRK</td>
                                 <td></td>
                                 <td></td>
                                 <td style={{color:"blue"}}><b>{value.state.totalOdd.toFixed(2)}</b></td>
+                            </tr>
+                            <tr style={{backgroundColor:"white", fontSize:"0.7em"}}>
+                                <td>-{(0.05 * value.state.money).toFixed(2)} (5% mt) = <b>{(0.95 * value.state.money).toFixed(2)}</b> HRK</td>
+                                <td>Tax = {value.state.tax.toFixed(2)} HRK</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </Table>
@@ -50,7 +57,7 @@ class NewTicket extends Component {
                     <div>
                         <InputGroup style={{margin:"15px", width:"96%"}}>
                             <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
-                                <Input placeholder="Amount" min={1} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
+                                <Input placeholder="Amount" min={2} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
                             <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.togglePopUp(); }}> Play Ticket </Button> </InputGroupAddon>
                         </InputGroup>
                     </div>

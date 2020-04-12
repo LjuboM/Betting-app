@@ -16,6 +16,7 @@ class MyProvider extends Component {
       NewTicket : [],
       totalOdd : 1,
       possibleGain : 0,
+      tax : 0,
       money : '',
       isHidden: true,
       alertMessage : '',
@@ -24,6 +25,37 @@ class MyProvider extends Component {
      this.createNewTicket= this.createNewTicket.bind(this);
      this.refreshTicket= this.refreshTicket.bind(this);
      this.removePair= this.removePair.bind(this);
+     this.calculateTax= this.calculateTax.bind(this);
+}
+
+calculateTax(possibleGain){
+  let newTax = 0;
+  let possibleGainparts = possibleGain;
+  if(possibleGainparts >= 10000){
+    newTax = 1000;
+    possibleGainparts = possibleGainparts - 10000;
+    if(possibleGainparts >= 20000){
+      newTax = 4000;
+      possibleGainparts = possibleGainparts - 20000;
+      if(possibleGainparts >= 470000){
+        newTax = 94000;
+        possibleGainparts = possibleGainparts - 470000;
+        if(possibleGainparts > 0){
+          newTax = newTax + possibleGainparts * 0.30;
+        }
+      }
+      else{
+        newTax = newTax + possibleGainparts * 0.20;
+      }
+    }
+    else{
+      newTax = newTax + possibleGainparts * 0.15;
+    }
+  }
+  else{
+    newTax = possibleGainparts * 0.10
+  }
+  return newTax;
 }
 
 async createNewTicket(finalTicket){
@@ -44,7 +76,7 @@ async createNewTicket(finalTicket){
     let newPossibleGain = 0;
     let newMoneyValue = this.state.money;
     const newTotalOdd = this.state.totalOdd / odd;
-    newPossibleGain = this.state.money * newTotalOdd;
+    newPossibleGain = 0.95 * this.state.money * newTotalOdd;
     if(newTotalOdd === 1.00){
       newPossibleGain = 0;
       newMoneyValue = '';
@@ -56,11 +88,12 @@ async createNewTicket(finalTicket){
     }
 
     const finalNewTicket = this.state.NewTicket.filter(pair => pair.odds.id !== oddId);
-    this.setState({ NewTicket: finalNewTicket, totalOdd: newTotalOdd, possibleGain: newPossibleGain, money: newMoneyValue, isHidden: isAlertNotNeeded, alertMessage : newAlertMessage})
+    const newTax = this.calculateTax(newPossibleGain);
+    this.setState({ NewTicket: finalNewTicket, totalOdd: newTotalOdd, possibleGain: newPossibleGain, tax : newTax, money: newMoneyValue, isHidden: isAlertNotNeeded, alertMessage : newAlertMessage})
   }
 
   refreshTicket(){
-    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: '', isHidden : true, alertMessage : '', popUpSeen : false})
+    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, tax: 0, money: '', isHidden: true, alertMessage: '', popUpSeen: false})
   }
   fetchUser = () => {
     fetch('/api/user/1', {})
@@ -78,7 +111,7 @@ async createNewTicket(finalTicket){
                 state: this.state,
 
                   changeMoneyValue: (newMoneyValue, addingMoney) => {
-                    if(newMoneyValue >= 1 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1 && (newMoneyValue <= this.state.User.money || addingMoney)){
+                    if(newMoneyValue >= 2 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1 && (newMoneyValue <= this.state.User.money || addingMoney)){
                       let newUserState = this.state.User;
                       if(addingMoney){
                         newUserState.money = parseInt(newUserState.money) + parseInt(newMoneyValue);
@@ -141,13 +174,14 @@ async createNewTicket(finalTicket){
                             newAlertMessage = '';
                           }
   
-                          const newPossibleGain = this.state.money * newTotalOdd;
+                          const newPossibleGain = 0.95 * this.state.money * newTotalOdd;
+                          const newTax = this.calculateTax(newPossibleGain);
                           const newPair = {
                             "odds": Odds,
                             "odd": odd,
                             "type": type
                           };
-                            this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, isHidden: isAlertNotNeeded, alertMessage: newAlertMessage })
+                            this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, tax: newTax, isHidden: isAlertNotNeeded, alertMessage: newAlertMessage })
                       }
                     }
                   },
@@ -158,20 +192,21 @@ async createNewTicket(finalTicket){
                     //if there are no pairs picked for bet, no need for calculating possible gain
                     //money input must be only integers higher than 1
                     if(this.state.NewTicket.length > 0){
-                      if(newMoneyValue >= 1 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1){
-                        const newPossibleGainValue = newMoneyValue * this.state.totalOdd;
+                      if(newMoneyValue >= 2 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1){
+                        const newPossibleGainValue = 0.95 * newMoneyValue * this.state.totalOdd;
+                        const newTax = this.calculateTax(newPossibleGainValue);
                         if(newMoneyValue > this.state.User.money){
-                          this.setState({possibleGain: newPossibleGainValue, money : newMoneyValue, isHidden : false, alertMessage : "You don't have enough money in your account!"});
+                          this.setState({possibleGain: newPossibleGainValue, tax: newTax, money : newMoneyValue, isHidden : false, alertMessage : "You don't have enough money in your account!"});
                         }
                         else{
-                          this.setState({possibleGain: newPossibleGainValue, money : newMoneyValue, isHidden : true, alertMessage : ''});
+                          this.setState({possibleGain: newPossibleGainValue, tax: newTax, money : newMoneyValue, isHidden : true, alertMessage : ''});
                         }
                       }
                       else if(newMoneyValue === ""){
-                        this.setState({possibleGain: 0, money : 0, isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
+                        this.setState({possibleGain: 0, money : 0, tax: 0, isHidden : false, alertMessage : 'Only positive integer values higher than 2 are accepted!'});
                       }
                       else{
-                        this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
+                        this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 2 are accepted!'});
                       }
                     }
                     else{
@@ -186,7 +221,7 @@ async createNewTicket(finalTicket){
                           ticketOdd = {
                           "ticket": {
                             "totalodd": this.state.totalOdd,
-                            "possiblegain": this.state.possibleGain,
+                            "possiblegain": this.state.possibleGain - this.state.tax,
                             "transaction": {
                                 "money": this.state.money,
                                     "user": {
@@ -221,8 +256,8 @@ async createNewTicket(finalTicket){
                   togglePopUp: () =>{
                     const moneyValue =  this.state.money;
 
-                    if(moneyValue < 1 || moneyValue.toString().search(/\./) !== -1 || moneyValue.toString().search(/e/) !== -1 || moneyValue === ''){
-                      this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
+                    if(moneyValue < 2 || moneyValue.toString().search(/\./) !== -1 || moneyValue.toString().search(/e/) !== -1 || moneyValue === ''){
+                      this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 2 are accepted!'});
                     }
                     else if( moneyValue > this.state.User.money){
                       this.setState({isHidden : false, alertMessage : "You don't have enough money in your account!"});
