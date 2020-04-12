@@ -1,42 +1,10 @@
 import React, { Component } from 'react';
-import { Table } from 'reactstrap';
-import { Button, Alert } from 'reactstrap';
-import { InputGroup, InputGroupAddon, Input } from 'reactstrap';
+import { Table, Button, Alert, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import { ExportableContext } from './providers/MyProvider';
+import PopUpPlayTicket from './PopUpPlayTicket';
 
 class NewTicket extends Component {
-    constructor(props){
-        super(props)
-  
-        this.state = { 
-          TicketOdds : this.emptyTicketOdds,
-          isHidden : true
-         }
-    }
-    emptyTicketOdds = [
-        {
-        "ticket": {
-            "totalodd": 1,
-            "possiblegain": 1,
-            "transaction": {
-                "money": 1,
-                    "user": {
-                        "id": 1
-                }
-            }
-        },
-        "odds": {
-            "id": 1,
-            "type": "Basic",
-            "match": {
-            	"id": 1,
-            	"matchdate": "2022-02-22T22:00:00.000Z"
-            }
-        },
-        "odd": 1.0,
-        "type": "1"
-        }
-    ]
+    state = { }
 
     render() { 
         return (
@@ -51,7 +19,7 @@ class NewTicket extends Component {
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th className={"delete"} onClick={ () => value.deleteNewTicket()}>Delete all</th>
+                            <th><Button color="danger" onClick={ () => value.deleteNewTicket()}> Delete all </Button></th>
                         </tr>
                         </thead>
                         {value.state.NewTicket.map( pair =>
@@ -83,9 +51,10 @@ class NewTicket extends Component {
                         <InputGroup style={{margin:"15px", width:"96%"}}>
                             <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
                                 <Input placeholder="Amount" min={1} type="number" step="1" onChange={(event) => {value.handleBetMoneyInput(event);}}/>
-                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.playTicket(); value.changeMoneyValue(value.state.money, false); }}> Place a Bet </Button> </InputGroupAddon>
+                            <InputGroupAddon addonType="append"> <Button color="primary" onClick={() => { value.togglePopUp(); }}> Play Ticket </Button> </InputGroupAddon>
                         </InputGroup>
                     </div>
+                    {value.state.popUpSeen ? <PopUpPlayTicket/> : null}
                 </React.Fragment>
                 )}
             </ExportableContext>

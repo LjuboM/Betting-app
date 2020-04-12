@@ -18,7 +18,8 @@ class MyProvider extends Component {
       possibleGain : 0,
       money : '',
       isHidden: true,
-      alertMessage : ''
+      alertMessage : '',
+      popUpSeen : false
      }
      this.createNewTicket= this.createNewTicket.bind(this);
      this.refreshTicket= this.refreshTicket.bind(this);
@@ -59,7 +60,7 @@ async createNewTicket(finalTicket){
   }
 
   refreshTicket(){
-    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: '', isHidden : true, alertMessage : ''})
+    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, money: '', isHidden : true, alertMessage : '', popUpSeen : false})
   }
   fetchUser = () => {
     fetch('/api/user/1', {})
@@ -180,18 +181,6 @@ async createNewTicket(finalTicket){
 
                   playTicket: () => {
                     let finalNewTicket = [];
-                    const moneyValue =  this.state.money;
-
-                    if(moneyValue < 1 || moneyValue.toString().search(/\./) !== -1 || moneyValue.toString().search(/e/) !== -1 || moneyValue === ''){
-                      this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
-                    }
-                    else if( moneyValue > this.state.User.money){
-                      this.setState({isHidden : false, alertMessage : "You don't have enough money in your account!"});
-                    }
-                    else if( this.state.NewTicket.filter(pair => pair.odds.type === "Special offer").length === 1 && this.state.NewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length < 5){
-                      this.setState({isHidden : false, alertMessage : 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!'});
-                    }
-                    else{
                       this.state.NewTicket.map( ticketOdd => {
                         finalNewTicket = [...finalNewTicket, 
                           ticketOdd = {
@@ -212,7 +201,6 @@ async createNewTicket(finalTicket){
                       return null;
                     })
                       this.createNewTicket(finalNewTicket);
-                    }
                   },
 
                   isPairSelected: (oddId) => {
@@ -229,6 +217,29 @@ async createNewTicket(finalTicket){
 
                   deletePair: (oddId, odd) => {
                     this.removePair(oddId, odd);
+                  },
+                  togglePopUp: () =>{
+                    const moneyValue =  this.state.money;
+
+                    if(moneyValue < 1 || moneyValue.toString().search(/\./) !== -1 || moneyValue.toString().search(/e/) !== -1 || moneyValue === ''){
+                      this.setState({isHidden : false, alertMessage : 'Only positive integer values higher than 1 are accepted!'});
+                    }
+                    else if( moneyValue > this.state.User.money){
+                      this.setState({isHidden : false, alertMessage : "You don't have enough money in your account!"});
+                    }
+                    else if( this.state.NewTicket.filter(pair => pair.odds.type === "Special offer").length === 1 && this.state.NewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length < 5){
+                      this.setState({isHidden : false, alertMessage : 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!'});
+                    }
+                    else{
+                      this.setState({
+                        popUpSeen: true
+                    });
+                    }
+                  },
+                  removePopUp: () =>{
+                      this.setState({
+                        popUpSeen: false
+                    });
                   }
               }}>
                 {this.props.children}

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import { ExportableContext } from './providers/MyProvider';
 
-
-
 class OddsOffer extends Component {
     constructor(props){
         super(props)
@@ -68,7 +66,7 @@ class OddsOffer extends Component {
             return (<div>Loading...</div>);
 
         return (
-            <div >
+            <div id="oddsOffer">
             <ExportableContext >
 
                    {(value) => (

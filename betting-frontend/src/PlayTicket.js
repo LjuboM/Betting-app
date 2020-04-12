@@ -7,7 +7,7 @@ class PlayTicket extends Component {
     render() { 
         return (
                 <div id="playTicketContainer">
-                    <OddsOffer id="oddsOffer"/>
+                    <OddsOffer/>
                     <NewTicket/> 
                 </div>
         );
