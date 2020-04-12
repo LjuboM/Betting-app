@@ -25,7 +25,8 @@ insert into match (id, matchdate, home, away, types_id) values (4, '2021-05-24T1
 insert into match (id, matchdate, home, away, types_id) values (5, '2021-02-27T16:00:00.000Z', 'Valencia', 'Real Betis', 0)
 insert into match (id, matchdate, home, away, types_id) values (6, '2021-02-17T19:30:00.000Z', 'Atletico Madrid', 'Osasuna', 0)
 insert into match (id, matchdate, home, away, types_id) values (7, '2021-02-22T16:00:00.000Z', 'Novak Djokovic', 'Marin Cilic', 2)
-insert into match (id, matchdate, home, away, types_id) values (8, '2021-03-21T17:00:00.000Z', 'Chicago Bulls', 'Orlando Magic', 3)
+insert into match (id, matchdate, home, away, types_id) values (8, '2021-03-21T17:00:00.000Z', 'Chicago Bulls', 'Orlando Magic', 1)
+insert into match (id, matchdate, home, away, types_id) values (9, '2021-03-21T17:30:00.000Z', 'Hajduk', 'Dinamo', 0)
 
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (0, 'Basic', 1.8, 2.0, 2.8, 1.4, 1.8, 1.7, 0)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (1, 'Basic', 2.2, 2.4, 5.0, 1.4, 2.5, 2.8, 1)
@@ -38,6 +39,7 @@ insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (8, 'Basic', 2.0, 1.9, 1.0, 1.9, 1.8, 2.0, 7)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (9, 'Special offer', 2.0, 1.9, 1.05, 1.9, 1.8, 2.0, 7)
 insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (10, 'Basic', 2.2, 2.0, 1.0, 1.7, 2.4, 100.0, 8)
+insert into odds (id, type, odd1, odd2, odd3, odd4, odd5, odd6, match_id) values (11, 'Basic', 1.8, 1, 2.0, 1.6, 1.7, 2.5, 9)
 
 insert into ticket_odds (ticket_id, odds_id, odd, type) values (1,0, 1.8, '1')
 insert into ticket_odds (ticket_id, odds_id, odd, type) values (1,1, 2.4, 'X2')

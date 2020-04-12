@@ -90,62 +90,64 @@ async createNewTicket(finalTicket){
                   },
 
                   modifyPair: (odd, type, Odds) => {
-                    let finalNewTicket = this.state.NewTicket;
-                    let newTotalOdd = this.state.totalOdd
-                    let isAlertNotNeeded = this.state.isHidden;
-                    let newAlertMessage = this.state.alertMessage;
-
-                    //check if we already bet on that exat odd, if yes, remove it from NewTicket
-                    let oddAlreadyExists = finalNewTicket.filter(pair => pair.odds.id === Odds.id && pair.type === type);
-
-                    if(oddAlreadyExists.length > 0){
-                      this.removePair(Odds.id, odd);
-                    }
-                    else{
-                        newTotalOdd = newTotalOdd * odd;
-
-                        //check if we already bet on that match
-                        let pairAlreadyExists = finalNewTicket.filter(pair => pair.odds.match.id === Odds.match.id);
-
-                        pairAlreadyExists.map( pair => {
-                          newTotalOdd = newTotalOdd / pair.odd;
-                          return pair;
-                        })
-
-                        if(pairAlreadyExists.length > 0){
-                          finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id);
-                        }
-
-                        //check if we already bet on one special match
-                        let specialMatchAlreadyExists = finalNewTicket.filter(pair => pair.odds.type === "Special offer" && Odds.type === "Special offer");                    
-                        
-                        specialMatchAlreadyExists.map( pair => {
-                          newTotalOdd = newTotalOdd / pair.odd;
-                          return pair;
-                        })
-
-                        if(specialMatchAlreadyExists.length > 0){
-                          finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id).filter(pair => pair.odds.type !== "Special offer" && Odds.type === "Special offer");
-                        }                    
-
-                        //check if constraint is no longer needed
-                        if( specialMatchAlreadyExists.length === 0 && (pairAlreadyExists.length > 0 || (this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && finalNewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length >= 4 && odd >= 1.10)) ){
-                          isAlertNotNeeded = true;
-                          newAlertMessage = '';
-                        }
-
-                        if(this.state.alertMessage === 'You have to add Matches for betting!'){
-                          isAlertNotNeeded = true;
-                          newAlertMessage = '';
-                        }
-
-                        const newPossibleGain = this.state.money * newTotalOdd;
-                        const newPair = {
-                          "odds": Odds,
-                          "odd": odd,
-                          "type": type
-                        };
-                          this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, isHidden: isAlertNotNeeded, alertMessage: newAlertMessage })
+                    if(odd !== ""){
+                      let finalNewTicket = this.state.NewTicket;
+                      let newTotalOdd = this.state.totalOdd
+                      let isAlertNotNeeded = this.state.isHidden;
+                      let newAlertMessage = this.state.alertMessage;
+  
+                      //check if we already bet on that exat odd, if yes, remove it from NewTicket
+                      let oddAlreadyExists = finalNewTicket.filter(pair => pair.odds.id === Odds.id && pair.type === type);
+  
+                      if(oddAlreadyExists.length > 0){
+                        this.removePair(Odds.id, odd);
+                      }
+                      else{
+                          newTotalOdd = newTotalOdd * odd;
+  
+                          //check if we already bet on that match
+                          let pairAlreadyExists = finalNewTicket.filter(pair => pair.odds.match.id === Odds.match.id);
+  
+                          pairAlreadyExists.map( pair => {
+                            newTotalOdd = newTotalOdd / pair.odd;
+                            return pair;
+                          })
+  
+                          if(pairAlreadyExists.length > 0){
+                            finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id);
+                          }
+  
+                          //check if we already bet on one special match
+                          let specialMatchAlreadyExists = finalNewTicket.filter(pair => pair.odds.type === "Special offer" && Odds.type === "Special offer");                    
+                          
+                          specialMatchAlreadyExists.map( pair => {
+                            newTotalOdd = newTotalOdd / pair.odd;
+                            return pair;
+                          })
+  
+                          if(specialMatchAlreadyExists.length > 0){
+                            finalNewTicket = [...this.state.NewTicket].filter(pair => pair.odds.match.id !== Odds.match.id).filter(pair => pair.odds.type !== "Special offer" && Odds.type === "Special offer");
+                          }                    
+  
+                          //check if constraint is no longer needed
+                          if( specialMatchAlreadyExists.length === 0 && (pairAlreadyExists.length > 0 || (this.state.alertMessage === 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!' && finalNewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length >= 4 && odd >= 1.10)) ){
+                            isAlertNotNeeded = true;
+                            newAlertMessage = '';
+                          }
+  
+                          if(this.state.alertMessage === 'You have to add Matches for betting!'){
+                            isAlertNotNeeded = true;
+                            newAlertMessage = '';
+                          }
+  
+                          const newPossibleGain = this.state.money * newTotalOdd;
+                          const newPair = {
+                            "odds": Odds,
+                            "odd": odd,
+                            "type": type
+                          };
+                            this.setState({ NewTicket: [...finalNewTicket, newPair], totalOdd: newTotalOdd, possibleGain: newPossibleGain, isHidden: isAlertNotNeeded, alertMessage: newAlertMessage })
+                      }
                     }
                   },
 

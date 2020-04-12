@@ -25,6 +25,31 @@ class OddsOffer extends Component {
     fetchOdds = () => {
         fetch('/api/odds', {})
         .then(body => body.json())
+        .then(body => {
+            let modifiedBody = body;
+            modifiedBody.map( odd => {
+                if(odd.odd1 === 1){
+                    odd.odd1 = "";
+                }
+                if(odd.odd2 === 1){
+                    odd.odd2 = "";
+                }
+                if(odd.odd3 === 1){
+                    odd.odd3 = "";
+                }
+                if(odd.odd4 === 1){
+                    odd.odd4 = "";
+                }
+                if(odd.odd5 === 1){
+                    odd.odd5 = "";
+                }
+                if(odd.odd6 === 1){
+                    odd.odd6 = "";
+                }
+                return odd;
+            })
+            return modifiedBody;
+        })
         .then(body => this.setState({Odds : body , isLoading: false}))
         .catch(error => console.log(error)); 
       };
@@ -35,10 +60,12 @@ class OddsOffer extends Component {
     }
 
     render() {
-         const {Odds, Types, isLoading} = this.state;
+        const {Odds, Types, isLoading} = this.state;
 
-         if(isLoading) 
-             return (<div>Loading...</div>);
+
+
+        if(isLoading) 
+            return (<div>Loading...</div>);
 
         return (
             <div >
@@ -68,27 +95,27 @@ class OddsOffer extends Component {
                                         <td>{specialOfferOdd.match.home}</td>
                                         <td>{specialOfferOdd.match.away}</td>
                                         <td>{specialOfferOdd.match.matchdate}</td>
-                                        <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${specialOfferOdd.odd1 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>
                                             {specialOfferOdd.odd1}
                                          </td>
-                                        <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type2) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${specialOfferOdd.odd2 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type2) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd2, TypesPerSport.type2, specialOfferOdd)}>
                                             {specialOfferOdd.odd2}
                                          </td>
-                                        <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type3) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${specialOfferOdd.odd3 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type3) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd3, TypesPerSport.type3, specialOfferOdd)}>
                                             {specialOfferOdd.odd3}
                                          </td>
-                                        <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type4) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${specialOfferOdd.odd4 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type4) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd4, TypesPerSport.type4, specialOfferOdd)}>
                                             {specialOfferOdd.odd4}
                                          </td>
-                                        <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type5) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${specialOfferOdd.odd5 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type5) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd5, TypesPerSport.type5, specialOfferOdd)}>
                                             {specialOfferOdd.odd5}
                                          </td>
-                                        <td className={value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type6) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${specialOfferOdd.odd6 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type6) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd6, TypesPerSport.type6, specialOfferOdd)}>
                                             {specialOfferOdd.odd6}
                                          </td>
@@ -102,27 +129,27 @@ class OddsOffer extends Component {
                                         <td>{basicOfferOdd.match.home}</td>
                                         <td>{basicOfferOdd.match.away}</td>
                                         <td>{basicOfferOdd.match.matchdate}</td>
-                                        <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${basicOfferOdd.odd1 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>
                                                 {basicOfferOdd.odd1}
                                         </td>
-                                        <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type2) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'}
+                                        <td className={`${basicOfferOdd.odd2 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type2) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd2, TypesPerSport.type2, basicOfferOdd)}>
                                             {basicOfferOdd.odd2}
                                         </td>
-                                        <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type3) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
+                                        <td className={`${basicOfferOdd.odd3 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type3) === true ? 'selectedTypeOfPair ' : ''}`} 
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd3, TypesPerSport.type3, basicOfferOdd)}>
                                             {basicOfferOdd.odd3}
                                         </td>
-                                        <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type4) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
+                                        <td className={`${basicOfferOdd.odd4 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type4) === true ? 'selectedTypeOfPair ' : ''}`} 
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd4, TypesPerSport.type4, basicOfferOdd)}>
                                             {basicOfferOdd.odd4}
                                         </td>
-                                        <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type5) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
+                                        <td className={`${basicOfferOdd.odd5 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type5) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd5, TypesPerSport.type5, basicOfferOdd)}>
                                             {basicOfferOdd.odd5}
                                         </td>
-                                        <td className={value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type6) === true ? 'selectedTypeOfPair oddsOfferFakeButton' : 'oddsOfferFakeButton'} 
+                                        <td className={`${basicOfferOdd.odd6 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type6) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd6, TypesPerSport.type6, basicOfferOdd)}>
                                             {basicOfferOdd.odd6}
                                         </td>
