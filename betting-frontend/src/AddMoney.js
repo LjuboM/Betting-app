@@ -13,7 +13,6 @@ class AddMoney extends Component {
          }
          this.handleAddingMoney= this.handleAddingMoney.bind(this);
          this.handleMoneyInput= this.handleMoneyInput.bind(this);
-         this.handleKeyDown= this.handleKeyDown.bind(this);
     }
     emptyTransaction = {
         "type": false,
@@ -48,12 +47,7 @@ class AddMoney extends Component {
         transaction.money = money;
         this.setState({Transaction: transaction});
     }
-
-    handleKeyDown(event){
-        if (event.key === 'Enter') {
-            this.handleAddingMoney();
-        }
-    }
+    
     render() {
       const {Transaction} = this.state;
         return (
@@ -62,7 +56,7 @@ class AddMoney extends Component {
             {(value) => (
               <InputGroup style={{margin:"15px", width:"50%"}}>
                 <InputGroupAddon addonType="prepend">HRK</InputGroupAddon>
-                <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput} onKeyDown={this.handleKeyDown}/>
+                <Input placeholder="Amount" min={1} type="number" step="1" onChange={this.handleMoneyInput}/>
                 <InputGroupAddon addonType="append"><Button color="primary" onClick={() => { this.handleAddingMoney(); value.changeMoneyValue(Transaction.money, true);}}>Add Money</Button></InputGroupAddon>
               </InputGroup>
             )}

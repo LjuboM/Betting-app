@@ -31,7 +31,7 @@ class PopUpPlayTicket extends Component {
                             <tr>
                                 <td>Tax: {value.state.tax.toFixed(2)} HRK</td>
                                 <td style={{fontSize:"0.6em"}}>First 10000 HRK is taxed by 10%, next 20000 by 15%, next 470000 by 20% and the rest by 30%</td>
-                                <td><a href="https://www.porezna-uprava.hr/HR_porezni_sustav/Stranice/porez_dobitak_kladjenje.aspx" target="_blank"> Bet taxes in Croatia.</a></td>
+                                <td><a href="https://www.porezna-uprava.hr/HR_porezni_sustav/Stranice/porez_dobitak_kladjenje.aspx" target="_blank" rel="noopener noreferrer"> Bet taxes in Croatia.</a></td>
                                 <td></td>
                             </tr>
                         </tbody>
