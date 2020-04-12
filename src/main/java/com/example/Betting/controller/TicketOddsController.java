@@ -119,15 +119,16 @@ public class TicketOddsController {
     	int specialOfferMatchOccurrences = 0;
     	//Odds bigger than 1.10
     	int biggerOddsCount = 0;
-    	
+    	int matchesIterator = 0;
     	if(specialOffer) {
     		for(Long match : matches) {
     			if(specialOfferMatch == match) {
     				specialOfferMatchOccurrences++;
     			}
-    			if(match >= 1.1) {
+    			if(odds[matchesIterator] >= 1.1) {
     				biggerOddsCount++;
     			}
+    			matchesIterator++;
     		}
         	if(specialOfferMatchOccurrences > 1) {
             	System.out.println("Invalid bet, played the same match in special offer and basic type!");
