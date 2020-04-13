@@ -8,8 +8,8 @@ class PopUpPlayTicket extends Component {
         return (   
         <ExportableContext > 
             {(value) => (
-            <div className="popup">
-                <div className="popup-content">
+            <div id="popup">
+                <div id="popup-content">
                     <Table striped >
                         <thead>
                         <tr>
