@@ -20,55 +20,67 @@ class MyProvider extends Component {
       money : '',
       isHidden: true,
       alertMessage : '',
-      popUpSeen : false
+      popUpSeen : false,
+      matchAlreadyStartedMessage : ''
      }
-     this.createNewTicket= this.createNewTicket.bind(this);
-     this.refreshTicket= this.refreshTicket.bind(this);
-     this.removePair= this.removePair.bind(this);
-     this.calculateTax= this.calculateTax.bind(this);
-}
+     this.finalizeNewTicket = this.finalizeNewTicket.bind(this);
+     this.refreshTicket = this.refreshTicket.bind(this);
+     this.removePair = this.removePair.bind(this);
+     this.calculateTax = this.calculateTax.bind(this);
+     this.updateMoneyValue = this.updateMoneyValue.bind(this);
+    }
 
-calculateTax(possibleGain){
-  let newTax = 0;
-  let possibleGainparts = possibleGain;
-  if(possibleGainparts >= 10000){
-    newTax = 1000;
-    possibleGainparts = possibleGainparts - 10000;
-    if(possibleGainparts >= 20000){
-      newTax = 4000;
-      possibleGainparts = possibleGainparts - 20000;
-      if(possibleGainparts >= 470000){
-        newTax = 94000;
-        possibleGainparts = possibleGainparts - 470000;
-        if(possibleGainparts > 0){
-          newTax = newTax + possibleGainparts * 0.30;
+  calculateTax(possibleGain){
+    let newTax = 0;
+    let possibleGainparts = possibleGain;
+    if(possibleGainparts >= 10000){
+      newTax = 1000;
+      possibleGainparts = possibleGainparts - 10000;
+      if(possibleGainparts >= 20000){
+        newTax = 4000;
+        possibleGainparts = possibleGainparts - 20000;
+        if(possibleGainparts >= 470000){
+          newTax = 94000;
+          possibleGainparts = possibleGainparts - 470000;
+          if(possibleGainparts > 0){
+            newTax = newTax + possibleGainparts * 0.30;
+          }
+        }
+        else{
+          newTax = newTax + possibleGainparts * 0.20;
         }
       }
       else{
-        newTax = newTax + possibleGainparts * 0.20;
+        newTax = newTax + possibleGainparts * 0.15;
       }
     }
     else{
-      newTax = newTax + possibleGainparts * 0.15;
+      newTax = possibleGainparts * 0.10
     }
+    return newTax;
   }
-  else{
-    newTax = possibleGainparts * 0.10
-  }
-  return newTax;
-}
 
-async createNewTicket(finalTicket){
-  await fetch(`/api/ticket`, {
-      method : 'POST',
-      headers : {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body : JSON.stringify(finalTicket),
-  });
-  this.refreshTicket();
-}
+  async finalizeNewTicket(finalTicket){
+    await fetch(`/api/ticket`, {
+        method : 'POST',
+        headers : {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(finalTicket)
+        })
+        .then(response => {     
+          if (response.ok) {
+            this.updateMoneyValue(this.state.money, false)
+            this.refreshTicket();
+          } else {
+                  this.setState({ matchAlreadyStartedMessage : 'Remove match or matches that already started!' })
+          }
+        })
+        .catch((error) => {
+          this.setState({ matchAlreadyStartedMessage : 'Remove match or matches that already started!' })
+        });
+  }
 
   removePair(oddId, odd){
     let isAlertNotNeeded = this.state.isHidden;
@@ -93,8 +105,9 @@ async createNewTicket(finalTicket){
   }
 
   refreshTicket(){
-    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, tax: 0, money: '', isHidden: true, alertMessage: '', popUpSeen: false})
+    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, tax: 0, money: '', isHidden: true, alertMessage: '', popUpSeen: false, matchAlreadyStartedMessage : ''})
   }
+
   fetchUser = () => {
     fetch('/api/user/1', {})
     .then(body => body.json())
@@ -102,25 +115,30 @@ async createNewTicket(finalTicket){
     .catch(error => console.log(error)); 
   };
   
+  updateMoneyValue(moneyValue, addingMoney){
+    if(moneyValue >= 2 && moneyValue.toString().search(/\./) === -1 && moneyValue.toString().search(/e/) === -1 && (moneyValue <= this.state.User.money || addingMoney)){
+      let newUserState = this.state.User;
+      if(addingMoney){
+        newUserState.money = parseInt(newUserState.money) + parseInt(moneyValue);
+      }
+      else{
+        newUserState.money = parseInt(newUserState.money) - parseInt(moneyValue);
+      }
+      this.setState({User : newUserState});
+    }
+  }
+
   componentDidMount(){
     this.fetchUser()
   }
+
     render() { 
         return ( 
             <MyContext.Provider value={{
                 state: this.state,
 
                   changeMoneyValue: (newMoneyValue, addingMoney) => {
-                    if(newMoneyValue >= 2 && newMoneyValue.toString().search(/\./) === -1 && newMoneyValue.toString().search(/e/) === -1 && (newMoneyValue <= this.state.User.money || addingMoney)){
-                      let newUserState = this.state.User;
-                      if(addingMoney){
-                        newUserState.money = parseInt(newUserState.money) + parseInt(newMoneyValue);
-                      }
-                      else{
-                        newUserState.money = parseInt(newUserState.money) - parseInt(newMoneyValue);
-                      }
-                      this.setState({User : newUserState});
-                    }
+                    this.updateMoneyValue(newMoneyValue, addingMoney)
                   },
 
                   modifyPair: (odd, type, Odds) => {
@@ -235,7 +253,7 @@ async createNewTicket(finalTicket){
                           }]
                       return null;
                     })
-                      this.createNewTicket(finalNewTicket);
+                      this.finalizeNewTicket(finalNewTicket);
                   },
 
                   isPairSelected: (oddId) => {
@@ -273,7 +291,8 @@ async createNewTicket(finalTicket){
                   },
                   removePopUp: () =>{
                       this.setState({
-                        popUpSeen: false
+                        popUpSeen: false,
+                        matchAlreadyStartedMessage : ''
                     });
                   }
               }}>

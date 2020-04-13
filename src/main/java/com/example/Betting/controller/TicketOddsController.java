@@ -131,7 +131,7 @@ public class TicketOddsController {
     			matchesIterator++;
     		}
         	if(specialOfferMatchOccurrences > 1) {
-            	System.out.println("Invalid bet, played the same match in special offer and basic type!");
+            	System.out.println("Invalid bet, played the same match in special offer and basic type!"); 
             	return false;
         	}
         	if(biggerOddsCount < 5) {
