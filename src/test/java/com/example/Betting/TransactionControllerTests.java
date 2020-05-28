@@ -28,23 +28,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+/**
+ * The Class TransactionControllerTests.
+ */
 @RunWith(SpringRunner.class)
 @WebMvcTest(TransactionController.class)
 public class TransactionControllerTests {
- 
+
+    /** The mvc. */
     @Autowired
     private MockMvc mvc;
- 
+
+    /** The transaction service. */
     @MockBean
     private TransactionService transactionService;
-    
+
+    /** The user service. */
     @MockBean
     private UserService userService;
- 
+
+    /**
+     * When get transactions then array of transactions.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTransactions_thenArrayOfTransactions()
       throws Exception {
-        
+
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
     	transactions.add(new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 300, null, null));
     	transactions.add(new Transaction((long) 2, Instant.parse("2020-05-16T17:00:00Z"), true, 40, null, null));
@@ -70,11 +81,16 @@ public class TransactionControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-    
+
+    /**
+     * When get transactions then transacton.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTransactions_thenTransacton()
       throws Exception {
-        
+
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
     	transactions.add(new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 300, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
@@ -92,11 +108,16 @@ public class TransactionControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-    
+
+    /**
+     * When get transactions then no transactions.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTransactions_thenNoTransactions()
       throws Exception {
-        
+
     	given(transactionService.findAllTransactions()).willReturn(Collections.emptyList());
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -104,18 +125,21 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[]"));
     }
-    
-    
+
+    /**
+     * Given transaction when set money in wallet then created and transaction.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void givenTransaction_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
-    	
+
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 600, null);
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 300, ljubo, null);
-        
+
     	given(userService.changeMoneyValueInWallet((long) 1, 300, true)).willReturn(Optional.of(ljubo));
     	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
-
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -136,16 +160,20 @@ public class TransactionControllerTests {
           		"}"));
     }
 
+    /**
+     * Given transaction with enough money value when set money in wallet then created and transaction.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void givenTransactionWithEnoughMoneyValue_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
-    	
+
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 301, null);
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 1, ljubo, null);
-        
+
     	given(userService.changeMoneyValueInWallet((long) 1, 1, true)).willReturn(Optional.of(ljubo));
     	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
-
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -165,11 +193,16 @@ public class TransactionControllerTests {
           		"    }\r\n" + 
           		"}"));
     }
-    
+
+    /**
+     * Given transaction with low money value when set money in wallet then bad request.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void givenTransactionWithLowMoneyValue_whenSetMoneyInWallet_thenBadRequest()
       throws Exception {
-    	
+
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 0, ljubo, null);
 
@@ -179,11 +212,16 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().string("You have to add at least 1 HRK to your account."));
     }
-    
+
+    /**
+     * Given transaction with negative money value when set money in wallet then bad request.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void givenTransactionWithNegativeMoneyValue_whenSetMoneyInWallet_thenBadRequest()
       throws Exception {
-    	
+
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
         Transaction newTransaction = new Transaction((long) -1, Instant.parse("2020-05-15T17:00:00Z"), false, 0, ljubo, null);
 
@@ -193,7 +231,13 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().string("You have to add at least 1 HRK to your account."));
     }
-    
+
+    /**
+     * As json string.
+     *
+     * @param transaction the transaction
+     * @return the string
+     */
     public static String asJsonString(final Transaction transaction) {
       try {
           final ObjectMapper mapper = new ObjectMapper();
@@ -206,5 +250,5 @@ public class TransactionControllerTests {
           throw new RuntimeException(e);
       }
     }
-    
+
 }

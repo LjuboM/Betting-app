@@ -8,13 +8,22 @@ import org.springframework.stereotype.Service;
 import com.example.Betting.model.Types;
 import com.example.Betting.repository.TypesRepository;
 
+/**
+ * The Class TypesService.
+ */
 @Service
 public class TypesService {
-	
+
+	/** The types repository. */
 	@Autowired
 	private TypesRepository typesRepository;
-	
-	public Collection<Types> findAllTypes(){
+
+	/**
+	 * Find all types.
+	 *
+	 * @return the collection of types
+	 */
+	public Collection<Types> findAllTypes() {
 		return typesRepository.findAll();
 	}
 }

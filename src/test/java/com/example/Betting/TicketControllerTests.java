@@ -21,16 +21,26 @@ import com.example.Betting.controller.TicketController;
 import com.example.Betting.model.Ticket;
 import com.example.Betting.service.TicketService;
 
+/**
+ * The Class TicketControllerTests.
+ */
 @RunWith(SpringRunner.class)
 @WebMvcTest(TicketController.class)
 public class TicketControllerTests {
 
+    /** The mvc. */
     @Autowired
     private MockMvc mvc;
-    
+
+    /** The ticket service. */
     @MockBean
     private TicketService ticketService;
-    
+
+    /**
+     * When get tickets then array of tickets.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTickets_thenArrayOfTickets()
       throws Exception {
@@ -58,7 +68,12 @@ public class TicketControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-    
+
+    /**
+     * When get tickets then tickets.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTickets_thenTickets()
       throws Exception {
@@ -80,7 +95,12 @@ public class TicketControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-    
+
+    /**
+     * When get tickets then no ticket odds.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTickets_thenNoTicketOdds()
       throws Exception {
@@ -92,5 +112,5 @@ public class TicketControllerTests {
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[]"));
     }
-    
+
 }

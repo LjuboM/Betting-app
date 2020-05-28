@@ -10,23 +10,38 @@ import org.springframework.stereotype.Service;
 import com.example.Betting.model.Transaction;
 import com.example.Betting.repository.TransactionRepository;
 
+/**
+ * The Class TransactionService.
+ */
 @Service
 public class TransactionService {
 
+	/** The transaction repository. */
 	@Autowired
 	private TransactionRepository transactionRepository;
-	
-	public Collection<Transaction> findAllTransactions(){
+
+	/**
+	 * Find all transactions.
+	 *
+	 * @return the collection of transactions
+	 */
+	public Collection<Transaction> findAllTransactions() {
 		return transactionRepository.findAll(Sort.by(Sort.Direction.DESC, "transactiondate"));
 	}
-	
-	public Transaction createTransaction(Transaction newTransaction, boolean transactionType) {
-		//Set transaction to current time.
+
+	/**
+	 * Creates the transaction.
+	 *
+	 * @param newTransaction the new transaction
+	 * @param transactionType the transaction type
+	 * @return the transaction
+	 */
+	public Transaction createTransaction(final Transaction newTransaction, final boolean transactionType) {
+	    /** Set transaction to current time. */
 		newTransaction.setTransactiondate(Instant.now());
 		newTransaction.setTransactiontype(transactionType);
 		transactionRepository.save(newTransaction);
 		return newTransaction;
 	}
-	
-	
+
 }

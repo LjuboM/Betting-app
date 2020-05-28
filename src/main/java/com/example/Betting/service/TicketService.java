@@ -9,13 +9,23 @@ import org.springframework.stereotype.Service;
 import com.example.Betting.model.Ticket;
 import com.example.Betting.repository.TicketRepository;
 
+/**
+ * The Class TicketService.
+ */
 @Service
 public class TicketService {
+
+	/** The ticket repository. */
 	@Autowired
 	private TicketRepository ticketRepository;
-	
-	public Collection<Ticket> findAllTickets(){
+
+	/**
+	 * Find all tickets.
+	 *
+	 * @return the collection of tickets
+	 */
+	public Collection<Ticket> findAllTickets() {
 		return ticketRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 	}
-	
+
 }

@@ -12,15 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Betting.model.Odds;
 import com.example.Betting.service.OddsService;
 
+/**
+ * The Class OddsController.
+ */
 @RestController
 @RequestMapping("/api")
 public class OddsController {
 
+	/** The odds service. */
 	@Autowired
-	OddsService oddsService;
-	
+	private OddsService oddsService;
+
+	/**
+	 * Gets the odds for future matches.
+	 *
+	 * @return the odds for future matches.
+	 */
 	@GetMapping("/odds")
-	ResponseEntity<?> getOddsForFutureMatches(){
+	ResponseEntity<?> getOddsForFutureMatches() {
 		Collection<Odds> allOdds = oddsService.findAllSortedOdds();
 		return ResponseEntity.status(HttpStatus.OK).body(allOdds);
 	}

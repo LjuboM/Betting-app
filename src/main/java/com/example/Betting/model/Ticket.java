@@ -18,29 +18,44 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * Instantiates a new ticket with all arguments.
+ */
 @AllArgsConstructor
+
+/**
+ * Instantiates a new ticket.
+ */
 @NoArgsConstructor
 @Entity
+
+/**
+ * To string.
+ *
+ * @return the java.lang. string
+ */
 @Data
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-@Table(name="ticket")
+@Table(name = "ticket")
 public class Ticket {
 
+	/** The id. */
 	@Id
-	//@JsonIdentityReference(alwaysAsId = true)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	/** The total odd. */
 	private float totalodd;
 
+	/** The possible gain. */
 	private float possiblegain;
 
+	/** The transaction. */
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_id", referencedColumnName = "id")
 	private Transaction transaction;
-	
+
+	/** The ticket odds. */
 	@OneToMany(mappedBy = "ticket")
 	@JsonBackReference
-	Set<TicketOdds> ticket_odds;
+	private Set<TicketOdds> ticketOdds;
 }

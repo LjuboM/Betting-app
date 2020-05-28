@@ -12,18 +12,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Betting.model.Types;
 import com.example.Betting.service.TypesService;
 
+/**
+ * The Class TypesController.
+ */
 @RestController
 @RequestMapping("/api")
 public class TypesController {
 
+	/** The types service. */
 	@Autowired
-	TypesService typesService;
-	
+	private TypesService typesService;
 
+	/**
+	 * Gets the types of odds.
+	 *
+	 * @return the types of odds
+	 */
 	@GetMapping("/types")
-	ResponseEntity<?> getTypes(){
+	ResponseEntity<?> getTypes() {
 		Collection<Types> allTypes = typesService.findAllTypes();
 		return ResponseEntity.status(HttpStatus.OK).body(allTypes);
 	}
-	
+
 }

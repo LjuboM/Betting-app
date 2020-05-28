@@ -15,27 +15,44 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Instantiates a new user with all arguments.
+ */
 @AllArgsConstructor
+
+/**
+ * Instantiates a new user.
+ */
 @NoArgsConstructor
 @Entity
+
+/**
+ * To string.
+ *
+ * @return the java.lang. string
+ */
 @Data
-//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
+	/** The id. */
 	@Id
-	//@JsonIdentityReference(alwaysAsId = true)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	/** The name. */
 	private String name;
-	
+
+	/** The location. */
 	private String location;
-	
+
+	/** The age. */
 	private int age;
 
+	/** The money. */
 	private int money;
 
+	/** The transaction. */
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private Set<Transaction> transaction;

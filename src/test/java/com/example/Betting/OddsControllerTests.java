@@ -21,20 +21,30 @@ import com.example.Betting.controller.OddsController;
 import com.example.Betting.model.Odds;
 import com.example.Betting.service.OddsService;
 
+/**
+ * The Class OddsControllerTests.
+ */
 @RunWith(SpringRunner.class)
 @WebMvcTest(OddsController.class)
 public class OddsControllerTests {
- 
+
+    /** The mvc. */
     @Autowired
     private MockMvc mvc;
- 
+
+    /** The odds service. */
     @MockBean
     private OddsService oddsService;
 
+    /**
+     * When get odds then array of odds.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetOdds_thenArrayOfOdds()
       throws Exception {
-        
+
     	Collection<Odds> odds = new ArrayList<Odds>();
     	odds.add(new Odds( 0, "Basic",(float) 2.0, (float) 2.0, (float) 2.0, (float) 2.0, (float) 1.0, (float) 5.0, null, null));
     	odds.add(new Odds( 1, "Special offer", (float) 2.1, (float) 2.1, (float) 2.1, (float) 2.1, (float) 1.1, (float) 5.2, null, null));
@@ -68,11 +78,16 @@ public class OddsControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-    
+
+    /**
+     * When get odds then odds.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetOdds_thenOdds()
       throws Exception {
-        
+
     	Collection<Odds> odds = new ArrayList<Odds>();
     	odds.add(new Odds( 0, "Basic",(float) 2.0, (float) 2.0, (float) 2.0, (float) 2.0, (float) 1.0, (float) 5.0, null, null));
     	given(oddsService.findAllSortedOdds()).willReturn(odds);
@@ -94,11 +109,16 @@ public class OddsControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-    
+
+    /**
+     * When get odds then no odds.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetOdds_thenNoOdds()
       throws Exception {
-        
+
     	given(oddsService.findAllSortedOdds()).willReturn(Collections.emptyList());
 
         mvc.perform(MockMvcRequestBuilders.get("/api/odds")
@@ -106,5 +126,5 @@ public class OddsControllerTests {
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("[]"));
     }
-    
+
 }

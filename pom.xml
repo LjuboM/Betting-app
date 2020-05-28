@@ -16,6 +16,18 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+		
+		<checkstyleBaseDir>${project.basedir}</checkstyleBaseDir>
+        <checkstyleConfig>${checkstyleBaseDir}/mvn-resources/checkstyle/checkstyle.xml</checkstyleConfig>
+        <fileSuppresions>${checkstyleBaseDir}/mvn-resources/checkstyle/checkstyle-suppressions.xml</fileSuppresions>
+        
+		<maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
+        <spotbugs-maven-plugin.version>3.1.11</spotbugs-maven-plugin.version>
+        <spotbugs.version>3.1.12</spotbugs.version>
+        <maven-pmd-plugin.version>3.12.0</maven-pmd-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -27,7 +39,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -56,14 +67,95 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
+	
 	<build>
-		<plugins>
-			<plugin>
+        <plugins>
+        	<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
-	</build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <argLine>@{argLine} -Xms500m -Xmx1500m</argLine>
+                    <forkCount>1C</forkCount>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <configLocation>${checkstyleConfig}</configLocation>
+                            <suppressionsLocation>${fileSuppresions}</suppressionsLocation>
+                            <failOnViolation>true</failOnViolation>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs-maven-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>${spotbugs.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>spotbugs</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <effort>Max</effort>
+                            <failOnError>true</failOnError>
+                            <excludeFilterFile>${project.basedir}/mvn-resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+                            <threshold>Low</threshold>
+                            <xmlOutput>true</xmlOutput>
+                            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven-pmd-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>pmd</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <printFailingErrors>true</printFailingErrors>
+                    <analysisCache>true</analysisCache>
+                    <failOnViolation>true</failOnViolation>
+                    <linkXRef>false</linkXRef>
+                    <targetJdk>${java.version}</targetJdk>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+	
+	
 
 </project>

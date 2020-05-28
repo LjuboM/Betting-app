@@ -12,16 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Betting.model.Ticket;
 import com.example.Betting.service.TicketService;
 
+/**
+ * The Class TicketController.
+ */
 @RestController
 @RequestMapping("/api")
 public class TicketController {
-	
-	@Autowired
-	TicketService ticketService;
-	
 
+	/** The ticket service. */
+	@Autowired
+	private TicketService ticketService;
+
+	/**
+	 * Gets the tickets.
+	 *
+	 * @return the tickets
+	 */
 	@GetMapping("/tickets")
-	ResponseEntity<?> getTickets(){
+	ResponseEntity<?> getTickets() {
 		Collection<Ticket> allTickets = ticketService.findAllTickets();
 		return ResponseEntity.status(HttpStatus.OK).body(allTickets);
 	}

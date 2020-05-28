@@ -19,20 +19,30 @@ import com.example.Betting.controller.UserController;
 import com.example.Betting.model.User;
 import com.example.Betting.service.UserService;
 
+/**
+ * The Class UserControllerTests.
+ */
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 public class UserControllerTests {
- 
+
+    /** The mvc. */
     @Autowired
     private MockMvc mvc;
- 
+
+    /** The user service. */
     @MockBean
     private UserService userService;
- 
+
+    /**
+     * Given user id when get users then ok and user.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void givenUserId_whenGetUsers_thenOkAndUser()
       throws Exception {
-         
+
     	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 500, null);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(ljubo));
@@ -48,7 +58,12 @@ public class UserControllerTests {
           		"    \"money\": 500.0\r\n" + 
           		"}"));
     }
-    
+
+    /**
+     * Given user id when get users then bad request.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void givenUserId_whenGetUsers_thenBadRequest()
       throws Exception {
@@ -59,5 +74,5 @@ public class UserControllerTests {
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-    
+
 }

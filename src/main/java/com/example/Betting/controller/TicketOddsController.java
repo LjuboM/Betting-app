@@ -22,125 +22,155 @@ import com.example.Betting.service.TicketOddsService;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
 
-
+/**
+ * The Class TicketOddsController.
+ */
 @RestController
 @RequestMapping("/api")
 public class TicketOddsController {
-	
+
+	/** The ticket odds service. */
 	@Autowired
 	private TicketOddsService ticketOddsService;
-	
+
+	/** The user service. */
 	@Autowired
 	private UserService userService;
 
+	/** The transaction service. */
 	@Autowired
 	private TransactionService transactionService;
-	
+
+	/**
+	 * Gets the ticket odds.
+	 *
+	 * @return the ticket odds
+	 */
 	@GetMapping("/ticketOdds")
-	ResponseEntity<?> getTicketOdds(){
+	ResponseEntity<?> getTicketOdds() {
 		Collection<TicketOdds> allTicketOdds = ticketOddsService.findAllPlayedTicketPairs();
 		return ResponseEntity.status(HttpStatus.OK).body(allTicketOdds);
 	}
-	
+
+	/**
+	 * Gets the match pairs by ticket id.
+	 *
+	 * @param ticketId the ticket id
+	 * @return the match pairs by ticket id
+	 */
 	@GetMapping("/ticketOdds/{ticketId}")
-	ResponseEntity<?> getMatchPairsByTicketId(@PathVariable Long ticketId){
+	ResponseEntity<?> getMatchPairsByTicketId(@PathVariable final Long ticketId) {
 		Collection<TicketOdds> ticketOdds = ticketOddsService.findAllPlayedPairsByTicketId(ticketId);
 		return ResponseEntity.status(HttpStatus.OK).body(ticketOdds);
 	}
 
-	//Play a ticket.
+	/**
+	 * Playing ticket.
+	 *
+	 * @param ticketOdds the ticket odds
+	 * @return the response entity
+	 */
     @RequestMapping(value = "/ticket", method = RequestMethod.POST)
-    public ResponseEntity<?> playingTicket(@RequestBody ArrayList<TicketOdds> ticketOdds){
+    public ResponseEntity<?> playingTicket(@RequestBody final ArrayList<TicketOdds> ticketOdds) {
     	//Check if the ticket is valid.
-    	if(!validateTicket(ticketOdds)) {
+    	if (!validateTicket(ticketOdds)) {
     		return ResponseEntity.badRequest().body("You didn't place a valid bet.");
     	}
     	TicketOdds first = ticketOdds.iterator().next();
 
-		//Get User who played ticket. 
+		//Get User who played ticket.
 		Optional<User> user = userService.findUserById(first.getTicket().getTransaction().getUser().getId());
 		int moneyInWallet = user.get().getMoney();
 		int spentMoney = first.getTicket().getTransaction().getMoney();
-		
-		if(spentMoney < 1) {
+
+		if (spentMoney < 1) {
 			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
 		}
-		
-		if(spentMoney > moneyInWallet) {
+
+		if (spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
 		//Create transaction with current time of type true.
-		Transaction transaction = transactionService.createTransaction(first.getTicket().getTransaction(), true);
+		Transaction transaction;
+		transaction = transactionService.createTransaction(first.getTicket().getTransaction(), true);
+
 		//Spending money.
-		user = userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
-		
+		userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
+
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
-		ticketOddsService.createTicketOddsPair(first);
-        ticketOdds.iterator().next();
-        
-        ticketOdds.iterator().forEachRemaining( ticketOdd -> {
+	    ticketOddsService.createTicketOddsPair(first);
+	    ticketOdds.iterator().next();
+
+        ticketOdds.iterator().forEachRemaining(ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(first.getTicket());
 		ticketOddsService.createTicketOddsPair(ticketOdd);
 	});
         return ResponseEntity.ok().body("Successfully placed a bet!");
     }
-    
-    //Checks all constraints for a ticket.
-    private boolean validateTicket(ArrayList<TicketOdds> ticketOdds){
-    	float odds[] = new float[ticketOdds.size()];
-    	Long matches[] = new Long[ticketOdds.size()];
+
+    /**
+     * Validate ticket.
+     *
+     * @param ticketOdds the ticket odds
+     * @return true, if ticket is valid
+     */
+    private boolean validateTicket(final ArrayList<TicketOdds> ticketOdds) {
+        /** Minimum number of basic odds higher than minOddValue needed for valid ticket */
+        final int minBiggerOddsCount = 5;
+        final float minOddValue = (float) 1.10;
+    	float[] odds = new float[ticketOdds.size()];
+    	Long[] matches = new Long[ticketOdds.size()];
     	boolean specialOffer = false;
     	long specialOfferMatch = 1;
     	int iterator = 0;
 		Instant currentTime = Instant.now();
-    	
-    	for(TicketOdds ticketOdd : ticketOdds) {
+
+    	for (TicketOdds ticketOdd : ticketOdds) {
 			matches[iterator] = ticketOdd.getOdds().getMatch().getId();
-    		if(ticketOdd.getOdds().getType().equals("Basic")) {
+    		if (ticketOdd.getOdds().getType().equals("Basic")) {
     			odds[iterator] = ticketOdd.getOdd();
-    		}
-    		else if(specialOffer == false) {
-    			specialOffer=true;
+    		} else if (!specialOffer) {
+    			specialOffer = true;
     			specialOfferMatch = ticketOdd.getOdds().getMatch().getId();
     			odds[iterator] = (float) 1.0;
-    		}
-    		else {
+    		} else {
     	    	System.out.println("Invalid bet, more than one Special offer played!");
     			return false;
     		}
-    		if(ticketOdd.getOdds().getMatch().getMatchdate().compareTo(currentTime) < 1) {
+    		if (ticketOdd.getOdds().getMatch().getMatchdate().compareTo(currentTime) < 1) {
     	    	System.out.println("Invalid bet, too late, match already started!");
     			return false;
     		}
     		iterator++;
     	}
-    	
+
     	int specialOfferMatchOccurrences = 0;
-    	//Odds bigger than 1.10
+    	//Number of odds bigger than minOddValue
     	int biggerOddsCount = 0;
     	int matchesIterator = 0;
-    	if(specialOffer) {
-    		for(Long match : matches) {
-    			if(specialOfferMatch == match) {
+    	if (specialOffer) {
+    		for (Long match : matches) {
+    			if (specialOfferMatch == match) {
     				specialOfferMatchOccurrences++;
     			}
-    			if(odds[matchesIterator] >= 1.1) {
+    			if (odds[matchesIterator] >= minOddValue) {
     				biggerOddsCount++;
     			}
     			matchesIterator++;
     		}
-        	if(specialOfferMatchOccurrences > 1) {
-            	System.out.println("Invalid bet, played the same match in special offer and basic type!"); 
+        	if (specialOfferMatchOccurrences > 1) {
+            	System.out.println("Invalid bet, played the same match in special offer and basic type!");
             	return false;
         	}
-        	if(biggerOddsCount < 5) {
-            	System.out.println("Invalid bet, you have to play at least 5 basic odds that are 1.10 or bigger!");
+        	if (biggerOddsCount < minBiggerOddsCount) {
+            	System.out.println("Invalid bet, you have to play at least "
+            	        + String.valueOf(minBiggerOddsCount) + " basic odds that are "
+            	        + String.valueOf(minOddValue) + " or bigger!");
             	return false;
         	}
     	}
-    	
+
 		return true;
     }
 }
-//Should I add check if 2 same matches are played regardless it's type?

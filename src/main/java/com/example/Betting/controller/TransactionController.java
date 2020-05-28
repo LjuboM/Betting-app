@@ -20,30 +20,53 @@ import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
 
+/**
+ * The Class TransactionController.
+ */
 @RestController
 @RequestMapping("/api")
 public class TransactionController {
-	
-	@Autowired
-	TransactionService transactionService;
-	
-	@Autowired
-	UserService userService;
 
+	/** The transaction service. */
+	@Autowired
+	private TransactionService transactionService;
+
+	/** The user service. */
+	@Autowired
+	private UserService userService;
+
+	/**
+	 * Gets the transactions.
+	 *
+	 * @return the transactions
+	 */
 	@GetMapping("/transactions")
-	ResponseEntity<?> getTransactions(){
+	ResponseEntity<?> getTransactions() {
 		Collection<Transaction> allTransactions = transactionService.findAllTransactions();
 		return ResponseEntity.status(HttpStatus.OK).body(allTransactions);
 	}
 
-	//Add money to account: Add new transaction of type false and increment User's money.
-	@PostMapping(value="/transaction", consumes="application/json")
-	ResponseEntity<?> setMoneyInWallet(@Valid @RequestBody Transaction transaction) throws URISyntaxException{
-		if(transaction.getMoney() < 1) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You have to add at least 1 HRK to your account.");
-		}
-		else {
-			Optional<User> user = userService.changeMoneyValueInWallet(transaction.getUser().getId(), transaction.getMoney(), true);
+	/**
+	 * Adds new transaction of type false.
+	 * Sets the money value in wallet.
+	 *
+	 * @param transaction the transaction
+	 * @return the response entity
+	 * @throws URISyntaxException the URI syntax exception
+	 */
+	@PostMapping(value = "/transaction", consumes = "application/json")
+	ResponseEntity<?> setMoneyInWallet(
+	        @Valid @RequestBody final Transaction transaction)
+	        throws URISyntaxException {
+
+		if (transaction.getMoney() < 1) {
+			return ResponseEntity
+			        .status(HttpStatus.BAD_REQUEST)
+			        .body("You have to add at least 1 HRK to your account.");
+		} else {
+			Optional<User> user;
+			long transactionId = transaction.getUser().getId();
+			user = userService.changeMoneyValueInWallet(transactionId, transaction.getMoney(), true);
 			Transaction newTransaction = transactionService.createTransaction(transaction, false);
 			newTransaction.setUser(user.get());
 			return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);

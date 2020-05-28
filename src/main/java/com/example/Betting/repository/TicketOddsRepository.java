@@ -6,8 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.Betting.model.TicketOdds;
 
+/**
+ * The Interface TicketOddsRepository.
+ */
 public interface TicketOddsRepository extends JpaRepository<TicketOdds, Long> {
 
-	Collection<TicketOdds> findAllByTicket_id(long ticketId);
+	/**
+	 * Find all by ticket id.
+	 *
+	 * @param ticketId the ticket id
+	 * @return the collection of ticket odds
+	 */
+	Collection<TicketOdds> findAllByTicketId(long ticketId);
 
 }

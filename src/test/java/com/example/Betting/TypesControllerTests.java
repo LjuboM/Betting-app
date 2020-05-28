@@ -20,20 +20,30 @@ import com.example.Betting.controller.TypesController;
 import com.example.Betting.model.Types;
 import com.example.Betting.service.TypesService;
 
+/**
+ * The Class TypesControllerTests.
+ */
 @RunWith(SpringRunner.class)
 @WebMvcTest(TypesController.class)
 public class TypesControllerTests {
 
+    /** The mvc. */
     @Autowired
     private MockMvc mvc;
-    
+
+    /** The types service. */
     @MockBean
     private TypesService typesService;
-    
+
+    /**
+     * When get types then array of types.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void whenGetTypes_thenArrayOfTypes()
       throws Exception {
-        
+
     	Collection<Types> types = new ArrayList<Types>();
     	types.add(new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null));
     	types.add(new Types((long) 2, "Basketball", "1X", "X2", ">=200p", "<200p", "1H10", "2H10", null));
@@ -65,5 +75,5 @@ public class TypesControllerTests {
           		"    }\r\n" + 
           		"]"));
     }
-   
+
 }

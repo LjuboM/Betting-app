@@ -18,28 +18,46 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Instantiates a new match with all arguments.
+ */
 @AllArgsConstructor
+
+/**
+ * Instantiates a new match.
+ */
 @NoArgsConstructor
 @Entity
+
+/**
+ * To string.
+ *
+ * @return the java.lang. string
+ */
 @Data
-@Table(name="match")
+@Table(name = "match")
 public class Match {
 
+	/** The id. */
 	@Id
 	@JsonIdentityReference(alwaysAsId = true)
 	private long id;
-	
+
+	/** The match date. */
 	private Instant matchdate;
-	
+
+	/** The home. */
 	private String home;
-	
+
+	/** The away. */
 	private String away;
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+
+	/** The types. */
+	@ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "types_id")
-	//@JsonManagedReference
 	private Types types;
-	
+
+	/** The odds. */
 	@OneToMany(mappedBy = "match")
 	@JsonBackReference
 	private Set<Odds> odds;
