@@ -65,7 +65,7 @@ public class TicketOddsController {
 		if (CollectionUtils.isEmpty(ticketOdds)) {
 		    return ResponseEntity.notFound().build();
 		} else {
-		    return ResponseEntity.status(HttpStatus.OK).body(ticketOdds); 
+		    return ResponseEntity.status(HttpStatus.OK).body(ticketOdds);
 		}
 	}
 
