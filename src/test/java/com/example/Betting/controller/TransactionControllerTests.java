@@ -1,4 +1,4 @@
-package com.example.Betting;
+package com.example.Betting.controller;
 
 import static org.mockito.BDDMockito.given;
 
@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.Betting.controller.TransactionController;
 import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
@@ -135,10 +134,10 @@ public class TransactionControllerTests {
     public void givenTransaction_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
 
-    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 600, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 300, ljubo, null);
+    	User initialUser = new User(1, "John Doe", "Split", 24, 600, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 300, initialUser, null);
 
-    	given(userService.changeMoneyValueInWallet((long) 1, 300, true)).willReturn(Optional.of(ljubo));
+    	given(userService.changeMoneyValueInWallet((long) 1, 300, true)).willReturn(Optional.of(initialUser));
     	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
@@ -152,7 +151,7 @@ public class TransactionControllerTests {
           		"    \"money\": 300,\r\n" + 
           		"    \"user\": {\r\n" + 
           		"        \"id\": 1,\r\n" + 
-          		"        \"name\": \"Ljubo Mamic\",\r\n" + 
+          		"        \"name\": \"John Doe\",\r\n" + 
           		"        \"location\": \"Split\",\r\n" + 
           		"        \"age\": 24,\r\n" + 
           		"        \"money\": 600\r\n" + 
@@ -169,10 +168,10 @@ public class TransactionControllerTests {
     public void givenTransactionWithEnoughMoneyValue_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
 
-    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 301, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 1, ljubo, null);
+    	User initialUser = new User(1, "John Doe", "Split", 24, 301, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 1, initialUser, null);
 
-    	given(userService.changeMoneyValueInWallet((long) 1, 1, true)).willReturn(Optional.of(ljubo));
+    	given(userService.changeMoneyValueInWallet((long) 1, 1, true)).willReturn(Optional.of(initialUser));
     	given(transactionService.createTransaction(newTransaction, false)).willReturn(newTransaction);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
@@ -186,7 +185,7 @@ public class TransactionControllerTests {
           		"    \"money\": 1,\r\n" + 
           		"    \"user\": {\r\n" + 
           		"        \"id\": 1,\r\n" + 
-          		"        \"name\": \"Ljubo Mamic\",\r\n" + 
+          		"        \"name\": \"John Doe\",\r\n" + 
           		"        \"location\": \"Split\",\r\n" + 
           		"        \"age\": 24,\r\n" + 
           		"        \"money\": 301\r\n" + 
@@ -203,8 +202,8 @@ public class TransactionControllerTests {
     public void givenTransactionWithLowMoneyValue_whenSetMoneyInWallet_thenBadRequest()
       throws Exception {
 
-    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 0, ljubo, null);
+    	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2020-05-15T17:00:00Z"), false, 0, initialUser, null);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -222,8 +221,8 @@ public class TransactionControllerTests {
     public void givenTransactionWithNegativeMoneyValue_whenSetMoneyInWallet_thenBadRequest()
       throws Exception {
 
-    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) -1, Instant.parse("2020-05-15T17:00:00Z"), false, 0, ljubo, null);
+    	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
+        Transaction newTransaction = new Transaction((long) -1, Instant.parse("2020-05-15T17:00:00Z"), false, 0, initialUser, null);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))

@@ -1,4 +1,4 @@
-package com.example.Betting;
+package com.example.Betting.controller;
 
 import static org.mockito.BDDMockito.given;
 
@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.Betting.controller.UserController;
 import com.example.Betting.model.User;
 import com.example.Betting.service.UserService;
 
@@ -43,16 +42,16 @@ public class UserControllerTests {
     public void givenUserId_whenGetUsers_thenOkAndUser()
       throws Exception {
 
-    	User ljubo = new User(1, "Ljubo Mamic", "Split", 24, 500, null);
+    	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
 
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(ljubo));
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
 
         mvc.perform(MockMvcRequestBuilders.get("/api/user/{id}", 1)
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
           .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
           		"    \"id\": 1,\r\n" + 
-          		"    \"name\": \"Ljubo Mamic\",\r\n" + 
+          		"    \"name\": \"John Doe\",\r\n" + 
           		"    \"location\": \"Split\",\r\n" + 
           		"    \"age\": 24,\r\n" + 
           		"    \"money\": 500.0\r\n" + 

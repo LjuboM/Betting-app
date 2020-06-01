@@ -41,7 +41,7 @@ public class UserService {
     	Optional<User> user = findUserById(id);
 		int moneyInWallet = user.get().getMoney();
 		int newMoneyValue;
-		//Increment money.
+
 		if (adding) {
 			newMoneyValue = transactionMoney + (int) moneyInWallet;
 		} else {

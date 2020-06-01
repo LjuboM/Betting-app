@@ -1,4 +1,4 @@
-package com.example.Betting;
+package com.example.Betting.controller;
 
 import static org.mockito.BDDMockito.given;
 

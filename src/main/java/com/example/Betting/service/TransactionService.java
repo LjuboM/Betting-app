@@ -33,7 +33,7 @@ public class TransactionService {
 	 * Creates the transaction.
 	 *
 	 * @param newTransaction the new transaction
-	 * @param transactionType the transaction type
+	 * @param transactionType the transaction type, adding money or playing ticket
 	 * @return the transaction
 	 */
 	public Transaction createTransaction(final Transaction newTransaction, final boolean transactionType) {
