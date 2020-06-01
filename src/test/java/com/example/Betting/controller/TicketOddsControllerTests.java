@@ -324,8 +324,7 @@ public class TicketOddsControllerTests {
 
         mvc.perform(MockMvcRequestBuilders.get("/api/ticketOdds/{ticketId}", ticketId)
            .contentType(MediaType.APPLICATION_JSON))
-           .andExpect(MockMvcResultMatchers.status().isOk())
-           .andExpect(MockMvcResultMatchers.content().json("[]"));
+           .andExpect(MockMvcResultMatchers.status().isNotFound());
         }
  
     /**
