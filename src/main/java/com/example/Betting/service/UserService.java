@@ -12,7 +12,7 @@ import com.example.Betting.repository.UserRepository;
  * The Class UserService.
  */
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
 	/** The user repository. */
 	@Autowired

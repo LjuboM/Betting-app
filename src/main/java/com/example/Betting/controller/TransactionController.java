@@ -63,13 +63,12 @@ public class TransactionController {
 			return ResponseEntity
 			        .status(HttpStatus.BAD_REQUEST)
 			        .body("You have to add at least 1 HRK to your account.");
-		} else {
-			Optional<User> user;
-			long transactionId = transaction.getUser().getId();
-			user = userService.changeMoneyValueInWallet(transactionId, transaction.getMoney(), true);
-			Transaction newTransaction = transactionService.createTransaction(transaction, false);
-			newTransaction.setUser(user.get());
-			return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);
 		}
+		Optional<User> user;
+		long transactionId = transaction.getUser().getId();
+		user = userService.changeMoneyValueInWallet(transactionId, transaction.getMoney(), true);
+		Transaction newTransaction = transactionService.createTransaction(transaction, false);
+		newTransaction.setUser(user.get());
+		return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);
 	}
 }

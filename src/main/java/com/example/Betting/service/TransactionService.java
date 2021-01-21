@@ -14,7 +14,7 @@ import com.example.Betting.repository.TransactionRepository;
  * The Class TransactionService.
  */
 @Service
-public class TransactionService {
+public class TransactionService implements ITransactionService {
 
 	/** The transaction repository. */
 	@Autowired

@@ -13,7 +13,7 @@ import com.example.Betting.repository.TicketRepository;
  * The Class TicketService.
  */
 @Service
-public class TicketService {
+public class TicketService implements ITicketService {
 
 	/** The ticket repository. */
 	@Autowired

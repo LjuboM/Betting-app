@@ -14,15 +14,14 @@ public interface ITicketOddsService {
 	 *
 	 * @return the collection of ticket odds
 	 */
-	Collection<TicketOdds> findAllPlayedTickets();
+	Collection<TicketOdds> findAllPlayedTicketPairs();
 
 	/**
 	 * Creates the ticket odds pair.
 	 *
 	 * @param ticketOdd the ticket odd
-	 * @return the ticket odds
 	 */
-	TicketOdds createTicketOddsPair(TicketOdds ticketOdd);
+	void createTicketOddsPair(TicketOdds ticketOdd);
 
 	/**
 	 * Find all played pairs by ticket id.

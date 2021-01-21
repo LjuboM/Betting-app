@@ -12,7 +12,7 @@ import com.example.Betting.repository.TypesRepository;
  * The Class TypesService.
  */
 @Service
-public class TypesService {
+public class TypesService implements ITypesService {
 
 	/** The types repository. */
 	@Autowired

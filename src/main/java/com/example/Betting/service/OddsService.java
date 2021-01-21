@@ -15,7 +15,7 @@ import com.example.Betting.repository.OddsRepository;
  * The Class OddsService.
  */
 @Service
-public class OddsService {
+public class OddsService implements IOddsService {
 
 	/** The odds repository. */
 	@Autowired
