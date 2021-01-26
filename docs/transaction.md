@@ -3,6 +3,7 @@
 Used for retrieving information about transactions.
 
 * GET /api/transactions
+* GET /api/transactions/{transactionType}
 * POST /api/transaction
 #
 **URL** ``` /api/transactions ```
@@ -21,27 +22,93 @@ Used for retrieving information about transactions.
     {
         "id": 1,
         "transactiondate": "2020-02-19T17:00:00Z",
-        "transactiontype": false,
-        "money": 77,
+        "transactiontype": 1,
+        "money": 40,
         "user": {
             "id": 1,
             "name": "John Doe",
             "location": "Croatia",
             "age": 24,
             "money": 700
+        },
+        "ticket": {
+            "id": 1,
+            "totalodd": 7.776,
+            "possiblegain": 311.4,
+            "status": 0
         }
     },
     {
         "id": 0,
         "transactiondate": "2020-02-18T17:00:00Z",
-        "transactiontype": true,
-        "money": 12,
+        "transactiontype": 2,
+        "money": 77,
         "user": {
             "id": 1,
             "name": "John Doe",
             "location": "Croatia",
             "age": 24,
             "money": 200
+        },
+        "ticket": {
+            "id": 2,
+            "totalodd": 7.25,
+            "possiblegain": 558.25,
+            "status": 0
+        }
+    }
+]
+```
+#
+**URL** ``` /api/transactions/{transactionType} ```
+
+**METHOD** ``` GET ```
+
+**Description** Gets all transactions sorted by Date, from newer to older of type transactionType.
+
+## Success Response
+
+**CODE** ``` 200 OK ```
+
+**Content example**
+```
+[
+    {
+        "id": 1,
+        "transactiondate": "2020-02-19T17:00:00Z",
+        "transactiontype": 1,
+        "money": 40,
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "location": "Croatia",
+            "age": 24,
+            "money": 700
+        },
+        "ticket": {
+            "id": 1,
+            "totalodd": 7.776,
+            "possiblegain": 311.4,
+            "status": 0
+        }
+    },
+    {
+        "id": 0,
+        "transactiondate": "2020-02-18T17:00:00Z",
+        "transactiontype": 1,
+        "money": 77,
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "location": "Croatia",
+            "age": 24,
+            "money": 200
+        },
+        "ticket": {
+            "id": 2,
+            "totalodd": 7.25,
+            "possiblegain": 558.25,
+            "status": 0
         }
     }
 ]
@@ -56,13 +123,14 @@ Used for retrieving information about transactions.
 **Data example** 
 
 ```
-    {
-        "type": false,
-        "money": 5555,
-        "user": {
-            "id": 1
-        }
-    }
+{
+    "type": false,
+    "money": 5555,
+    "user": {
+        "id": 1
+    },
+    "ticket": null
+}
 ```
 ## Success Response
 
@@ -82,7 +150,8 @@ Used for retrieving information about transactions.
         "location": "Croatia",
         "age": 24,
         "money": 6055
-    }
+    },
+    "ticket": null
 }
 ```
 
