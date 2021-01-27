@@ -37,15 +37,15 @@ public class UserService implements IUserService {
      * @param adding the adding
      * @return the optional user
      */
-    public Optional<User> changeMoneyValueInWallet(final Long id, final int transactionMoney, final boolean adding) {
+    public Optional<User> changeMoneyValueInWallet(final Long id, final float transactionMoney, final boolean adding) {
     	Optional<User> user = findUserById(id);
-		int moneyInWallet = user.get().getMoney();
-		int newMoneyValue;
+		float moneyInWallet = (float) user.get().getMoney();
+		float newMoneyValue;
 
 		if (adding) {
-			newMoneyValue = transactionMoney + (int) moneyInWallet;
+			newMoneyValue = transactionMoney + moneyInWallet;
 		} else {
-			newMoneyValue = (int) moneyInWallet - transactionMoney;
+			newMoneyValue = moneyInWallet - transactionMoney;
 		}
 
 		user.get().setMoney(newMoneyValue);

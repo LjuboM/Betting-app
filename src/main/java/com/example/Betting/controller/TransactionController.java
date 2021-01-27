@@ -67,7 +67,10 @@ public class TransactionController {
 		Optional<User> user;
 		long transactionId = transaction.getUser().getId();
 		user = userService.changeMoneyValueInWallet(transactionId, transaction.getMoney(), true);
-		Transaction newTransaction = transactionService.createTransaction(transaction, false);
+		Transaction newTransaction;
+		newTransaction = transactionService.createTransaction(
+		        transaction.getMoney(), user.get(), transaction.getTicket(), 0);
+
 		newTransaction.setUser(user.get());
 		return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);
 	}

@@ -9,10 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 import lombok.AllArgsConstructor;
@@ -42,7 +40,7 @@ public class Transaction {
 	/** The id. */
 	@Id
 	@JsonIdentityReference(alwaysAsId = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	/** The transaction date. */
@@ -50,12 +48,14 @@ public class Transaction {
 
 	/**
 	 * The transaction type.
-	 * 0 Represents adding money to account, 1 represents ticket payment
+	 * 0 -> Add money to Account
+	 * 1 -> Ticket Payment
+	 * 2 -> Payout
 	 */
-	private boolean transactiontype;
+	private int transactiontype;
 
 	/** The money. */
-	private int money;
+	private float money;
 
 	/** The user. */
 	@ManyToOne(cascade = CascadeType.DETACH)
@@ -63,7 +63,7 @@ public class Transaction {
 	private User user;
 
 	/** The ticket. */
-	@OneToOne(mappedBy = "transaction")
-	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "ticket_id")
 	private Ticket ticket;
 }

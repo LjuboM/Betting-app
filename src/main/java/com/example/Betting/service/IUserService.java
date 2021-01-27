@@ -25,5 +25,5 @@ public interface IUserService {
      * @param adding the adding money value
      * @return the optional user
      */
-    Optional<User> changeMoneyValueInWallet(Long id, int transactionMoney, boolean adding);
+    Optional<User> changeMoneyValueInWallet(Long id, float transactionMoney, boolean adding);
 }

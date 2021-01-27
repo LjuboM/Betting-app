@@ -84,10 +84,12 @@ public class TicketOddsController {
     	TicketOdds first = ticketOdds.iterator().next();
 
 		//Get User who played ticket.
-		Optional<User> user = userService.findUserById(first.getTicket().getTransaction().getUser().getId());
-		int moneyInWallet = user.get().getMoney();
-		int spentMoney = first.getTicket().getTransaction().getMoney();
-
+    	//Hardcoded !!!
+		Optional<User> user = userService.findUserById(1L);
+		float moneyInWallet = user.get().getMoney();
+		//Needs improvement, 0.95 comes from 5% of manipulative spends
+		float spentMoney = first.getTicket().getPossiblegain() / (first.getTicket().getTotalodd() * 0.95f);
+        System.out.println(spentMoney);
 		if (spentMoney < 1) {
 			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
 		}
@@ -95,21 +97,27 @@ public class TicketOddsController {
 		if (spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
-		//Create transaction with current time of type true.
-		Transaction transaction;
-		transaction = transactionService.createTransaction(first.getTicket().getTransaction(), true);
-
-		//Spending money.
-		userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
 
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
 	    ticketOddsService.createTicketOddsPair(first);
 	    ticketOdds.iterator().next();
-
+	    System.out.println(String.valueOf(user.get()));
         ticketOdds.iterator().forEachRemaining(ticketOdd -> {
+        System.out.println("Idemo");
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(first.getTicket());
+        System.out.println("Idemo 2");
 		ticketOddsService.createTicketOddsPair(ticketOdd);
+        System.out.println("Idemo 3");
+        System.out.println(spentMoney);
+        System.out.println(first.getTicket());
+	    //Create transaction with current time of type 1.
+        Transaction transaction;
+        transaction = transactionService.createTransaction(spentMoney, user.get(), first.getTicket(), 1);
+        System.out.println(String.valueOf(transaction.getMoney()));
+
+        //Spending money.
+        userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
 	});
         return ResponseEntity.ok().body("Successfully placed a bet!");
     }

@@ -64,7 +64,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenArrayOfTicketOdds()
       throws Exception {
 
-    	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 400, 0, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
 
@@ -84,7 +84,7 @@ public class TicketOddsControllerTests {
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
           		"            \"possiblegain\": 400,\r\n" + 
-          		"            \"transaction\": null\r\n" + 
+          		"            \"status\": 0\r\n" + 
           		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
           		"            \"id\": 1,\r\n" + 
@@ -107,7 +107,7 @@ public class TicketOddsControllerTests {
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
           		"            \"possiblegain\": 400,\r\n" + 
-          		"            \"transaction\": null\r\n" + 
+          		"            \"status\": 0\r\n" + 
           		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
           		"            \"id\": 1,\r\n" + 
@@ -135,7 +135,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenTicketOdds()
       throws Exception {
 
-    	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 400, 0, null, null);
     	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
@@ -153,7 +153,7 @@ public class TicketOddsControllerTests {
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
           		"            \"possiblegain\": 400,\r\n" + 
-          		"            \"transaction\": null\r\n" + 
+          		"            \"status\": 0\r\n" + 
           		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
           		"            \"id\": 1,\r\n" + 
@@ -200,7 +200,7 @@ public class TicketOddsControllerTests {
 
     	long ticketId = 1;
 
-    	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 400, 0, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
 
@@ -221,7 +221,7 @@ public class TicketOddsControllerTests {
               		"            \"id\": 1,\r\n" + 
               		"            \"totalodd\": 4,\r\n" + 
               		"            \"possiblegain\": 400,\r\n" + 
-              		"            \"transaction\": null\r\n" + 
+              		"            \"status\": 0\r\n" + 
               		"        },\r\n" + 
               		"        \"odds\": {\r\n" + 
               		"            \"id\": 1,\r\n" + 
@@ -244,7 +244,7 @@ public class TicketOddsControllerTests {
               		"            \"id\": 1,\r\n" + 
               		"            \"totalodd\": 4,\r\n" + 
               		"            \"possiblegain\": 400,\r\n" + 
-              		"            \"transaction\": null\r\n" + 
+              		"            \"status\": 0\r\n" + 
               		"        },\r\n" + 
               		"        \"odds\": {\r\n" + 
               		"            \"id\": 1,\r\n" + 
@@ -273,7 +273,7 @@ public class TicketOddsControllerTests {
         throws Exception {
 
     	long ticketId = 1;
-    	Ticket ticket = new Ticket((long) 1, 4, 400, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 400, 0, null, null);
     	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
@@ -291,7 +291,7 @@ public class TicketOddsControllerTests {
               		"            \"id\": 1,\r\n" + 
               		"            \"totalodd\": 4,\r\n" + 
               		"            \"possiblegain\": 400,\r\n" + 
-              		"            \"transaction\": null\r\n" + 
+              		"            \"status\": 0\r\n" + 
               		"        },\r\n" + 
               		"        \"odds\": {\r\n" + 
               		"            \"id\": 1,\r\n" + 
@@ -339,15 +339,17 @@ public class TicketOddsControllerTests {
         int spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
+        Ticket ticket = new Ticket((long) 1, 4, 760, 0, null, null);
+        
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, true,  spentMoney, userAfterBet, null);
+        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(spentMoney, userBeforeBet, ticket, 1)).willReturn(newTransaction);
 
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
@@ -377,15 +379,17 @@ public class TicketOddsControllerTests {
         int spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
+        Ticket ticket = new Ticket((long) 1, 4, 760, 0, null, null);
+        
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, true,  spentMoney, userAfterBet, null);
+        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
+        given(transactionService.createTransaction(spentMoney, userBeforeBet, ticket, 1)).willReturn(newTransaction);
 
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
 
@@ -412,15 +416,16 @@ public class TicketOddsControllerTests {
         int spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
+        Ticket ticket = new Ticket((long) 1, 4, 760, 0, null, null);
+        
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, true,  spentMoney, userAfterBet, null);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(spentMoney, userBeforeBet,  ticket, 1)).willReturn(newTransaction);
 
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -465,8 +470,8 @@ public class TicketOddsControllerTests {
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
 
-        Transaction newTransaction = new Transaction((long) 1, null, true,  600, initialUser, null);
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+        Ticket ticket = new Ticket((long) 1, 2, 1000, 0, null, null);
+        
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
@@ -496,9 +501,9 @@ public class TicketOddsControllerTests {
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
-
-        Transaction newTransaction = new Transaction((long) 1, null, true,  0, initialUser, null);
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+        //0.9499f mimics betting just bellow 1 HRK
+        Ticket ticket = new Ticket((long) 1, 1f, 0.9499f, 0, null, null);
+        
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
@@ -528,15 +533,17 @@ public class TicketOddsControllerTests {
         int spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
+        Ticket ticket = new Ticket((long) 1, 4, 800, 0, null, null);
+        
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, true,  spentMoney, userAfterBet, null);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(spentMoney, userAfterBet,  ticket, 1)).willReturn(newTransaction);
 
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
@@ -566,15 +573,15 @@ public class TicketOddsControllerTests {
         int spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
+        Ticket ticket = new Ticket((long) 1, 4, 800, 0, null, null);
+        
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, true,  spentMoney, userAfterBet, null);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
-
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+    	given(transactionService.createTransaction(spentMoney, userAfterBet, ticket, 1)).willReturn(newTransaction);
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -618,15 +625,16 @@ public class TicketOddsControllerTests {
         int spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
+        Ticket ticket = new Ticket((long) 1, 4, 800, 0, null, null);
+        
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, true,  spentMoney, userAfterBet, null);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, true)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(spentMoney, userAfterBet, ticket, 1)).willReturn(newTransaction);
 
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -670,8 +678,10 @@ public class TicketOddsControllerTests {
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
 
-        Transaction newTransaction = new Transaction((long) 1, null, true, 200, initialUser, null);
-    	Ticket ticket = new Ticket((long) 1, 4, 800, newTransaction, null);
+        Ticket ticket = new Ticket((long) 1, 4, 800, 0, null, null);
+        
+        Transaction newTransaction = new Transaction((long) 1, null, 1, 200, initialUser, ticket);
+        
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);

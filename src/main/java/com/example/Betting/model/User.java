@@ -50,7 +50,7 @@ public class User {
 	private int age;
 
 	/** The money. */
-	private int money;
+	private float money;
 
 	/** The transaction. */
 	@OneToMany(mappedBy = "user")
