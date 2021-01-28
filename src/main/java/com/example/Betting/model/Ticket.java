@@ -58,11 +58,11 @@ public class Ticket {
 
 	/** The transaction. */
 	@OneToMany(mappedBy = "ticket")
-	@JsonBackReference(value="transaction")
+	@JsonBackReference(value = "transaction")
     private Set<Transaction> transaction;
 
 	/** The ticket odds. */
 	@OneToMany(mappedBy = "ticket")
-	@JsonBackReference(value="ticket-odds")
+	@JsonBackReference(value = "ticket-odds")
 	private Set<TicketOdds> ticketOdds;
 }

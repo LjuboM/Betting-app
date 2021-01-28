@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Betting.model.Ticket;
 import com.example.Betting.model.TicketOdds;
 import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
@@ -87,8 +88,12 @@ public class TicketOddsController {
     	//Hardcoded !!!
 		Optional<User> user = userService.findUserById(1L);
 		float moneyInWallet = user.get().getMoney();
-		//Needs improvement, 0.95 comes from 5% of manipulative spends
-		float spentMoney = first.getTicket().getPossiblegain() / (first.getTicket().getTotalodd() * 0.95f);
+
+		//0.95 comes from 5% of manipulative spends
+		final float manipulativeSpends = 0.95f;
+		Ticket ticket = first.getTicket();
+		//Needs improvement
+		float spentMoney = ticket.getPossiblegain() / (ticket.getTotalodd() * manipulativeSpends);
 
 		if (spentMoney < 1) {
 			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
@@ -104,12 +109,12 @@ public class TicketOddsController {
 
         ticketOdds.iterator().forEachRemaining(ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
-		ticketOdd.setTicket(first.getTicket());
+		ticketOdd.setTicket(ticket);
 		ticketOddsService.createTicketOddsPair(ticketOdd);
 
 	    //Create transaction with current time of type 1.
         Transaction transaction;
-        transaction = transactionService.createTransaction(spentMoney, user.get(), first.getTicket(), 1);
+        transaction = transactionService.createTransaction(spentMoney, user.get(), ticket, 1);
 
         //Spending money.
         userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
