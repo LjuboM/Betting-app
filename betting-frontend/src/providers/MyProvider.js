@@ -240,12 +240,8 @@ class MyProvider extends Component {
                           "ticket": {
                             "totalodd": this.state.totalOdd,
                             "possiblegain": this.state.possibleGain - this.state.tax,
-                            "transaction": {
-                                "money": this.state.money,
-                                    "user": {
-                                    "id": 1
-                                }
-                            }
+                            "taxes": this.state.tax,
+                            "status": 0
                           },
                           "odds": ticketOdd.odds,
                           "odd": ticketOdd.odd,
