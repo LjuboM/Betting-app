@@ -32,6 +32,16 @@ public class TransactionService implements ITransactionService {
     }
 
     /**
+     * Find all transactions of asked type.
+     *
+     * @param type the transaction type
+     * @return the collection of transactions of asked type
+     */
+    public Collection<Transaction> findAllTransactionTypes(final int type) {
+        return transactionRepository.findAllByTransactiontype(type);
+    }
+    
+    /**
      * Creates the transaction.
      *
      * @param spentMoney spent money
@@ -42,22 +52,16 @@ public class TransactionService implements ITransactionService {
      */
     public Transaction createTransaction(
             final float spentMoney, final User user, final Ticket ticket, final int transactionType) {
-        System.out.println("0");
+
         Transaction newTransaction = new Transaction();
-        System.out.println("1");
         /** Set transaction to current time. */
         newTransaction.setTransactiondate(Instant.now());
-        System.out.println("2");
         newTransaction.setTransactiontype(transactionType);
-        System.out.println("3");
         newTransaction.setMoney(spentMoney);
-        System.out.println("4");
         newTransaction.setTicket(ticket);
-        System.out.println("5");
         newTransaction.setUser(user);
-        System.out.println("6");
+
         transactionRepository.save(newTransaction);
-        System.out.println("7");
         return newTransaction;
     }
 

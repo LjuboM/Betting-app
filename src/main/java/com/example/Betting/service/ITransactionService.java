@@ -18,7 +18,15 @@ public interface ITransactionService {
 	 */
 	Collection<Transaction> findAllTransactions();
 
-	/**
+    /**
+     * Find all transactions of asked type.
+     *
+     * @param type the transaction type
+     * @return the collection of transactions of asked type
+     */
+    Collection<Transaction> findAllTransactionTypes(int type);
+
+    /**
 	 * Creates the transaction.
 	 *
 	 * @param spentMoney spent money
