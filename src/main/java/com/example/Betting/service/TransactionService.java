@@ -35,10 +35,11 @@ public class TransactionService implements ITransactionService {
      * Find all transactions of asked type.
      *
      * @param type the transaction type
+     * @param sort sorting by date descending from newer to older
      * @return the collection of transactions of asked type
      */
     public Collection<Transaction> findAllTransactionTypes(final int type) {
-        return transactionRepository.findAllByTransactiontype(type);
+        return transactionRepository.findAllByTransactiontype(type, Sort.by(Sort.Direction.DESC, "transactiondate"));
     }
     
     /**

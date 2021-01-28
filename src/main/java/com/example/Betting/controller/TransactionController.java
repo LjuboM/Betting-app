@@ -47,7 +47,7 @@ public class TransactionController {
 		return ResponseEntity.status(HttpStatus.OK).body(allTransactions);
 	}
 
-	   /**
+	/**
      * Gets transactions of asked type.
      *
      * @param type the transaction type

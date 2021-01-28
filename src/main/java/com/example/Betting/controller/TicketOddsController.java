@@ -102,7 +102,7 @@ public class TicketOddsController {
 		if (spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
-
+ 
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
 	    ticketOddsService.createTicketOddsPair(first);
 	    ticketOdds.iterator().next();
