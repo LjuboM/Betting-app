@@ -93,7 +93,8 @@ public class TicketOddsController {
 		final float manipulativeSpends = 0.95f;
 		Ticket ticket = first.getTicket();
 		//Needs improvement
-		float spentMoney = ticket.getPossiblegain() / (ticket.getTotalodd() * manipulativeSpends);
+		float spentMoney = (
+		        ticket.getPossiblegain() + ticket.getTaxes()) / (ticket.getTotalodd() * manipulativeSpends);
 
 		if (spentMoney < 1) {
 			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
@@ -102,7 +103,7 @@ public class TicketOddsController {
 		if (spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
- 
+
 		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
 	    ticketOddsService.createTicketOddsPair(first);
 	    ticketOdds.iterator().next();

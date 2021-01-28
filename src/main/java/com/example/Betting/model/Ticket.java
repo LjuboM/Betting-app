@@ -46,6 +46,9 @@ public class Ticket {
 	/** The possible gain. */
 	private float possiblegain;
 
+	/** The taxes. */
+    private float taxes;
+
 	/**
 	 * The Ticket status.
 	 * 0 -> Waiting for results

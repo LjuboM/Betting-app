@@ -1,8 +1,8 @@
 insert into user (name, location, age, money) values ('Ljubo Mamic', 'Split', 24, 500.0)
 
-insert into ticket (totalodd, possiblegain, status) values (7.776, 311.04, 0)
-insert into ticket (totalodd, possiblegain, status) values (7.25, 362.5, 0)
-insert into ticket (totalodd, possiblegain, status) values (476.0, 23800.0, 0)
+insert into ticket (totalodd, possiblegain, taxes, status) values (7.776, 311.04, 17, 0)
+insert into ticket (totalodd, possiblegain, taxes, status) values (7.25, 362.5, 21, 0)
+insert into ticket (totalodd, possiblegain, taxes, status) values (476.0, 23800.0, 1540, 0)
 
 insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-15T17:00:00.000Z', 0, 300, 1, null)
 insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-16T17:00:00.000Z', 1, 40, 1, 1)
