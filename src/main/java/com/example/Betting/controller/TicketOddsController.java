@@ -108,14 +108,14 @@ public class TicketOddsController {
 	    ticketOddsService.createTicketOddsPair(first);
 	    ticketOdds.iterator().next();
 
+	     //Create transaction with current time of type 1.
+        Transaction transaction;
+        transaction = transactionService.createTransaction(spentMoney, user.get(), ticket, 1);
+        
         ticketOdds.iterator().forEachRemaining(ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(ticket);
 		ticketOddsService.createTicketOddsPair(ticketOdd);
-
-	    //Create transaction with current time of type 1.
-        Transaction transaction;
-        transaction = transactionService.createTransaction(spentMoney, user.get(), ticket, 1);
 
         //Spending money.
         userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
