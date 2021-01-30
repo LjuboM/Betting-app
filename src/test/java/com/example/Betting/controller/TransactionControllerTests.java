@@ -56,8 +56,8 @@ public class TransactionControllerTests {
       throws Exception {
 
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-15T17:00:00Z"), 0, 300, null, null));
-    	transactions.add(new Transaction((long) 2, Instant.parse("2022-05-16T17:00:00Z"), 1, 40, null, null));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-15T17:00:00Z"), 0, 300, 30, 5, null, null));
+    	transactions.add(new Transaction((long) 2, Instant.parse("2022-05-16T17:00:00Z"), 1, 40, 10, 4, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -69,6 +69,8 @@ public class TransactionControllerTests {
                   "        \"transactiondate\": \"2022-05-15T17:00:00Z\",\r\n" + 
                   "        \"transactiontype\": 0,\r\n" + 
                   "        \"money\": 300.0,\r\n" + 
+                  "        \"taxes\": 30.0,\r\n" + 
+                  "        \"manipulativespends\": 5.0,\r\n" + 
                   "        \"user\": null,\r\n" + 
                   "        \"ticket\": null\r\n" + 
                   "    },\r\n" + 
@@ -93,7 +95,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-14T17:00:00Z"), 0, 300, null, null));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-14T17:00:00Z"), 0, 300, 30, 5, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -105,6 +107,8 @@ public class TransactionControllerTests {
                   "        \"transactiondate\": \"2022-05-14T17:00:00Z\",\r\n" + 
                   "        \"transactiontype\": 0,\r\n" + 
                   "        \"money\": 300.0,\r\n" + 
+                  "        \"taxes\": 30.0,\r\n" + 
+                  "        \"manipulativespends\": 5.0,\r\n" + 
                   "        \"user\": null,\r\n" + 
                   "        \"ticket\": null\r\n" + 
                   "    }\r\n" + 
@@ -138,7 +142,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 600, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 30, 5, initialUser, null);
 
     	given(userService.changeMoneyValueInWallet((long) 1, 300, true)).willReturn(Optional.of(initialUser));
     	given(transactionService.createTransaction(300f, initialUser, null, 0)).willReturn(newTransaction);
@@ -152,6 +156,8 @@ public class TransactionControllerTests {
           		"    \"transactiondate\": \"2022-05-13T17:00:00Z\",\r\n" +
           		"    \"transactiontype\": 0,\r\n" + 
           		"    \"money\": 300.0,\r\n" + 
+                "    \"taxes\": 30.0,\r\n" + 
+                "    \"manipulativespends\": 5.0,\r\n" + 
           		"    \"user\": {\r\n" + 
           		"        \"id\": 1,\r\n" + 
           		"        \"name\": \"John Doe\",\r\n" + 
@@ -173,7 +179,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 301, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-12T17:00:00Z"), 0, 1, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-12T17:00:00Z"), 0, 1, 0, 0, initialUser, null);
 
     	given(userService.changeMoneyValueInWallet((long) 1, 1, true)).willReturn(Optional.of(initialUser));
     	given(transactionService.createTransaction(1f, initialUser, null, 0)).willReturn(newTransaction);
@@ -186,7 +192,9 @@ public class TransactionControllerTests {
           		"    \"id\": 1,\r\n" + 
           		"    \"transactiondate\": \"2022-05-12T17:00:00Z\",\r\n" +
           		"    \"transactiontype\": 0,\r\n" + 
-          		"    \"money\": 1,\r\n" + 
+          		"    \"money\": 1,\r\n" +
+                "    \"taxes\": 0.0,\r\n" + 
+                "    \"manipulativespends\": 0.0,\r\n" + 
           		"    \"user\": {\r\n" + 
           		"        \"id\": 1,\r\n" + 
           		"        \"name\": \"John Doe\",\r\n" + 
@@ -208,7 +216,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-11T17:00:00Z"), 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-11T17:00:00Z"), 0, 0, 0, 0, initialUser, null);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -227,7 +235,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-10T17:00:00Z"), 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-10T17:00:00Z"), 0, 0, 0, 0, initialUser, null);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))

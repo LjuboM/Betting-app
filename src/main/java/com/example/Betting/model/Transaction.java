@@ -57,6 +57,12 @@ public class Transaction {
 	/** The money. */
 	private float money;
 
+    /** The taxes. */
+    private float taxes;
+
+    /** The manipulative spends. */
+    private float manipulativespends;
+
 	/** The user. */
 	@ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")

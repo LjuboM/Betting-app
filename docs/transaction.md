@@ -24,6 +24,8 @@ Used for retrieving information about transactions.
         "transactiondate": "2020-02-19T17:00:00Z",
         "transactiontype": 1,
         "money": 40,
+        "taxes": 10,
+        "manipulativespends": 2,
         "user": {
             "id": 1,
             "name": "John Doe",
@@ -43,6 +45,8 @@ Used for retrieving information about transactions.
         "transactiondate": "2020-02-18T17:00:00Z",
         "transactiontype": 2,
         "money": 77,
+        "taxes": 14,
+        "manipulativespends": 4,
         "user": {
             "id": 1,
             "name": "John Doe",
@@ -78,6 +82,8 @@ Used for retrieving information about transactions.
         "transactiondate": "2020-02-19T17:00:00Z",
         "transactiontype": 1,
         "money": 40,
+        "taxes": 10,
+        "manipulativespends": 2,
         "user": {
             "id": 1,
             "name": "John Doe",
@@ -97,6 +103,8 @@ Used for retrieving information about transactions.
         "transactiondate": "2020-02-18T17:00:00Z",
         "transactiontype": 1,
         "money": 77,
+        "taxes": 14,
+        "manipulativespends": 4,
         "user": {
             "id": 1,
             "name": "John Doe",
@@ -144,6 +152,8 @@ Used for retrieving information about transactions.
     "transactiondate": "2020-03-18T19:45:49.583Z",
     "transactiontype": false,
     "money": 5555.0,
+    "taxes": 555,
+    "manipulativespends": 50,
     "user": {
         "id": 1,
         "name": "John Doe",

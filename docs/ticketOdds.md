@@ -4,7 +4,7 @@ Used for retrieving all information about played tickets and for playing a ticke
 
 
 * GET /api/ticketOdds/{ticket_id}
-* POST /api/ticket
+* POST /api/ticket/{money}
 #
 **URL** ``` /api/ticketOdds/{ticket_id} ```
 
@@ -98,11 +98,11 @@ Used for retrieving all information about played tickets and for playing a ticke
 ]
 ```
 #
-**URL** ``` /api/ticket ```
+**URL** ``` /api/ticket/{money} ```
 
 **METHOD** ``` POST ```
 
-**Description** Creates a ticket.
+**Description** Creates a ticket and bets money {money}.
 
 **Data example** 
 

@@ -64,7 +64,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenArrayOfTicketOdds()
       throws Exception {
 
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 40, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
 
@@ -83,8 +83,7 @@ public class TicketOddsControllerTests {
           		"        \"ticket\": {\r\n" + 
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
-                "            \"possiblegain\": 360,\r\n" + 
-                "            \"taxes\": 40,\r\n" + 
+                "            \"possiblegain\": 360,\r\n" +  
           		"            \"status\": 0\r\n" + 
           		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
@@ -108,7 +107,6 @@ public class TicketOddsControllerTests {
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
                 "            \"possiblegain\": 360,\r\n" + 
-                "            \"taxes\": 40,\r\n" + 
           		"            \"status\": 0\r\n" + 
           		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
@@ -137,7 +135,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenTicketOdds()
       throws Exception {
 
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 40, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
     	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
@@ -155,7 +153,6 @@ public class TicketOddsControllerTests {
           		"            \"id\": 1,\r\n" + 
           		"            \"totalodd\": 4,\r\n" + 
           		"            \"possiblegain\": 360,\r\n" + 
-                "            \"taxes\": 40,\r\n" + 
           		"            \"status\": 0\r\n" + 
           		"        },\r\n" + 
           		"        \"odds\": {\r\n" + 
@@ -203,7 +200,7 @@ public class TicketOddsControllerTests {
 
     	long ticketId = 1;
 
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 40, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
 
@@ -224,7 +221,6 @@ public class TicketOddsControllerTests {
               		"            \"id\": 1,\r\n" + 
               		"            \"totalodd\": 4,\r\n" + 
               		"            \"possiblegain\": 360,\r\n" + 
-                    "            \"taxes\": 40,\r\n" + 
               		"            \"status\": 0\r\n" + 
               		"        },\r\n" + 
               		"        \"odds\": {\r\n" + 
@@ -248,7 +244,6 @@ public class TicketOddsControllerTests {
               		"            \"id\": 1,\r\n" + 
               		"            \"totalodd\": 4,\r\n" + 
                     "            \"possiblegain\": 360,\r\n" + 
-                    "            \"taxes\": 40,\r\n" + 
               		"            \"status\": 0\r\n" + 
               		"        },\r\n" + 
               		"        \"odds\": {\r\n" + 
@@ -278,7 +273,7 @@ public class TicketOddsControllerTests {
         throws Exception {
 
     	long ticketId = 1;
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 40, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
     	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
@@ -296,7 +291,6 @@ public class TicketOddsControllerTests {
               		"            \"id\": 1,\r\n" + 
               		"            \"totalodd\": 4,\r\n" + 
               		"            \"possiblegain\": 360,\r\n" + 
-                    "            \"taxes\": 40,\r\n" + 
               		"            \"status\": 0\r\n" + 
               		"        },\r\n" + 
               		"        \"odds\": {\r\n" + 
@@ -341,18 +335,20 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfBasicTicketOdds_whenPlayingTicket_thenOk()
       throws Exception {
-        int moneyInWalletBefore = 200;
-        int spentMoney = 200;
+        float moneyInWalletBefore = 200;
+        float spentMoney = 200;
+        float taxes = 57;
+        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 76, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
+    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
     	given(transactionService.createTransaction(spentMoney, userBeforeBet, ticket, 1)).willReturn(newTransaction);
 
 
@@ -365,7 +361,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -381,18 +377,20 @@ public class TicketOddsControllerTests {
     public void givenPairOfBasicTicketOdds_whenPlayingTicket_thenOk()
       throws Exception {
 
-        int moneyInWalletBefore = 400;
-        int spentMoney = 200;
+        float moneyInWalletBefore = 400;
+        float spentMoney = 200;
+        float taxes = 57;
+        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 76, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
+    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
         given(transactionService.createTransaction(spentMoney, userBeforeBet, ticket, 1)).willReturn(newTransaction);
 
 
@@ -402,7 +400,7 @@ public class TicketOddsControllerTests {
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -418,18 +416,20 @@ public class TicketOddsControllerTests {
     public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithEnoughBiggerOdds_thenOk()
       throws Exception {
 
-        int moneyInWalletBefore = 200;
-        int spentMoney = 200;
+        float moneyInWalletBefore = 200;
+        float spentMoney = 200;
+        float taxes = 57;
+        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 76, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
+    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
     	given(transactionService.createTransaction(spentMoney, userBeforeBet,  ticket, 1)).willReturn(newTransaction);
 
 
@@ -455,7 +455,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
     	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isOk())
@@ -470,13 +470,13 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfTicketOdds_whenPlayingTicketWithNotEnoughMoney_thenBadRequest()
       throws Exception {
-
+        float spentMoney = 631.578947f;
         Instant matchDate = Instant.now().plusSeconds(60);
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
 
-        Ticket ticket = new Ticket((long) 1, 2, 900, 100, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 2, 900, 0, null, null);
         
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -487,7 +487,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -502,13 +502,13 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfTicketOdds_whenPlayingTicketWithNotEnoughBetMoney_thenBadRequest()
       throws Exception {
-
+        float spentMoney = 0.999f;
         Instant matchDate = Instant.now().plusSeconds(60);
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
         //0.9499f mimics betting just bellow 1 HRK
-        Ticket ticket = new Ticket((long) 1, 1f, 0.85491f, 0.09499f, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 2f, 1.423575f, 0, null, null);
         
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -519,7 +519,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -535,18 +535,20 @@ public class TicketOddsControllerTests {
     public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithNotEnoughBiggerOdds_thenBadRequest()
       throws Exception {
 
-        int moneyInWalletBefore = 200;
-        int spentMoney = 200;
+        float moneyInWalletBefore = 200;
+        float spentMoney = 200;
+        float taxes = 57;
+        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 720, 80, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
+    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
     	given(transactionService.createTransaction(spentMoney, userAfterBet,  ticket, 1)).willReturn(newTransaction);
 
 
@@ -559,7 +561,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -575,18 +577,20 @@ public class TicketOddsControllerTests {
     public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithMoreSpecialOffers_thenBadRequest()
       throws Exception {
 
-        int moneyInWalletBefore = 200;
-        int spentMoney = 200;
+        float moneyInWalletBefore = 200;
+        float spentMoney = 200;
+        float taxes = 57;
+        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 720, 80, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
+    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
     	given(transactionService.createTransaction(spentMoney, userAfterBet, ticket, 1)).willReturn(newTransaction);
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
@@ -611,7 +615,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
     	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -627,18 +631,20 @@ public class TicketOddsControllerTests {
     public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithSameMatchAsSpecialOfferAndBasicOffer_thenBadRequest()
       throws Exception {
 
-        int moneyInWalletBefore = 200;
-        int spentMoney = 200;
+        float moneyInWalletBefore = 200;
+        float spentMoney = 200;
+        float taxes = 57;
+        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 720, 80, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, 200, false)).willReturn(Optional.of(userAfterBet));
+    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
     	given(transactionService.createTransaction(spentMoney, userAfterBet, ticket, 1)).willReturn(newTransaction);
 
 
@@ -654,7 +660,7 @@ public class TicketOddsControllerTests {
     	Odds fourthOdd = new Odds((long) 4, "Basic", 2, 5, 2, 2, 2, 3, thirdMatch, null);
     	Odds fifthOdd = new Odds((long) 5, "Basic", 2, 2, 4, 2, 3, 3, fourthMatch, null);
     	Odds sixthOdd = new Odds((long) 6, "Basic", 2, 2, 2, 2, 3, 3, fifthMatch, null);
-
+    	
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
@@ -663,7 +669,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
     	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -678,13 +684,14 @@ public class TicketOddsControllerTests {
     @Test
     public void givenArrayOfTicketOdds_whenPlayingTicketWithOutdateMatch_thenBadRequest()
       throws Exception {
-
+        float spentMoney = 200;
+        
         Instant matchDate = Instant.now().minusSeconds(60);
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
 
-        Ticket ticket = new Ticket((long) 1, 4, 720, 80, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -695,7 +702,7 @@ public class TicketOddsControllerTests {
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
 
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket")
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())

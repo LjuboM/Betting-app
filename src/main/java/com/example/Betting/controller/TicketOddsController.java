@@ -74,10 +74,12 @@ public class TicketOddsController {
 	 * Playing ticket.
 	 *
 	 * @param ticketOdds the ticket odds
+	 * @param spentMoney bet money
 	 * @return the response entity
 	 */
-    @RequestMapping(value = "/ticket", method = RequestMethod.POST)
-    public ResponseEntity<?> playingTicket(@RequestBody final ArrayList<TicketOdds> ticketOdds) {
+    @RequestMapping(value = "/ticket/{spentMoney}", method = RequestMethod.POST)
+    public ResponseEntity<?> playingTicket(
+            @RequestBody final ArrayList<TicketOdds> ticketOdds, @PathVariable final float spentMoney) {
     	//Check if the ticket is valid.
     	if (!validateTicket(ticketOdds)) {
     		return ResponseEntity.badRequest().body("You didn't place a valid bet.");
@@ -89,12 +91,7 @@ public class TicketOddsController {
 		Optional<User> user = userService.findUserById(1L);
 		float moneyInWallet = user.get().getMoney();
 
-		//0.95 comes from 5% of manipulative spends
-		final float manipulativeSpends = 0.95f;
 		Ticket ticket = first.getTicket();
-		//Needs improvement
-		float spentMoney = (
-		        ticket.getPossiblegain() + ticket.getTaxes()) / (ticket.getTotalodd() * manipulativeSpends);
 
 		if (spentMoney < 1) {
 			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
@@ -111,7 +108,7 @@ public class TicketOddsController {
 	     //Create transaction with current time of type 1.
         Transaction transaction;
         transaction = transactionService.createTransaction(spentMoney, user.get(), ticket, 1);
-        
+
         ticketOdds.iterator().forEachRemaining(ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
 		ticketOdd.setTicket(ticket);
@@ -119,7 +116,7 @@ public class TicketOddsController {
 
         //Spending money.
         userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
-	});
+	    });
         return ResponseEntity.ok().body("Successfully placed a bet!");
     }
 

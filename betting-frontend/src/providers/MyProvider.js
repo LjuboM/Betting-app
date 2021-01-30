@@ -61,7 +61,7 @@ class MyProvider extends Component {
   }
 
   async finalizeNewTicket(finalTicket){
-    await fetch(`/api/ticket`, {
+    await fetch(`/api/ticket/` + this.state.money, {
         method : 'POST',
         headers : {
           'Accept': 'application/json',

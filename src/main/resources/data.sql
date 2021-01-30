@@ -1,14 +1,14 @@
 insert into user (name, location, age, money) values ('Ljubo Mamic', 'Split', 24, 500.0)
 
-insert into ticket (totalodd, possiblegain, taxes, status) values (7.776, 311.04, 17, 0)
-insert into ticket (totalodd, possiblegain, taxes, status) values (7.25, 362.5, 21, 0)
-insert into ticket (totalodd, possiblegain, taxes, status) values (476.0, 23800.0, 1540, 0)
+insert into ticket (totalodd, possiblegain, status) values (7.776, 311.04, 0)
+insert into ticket (totalodd, possiblegain, status) values (7.25, 362.5, 0)
+insert into ticket (totalodd, possiblegain, status) values (476.0, 23800.0, 0)
 
-insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-15T17:00:00.000Z', 0, 300, 1, null)
-insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-16T17:00:00.000Z', 1, 40, 1, 1)
-insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-17T17:00:00.000Z', 0, 60, 1, null)
-insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-18T17:00:00.000Z', 1, 50, 1, 2)
-insert into `transaction` (transactiondate, transactiontype, money, user_id, ticket_id) values ('2020-02-19T17:00:00.000Z', 1, 50, 1, 3)
+insert into `transaction` (transactiondate, transactiontype, money, taxes, manipulativespends, user_id, ticket_id) values ('2020-02-15T17:00:00.000Z', 0, 300, 10, 3, 1, null)
+insert into `transaction` (transactiondate, transactiontype, money, taxes, manipulativespends, user_id, ticket_id) values ('2020-02-16T17:00:00.000Z', 1, 40, 4, 2, 1, 1)
+insert into `transaction` (transactiondate, transactiontype, money, taxes, manipulativespends, user_id, ticket_id) values ('2020-02-17T17:00:00.000Z', 0, 60, 6, 3, 1, null)
+insert into `transaction` (transactiondate, transactiontype, money, taxes, manipulativespends, user_id, ticket_id) values ('2020-02-18T17:00:00.000Z', 1, 50, 5, 2.5, 1, 2)
+insert into `transaction` (transactiondate, transactiontype, money, taxes, manipulativespends, user_id, ticket_id) values ('2020-02-19T17:00:00.000Z', 1, 50, 5, 2.5, 1, 3)
 
 insert into types (id, name, type1, type2, type3, type4, type5, type6) values (0, 'Football', '1', 'X', '2', '1X', 'X2', '12')
 insert into types (id, name, type1, type2, type3, type4, type5, type6) values (1, 'Basketball', '1X', 'X2', '>=200p', '<200p', '1H10', '2H10')
