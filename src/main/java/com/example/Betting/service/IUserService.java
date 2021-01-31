@@ -20,10 +20,20 @@ public interface IUserService {
     /**
      * Change money value in wallet.
      *
-     * @param id the id
+     * @param user the user
      * @param transactionMoney the transaction money
      * @param adding the adding money value
-     * @return the optional user
+     * @return the  user
      */
-    Optional<User> changeMoneyValueInWallet(Long id, float transactionMoney, boolean adding);
+    User changeMoneyValueInWallet(User user, float transactionMoney, boolean adding);
+
+    /**
+     * Check if enough money is in wallet for new bet.
+     *
+     * @param spentMoney money that user is planning to bet on a ticket.
+     * @param user User who is placing a bet
+     * @return the user
+     */
+    boolean checkMoneyInWallet(float spentMoney, User user);
+
 }

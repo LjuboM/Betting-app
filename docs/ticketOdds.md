@@ -109,52 +109,23 @@ Used for retrieving all information about played tickets and for playing a ticke
 ```
 [
     {
-        "ticket": {
-            "totalodd": 7.776,
-            "possiblegain": 311.4,
-            "status": 0
-        },
         "odds": {
-            "id": 1,
-            "type": "Special offer",
-            "match": {
-            	"id": 1,
-            	"matchdate": "2020-04-20T17:00:00.000Z"
-            }
+            "id": 1
         },
         "odd": 1.0,
         "type": "1"
     },
         {
-        "ticket": {
-            "totalodd": 7.776,
-            "possiblegain": 311.4,
-            "status": 0
-        },
         "odds": {
-            "id": 2,
-            "type": "Basic",
-            "match": {
-            	"id": 2,
-            	"matchdate": "2020-04-20T17:00:00.000Z"
-            }
+            "id": 2
         },
         "odd": 2.0,
         "type": "X"
     },
         {
-        "ticket": {
-            "totalodd": 7.776,
-            "possiblegain": 311.4,
-            "status": 0
-        },
+
         "odds": {
-            "id": 3,
-            "type": "Basic",
-            "match": {
-            	"id": 3,
-            	"matchdate": "2020-04-20T17:00:00.000Z"
-            }
+            "id": 3
         },
         "odd": 3.0,
         "type": "2"

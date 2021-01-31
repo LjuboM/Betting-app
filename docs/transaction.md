@@ -134,9 +134,6 @@ Used for retrieving information about transactions.
 {
     "type": false,
     "money": 5555,
-    "user": {
-        "id": 1
-    },
     "ticket": null
 }
 ```

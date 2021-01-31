@@ -32,14 +32,13 @@ public class UserService implements IUserService {
     /**
      * Change money value in wallet.
      *
-     * @param id the id
+     * @param user the user
      * @param transactionMoney the transaction money
-     * @param adding the adding
-     * @return the optional user
+     * @param adding true for adding money, false for not adding money
+     * @return the  user
      */
-    public Optional<User> changeMoneyValueInWallet(final Long id, final float transactionMoney, final boolean adding) {
-    	Optional<User> user = findUserById(id);
-		float moneyInWallet = (float) user.get().getMoney();
+    public User changeMoneyValueInWallet(final User user, final float transactionMoney, final boolean adding) {
+		float moneyInWallet = (float) user.getMoney();
 		float newMoneyValue;
 
 		if (adding) {
@@ -48,9 +47,23 @@ public class UserService implements IUserService {
 			newMoneyValue = moneyInWallet - transactionMoney;
 		}
 
-		user.get().setMoney(newMoneyValue);
-		userRepository.save(user.get());
+		user.setMoney(newMoneyValue);
+		userRepository.save(user);
 		return user;
+    }
+
+    /**
+     * Check if enough money is in wallet for new bet.
+     *
+     * @param spentMoney money that user is planning to bet on a ticket.
+     * @param user User who is placing a bet
+     * @return the user
+     */
+    public boolean checkMoneyInWallet(final float spentMoney, final User user) {
+        if (spentMoney > user.getMoney()) {
+            return false;
+        }
+        return true;
     }
 
 }

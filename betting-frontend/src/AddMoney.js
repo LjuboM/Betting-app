@@ -16,8 +16,7 @@ class AddMoney extends Component {
     }
     emptyTransaction = {
         "type": false,
-        "money": 0,
-        "user": { "id": 1 }
+        "money": 0
     }
 
     async handleAddingMoney(){

@@ -344,20 +344,20 @@ public class TicketOddsControllerTests {
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
         Transaction newTransaction = new Transaction((long) 0, null, 0,  spentMoney, 0, 0, userBeforeBet, ticket);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
-
-
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
+
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
+        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
+        given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
+        given(userService.checkMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -384,18 +384,18 @@ public class TicketOddsControllerTests {
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 0, null, 0,  spentMoney, 0, 0, userBeforeBet, ticket);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-        given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
-
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
 
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
+        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
+        given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
+        given(userService.checkMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -422,12 +422,6 @@ public class TicketOddsControllerTests {
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 0, null, 0, spentMoney, 0, 0, userBeforeBet, ticket);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
-
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -443,13 +437,18 @@ public class TicketOddsControllerTests {
     	Odds fifthOdd = new Odds((long) 5, "Basic", 2, 2, 4, 2, 3, 3, fifthMatch, null);
     	Odds sixthOdd = new Odds((long) 6, "Basic", 2, 2, 2, 2, 3, 3, sixthMatch, null);
 
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
     	ticketOdds.add(new TicketOdds(3, ticket, thirdOdd, (long) 2, "2"));
     	ticketOdds.add(new TicketOdds(4, ticket, fourthOdd, (long) 2, "12"));
     	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
     	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
+
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
+        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(64f);
+        given(userService.checkMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -469,19 +468,18 @@ public class TicketOddsControllerTests {
         float spentMoney = 631.578947f;
         Instant matchDate = Instant.now().plusSeconds(60);
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
-
-        Ticket ticket = new Ticket((long) 1, 2, 900, 0, null, null);
-        
+        Ticket ticket = new Ticket((long) 1, 2, 900, 0, null, null);   
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
+
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -502,7 +500,7 @@ public class TicketOddsControllerTests {
         Instant matchDate = Instant.now().plusSeconds(60);
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
 
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
+
         //0.9499f mimics betting just bellow 1 HRK
         Ticket ticket = new Ticket((long) 1, 2f, 1.423575f, 0, null, null);
         
@@ -511,9 +509,13 @@ public class TicketOddsControllerTests {
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
+
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
+        given(userService.checkMoneyInWallet(spentMoney, initialUser)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -540,21 +542,19 @@ public class TicketOddsControllerTests {
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
-
-
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
     	Odds secondOdd = new Odds((long) 1, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
 
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
     	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
+
+        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
+        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
+        given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(0f);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -584,8 +584,8 @@ public class TicketOddsControllerTests {
         Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
+        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
+        given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -634,11 +634,10 @@ public class TicketOddsControllerTests {
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
+    	given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
+    	given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
 
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.Betting.model.Ticket;
 import com.example.Betting.model.Transaction;
+import com.example.Betting.model.User;
 import com.example.Betting.repository.TransactionRepository;
 
 /**
@@ -42,19 +44,26 @@ public class TransactionService implements ITransactionService {
     /**
      * Creates the transaction.
      *
-     * @param transaction the transaction
+     * @param money the transaction money
+     * @param ticket the ticket
+     * @param user the user
      * @param transactionType transaction type
      * @return true for successful transaction, false otherwise
      */
-    public boolean createTransaction(final Transaction transaction, final int transactionType) {
-        //Check if the user is adding enough money.
-        if (transaction.getMoney() < 1) {
+    public boolean createTransaction(
+            final float money, final Ticket ticket, final User user, final int transactionType) {
+        final Transaction transaction = new Transaction();
+        //Check if the user is adding or betting enough money.
+        if (money < 1) {
             return false;
         }
-        float spentMoney = transaction.getMoney();
+        float spentMoney = money;
         /** Set transaction to current time. */
         transaction.setTransactiondate(Instant.now());
         transaction.setTransactiontype(transactionType);
+        transaction.setMoney(money);
+        transaction.setUser(user);
+        transaction.setTicket(ticket);
 
         //If user just played new ticket
         if (transactionType == 1) {

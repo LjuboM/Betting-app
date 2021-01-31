@@ -3,6 +3,7 @@ package com.example.Betting.service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -40,4 +41,15 @@ public class OddsService implements IOddsService {
 		odds.removeAll(oldOdds);
 		return odds;
 	}
+
+    /**
+     * Find Odds by id.
+     *
+     * @param id the id
+     * @return the optional Odds
+     */
+    public Optional<Odds> findOddsById(final Long id) {
+
+        return oddsRepository.findById(id);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.Betting.controller;
 
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Betting.model.Transaction;
+import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
 
@@ -70,17 +72,22 @@ public class TransactionController {
 	ResponseEntity<?> setMoneyInWallet(
 	        @Valid @RequestBody final Transaction transaction)
 	        throws URISyntaxException {
+	    try {
 
-		long userId = transaction.getUser().getId();
-		userService.changeMoneyValueInWallet(userId, transaction.getMoney(), true);
+            //1L, otherwise if we had users we would get it from path variable.
+	        final User user = userService.findUserById(1L).get();
+	        userService.changeMoneyValueInWallet(user, transaction.getMoney(), true);
 
-		if (transactionService.createTransaction(transaction, 0)) {
-	        return ResponseEntity.ok().body("Successfully added new money to the wallet!");
-		} else {
-	        return ResponseEntity
-	                .status(HttpStatus.BAD_REQUEST)
-	                .body("You have to add at least 1 HRK to your account.");
-		}
-
+	        if (transactionService.createTransaction(transaction.getMoney(), null, user,  0)) {
+	            return ResponseEntity.ok().body("Successfully added new money to the wallet!");
+	        } else {
+	            return ResponseEntity
+	                    .status(HttpStatus.BAD_REQUEST)
+	                    .body("You have to add at least 1 HRK to your account.");
+	        }
+	    } catch (NoSuchElementException exception) {
+            return ResponseEntity.badRequest().body("Invalid user!");
+	    }
 	}
+
 }

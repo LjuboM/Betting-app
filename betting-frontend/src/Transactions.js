@@ -17,7 +17,7 @@ class Transactions extends Component {
         .then(body => {
             let modifiedBody = body;
             modifiedBody.map( transaction => {
-                if(transaction.transactiontype === true){
+                if(transaction.transactiontype === 1){
                     transaction.transactiontype="Ticket";
                     transaction.money = "-" + transaction.money;
                 }

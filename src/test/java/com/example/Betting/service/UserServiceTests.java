@@ -45,8 +45,8 @@ public class UserServiceTests {
         given(userRepository.findById(initialUser.getId())).willReturn(Optional.of(initialUser));
         given(userRepository.save(initialUser)).willReturn(changedUser);
 
-        Optional<User> expectedUser = (Optional<User>) userService.changeMoneyValueInWallet(initialUser.getId(), 125, true);
-        assertEquals(Optional.of(changedUser), expectedUser);
+        User expectedUser = userService.changeMoneyValueInWallet(initialUser, 125, true);
+        assertEquals(changedUser, expectedUser);
     }
  
     /**
@@ -64,8 +64,8 @@ public class UserServiceTests {
         given(userRepository.findById(initialUser.getId())).willReturn(Optional.of(initialUser));
         given(userRepository.save(initialUser)).willReturn(changedUser);
 
-        Optional<User> expectedUser = (Optional<User>) userService.changeMoneyValueInWallet(initialUser.getId(), 125, false);
-        assertEquals(Optional.of(changedUser), expectedUser);
+        User expectedUser = userService.changeMoneyValueInWallet(initialUser, 125, false);
+        assertEquals(changedUser, expectedUser);
     }
 
     /**
@@ -83,8 +83,8 @@ public class UserServiceTests {
         given(userRepository.findById(initialUser.getId())).willReturn(Optional.of(initialUser));
         given(userRepository.save(initialUser)).willReturn(changedUser);
 
-        Optional<User> expectedUser = (Optional<User>) userService.changeMoneyValueInWallet(initialUser.getId(), 0, true);
-        assertEquals(Optional.of(changedUser), expectedUser);
+        User expectedUser = userService.changeMoneyValueInWallet(initialUser, 0, true);
+        assertEquals(changedUser, expectedUser);
     }
 
     /**
@@ -102,7 +102,7 @@ public class UserServiceTests {
         given(userRepository.findById(initialUser.getId())).willReturn(Optional.of(initialUser));
         given(userRepository.save(initialUser)).willReturn(changedUser);
 
-        Optional<User> expectedUser = (Optional<User>) userService.changeMoneyValueInWallet(initialUser.getId(), 0, false);
-        assertEquals(Optional.of(changedUser), expectedUser);
+        User expectedUser = userService.changeMoneyValueInWallet(initialUser, 0, false);
+        assertEquals(changedUser, expectedUser);
     }
 }

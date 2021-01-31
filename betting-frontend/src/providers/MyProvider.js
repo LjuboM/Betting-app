@@ -74,11 +74,11 @@ class MyProvider extends Component {
             this.updateMoneyValue(this.state.money, false)
             this.refreshTicket();
           } else {
-                  this.setState({ matchAlreadyStartedMessage : 'Remove match or matches that already started!' })
+                  this.setState({ matchAlreadyStartedMessage : 'Invalid bet, check if any match already started!' })
           }
         })
         .catch((error) => {
-          this.setState({ matchAlreadyStartedMessage : 'Remove match or matches that already started!' })
+          this.setState({ matchAlreadyStartedMessage : 'Invalid bet, check if any match already started!' })
         });
   }
 
@@ -116,7 +116,7 @@ class MyProvider extends Component {
   };
   
   updateMoneyValue(moneyValue, addingMoney){
-    if(moneyValue >= 2 && moneyValue.toString().search(/\./) === -1 && moneyValue.toString().search(/e/) === -1 && (moneyValue <= this.state.User.money || addingMoney)){
+    if(moneyValue >= 1 && moneyValue.toString().search(/\./) === -1 && moneyValue.toString().search(/e/) === -1 && (moneyValue <= this.state.User.money || addingMoney)){
       let newUserState = this.state.User;
       if(addingMoney){
         newUserState.money = parseInt(newUserState.money) + parseInt(moneyValue);
@@ -237,13 +237,8 @@ class MyProvider extends Component {
                       this.state.NewTicket.map( ticketOdd => {
                         finalNewTicket = [...finalNewTicket, 
                           ticketOdd = {
-                          "ticket": {
-                            "totalodd": this.state.totalOdd,
-                            "possiblegain": this.state.possibleGain - this.state.tax,
-                            "taxes": this.state.tax,
-                            "status": 0
+                          "odds": { "id": ticketOdd.odds.id
                           },
-                          "odds": ticketOdd.odds,
                           "odd": ticketOdd.odd,
                           "type": ticketOdd.type
                           }]

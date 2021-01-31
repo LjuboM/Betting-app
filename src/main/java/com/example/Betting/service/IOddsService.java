@@ -1,6 +1,7 @@
 package com.example.Betting.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.example.Betting.model.Odds;
 
@@ -16,4 +17,11 @@ public interface IOddsService {
 	 */
 	Collection<Odds> findAllSortedOdds();
 
+    /**
+     * Find Odds by id.
+     *
+     * @param id the id
+     * @return the optional Odds
+     */
+    Optional<Odds> findOddsById(Long id);
 }

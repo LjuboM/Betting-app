@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.example.Betting.model.Ticket;
 import com.example.Betting.model.TicketOdds;
 
 /**
@@ -18,5 +19,12 @@ public interface TicketOddsRepository extends JpaRepository<TicketOdds, Long> {
 	 * @return the collection of ticket odds
 	 */
 	Collection<TicketOdds> findAllByTicketId(long ticketId);
+
+	 /**
+     * Save new ticket.
+     *
+     * @param ticket new ticket
+     */
+    void save(Ticket ticket);
 
 }

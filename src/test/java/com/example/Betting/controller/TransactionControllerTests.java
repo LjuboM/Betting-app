@@ -142,10 +142,11 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 600, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 30, 5, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 0, 0, initialUser, null);
 
-    	given(userService.changeMoneyValueInWallet((long) 1, 300, true)).willReturn(Optional.of(initialUser));
-    	given(transactionService.createTransaction(newTransaction, 0)).willReturn(true);
+    	given(userService.changeMoneyValueInWallet(initialUser, 300, true)).willReturn(initialUser);
+    	given(transactionService.createTransaction(300, null, initialUser, 0)).willReturn(true);
+    	given(userService.findUserById(1L)).willReturn(Optional.of(initialUser));
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -166,8 +167,9 @@ public class TransactionControllerTests {
     	User initialUser = new User(1, "John Doe", "Split", 24, 301, null);
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-12T17:00:00Z"), 0, 1, 0, 0, initialUser, null);
 
-    	given(userService.changeMoneyValueInWallet((long) 1, 1, true)).willReturn(Optional.of(initialUser));
-    	given(transactionService.createTransaction(newTransaction, 0)).willReturn(true);
+    	given(userService.changeMoneyValueInWallet(initialUser, 1, true)).willReturn(initialUser);
+    	given(transactionService.createTransaction(1, null, initialUser, 0)).willReturn(true);
+        given(userService.findUserById(1L)).willReturn(Optional.of(initialUser));
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
@@ -188,6 +190,8 @@ public class TransactionControllerTests {
     	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-11T17:00:00Z"), 0, 0, 0, 0, initialUser, null);
 
+        given(userService.findUserById(1L)).willReturn(Optional.of(initialUser));
+
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
           .contentType(MediaType.APPLICATION_JSON))
@@ -206,7 +210,8 @@ public class TransactionControllerTests {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-10T17:00:00Z"), 0, 0, 0, 0, initialUser, null);
-
+        given(userService.findUserById(1L)).willReturn(Optional.of(initialUser));
+        
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
           .contentType(MediaType.APPLICATION_JSON))

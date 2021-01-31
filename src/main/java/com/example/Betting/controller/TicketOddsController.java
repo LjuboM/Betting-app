@@ -1,9 +1,8 @@
 package com.example.Betting.controller;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Betting.model.Ticket;
 import com.example.Betting.model.TicketOdds;
-import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
 import com.example.Betting.service.TicketOddsService;
 import com.example.Betting.service.TransactionService;
@@ -80,109 +78,42 @@ public class TicketOddsController {
     @RequestMapping(value = "/ticket/{spentMoney}", method = RequestMethod.POST)
     public ResponseEntity<?> playingTicket(
             @RequestBody final ArrayList<TicketOdds> ticketOdds, @PathVariable final float spentMoney) {
-    	//Check if the ticket is valid.
-    	if (!validateTicket(ticketOdds)) {
+
+    	//function validateNewTicket returns 0 as total odd if the bet is not valid.
+        final float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
+    	if (totalOdd == 0) {
     		return ResponseEntity.badRequest().body("You didn't place a valid bet.");
     	}
-    	TicketOdds first = ticketOdds.iterator().next();
+    	try {
+    	    //Get User who played ticket.
+            //1L, otherwise if we had users we would get it from path variable.
+            final User user = userService.findUserById(1L).get();
 
-		//Get User who played ticket.
-    	//Hardcoded !!!
-		Optional<User> user = userService.findUserById(1L);
-		float moneyInWallet = user.get().getMoney();
+            if (!userService.checkMoneyInWallet(spentMoney, user)) {
+                return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
+            } else if (spentMoney < 1) {
+                return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
+            }
 
-		Ticket ticket = first.getTicket();
+            Ticket ticket = ticketOddsService.createTicket(totalOdd, spentMoney);
 
-		if (spentMoney > moneyInWallet) {
-			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
-		}
+            //Create transaction with current time of type 1
+            transactionService.createTransaction(spentMoney, ticket, user, 1);
+            //Adding all new ticket odd pairs
+            ticketOdds.iterator().forEachRemaining(ticketOdd -> {
+                //Attaching new ticket to ticket odd pairs
+                ticketOdd.setTicket(ticket);
+                //Creating new ticket odd pair
+                ticketOddsService.createTicketOddsPair(ticketOdd);
+            });
 
-		//Saving first ticket-odds pair so we can use generated IDs to forward them to other ticket-odds pairs
-	    ticketOddsService.createTicketOddsPair(first);
-	    ticketOdds.iterator().next();
+            //Spending money.
+            userService.changeMoneyValueInWallet(user, spentMoney, false);
+            return ResponseEntity.ok().body("Successfully placed a bet!");
 
-	     //Create transaction with current time of type 1.
-        Transaction transaction = new Transaction();
-        transaction.setMoney(spentMoney);
-        transaction.setTicket(ticket);
-        transaction.setUser(user.get());
-        if (!transactionService.createTransaction(transaction, 1)) {
-            return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
-        }
-
-        ticketOdds.iterator().forEachRemaining(ticketOdd -> {
-		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.
-		ticketOdd.setTicket(ticket);
-		ticketOddsService.createTicketOddsPair(ticketOdd);
-
-        //Spending money.
-        userService.changeMoneyValueInWallet(user.get().getId(), transaction.getMoney(), false);
-	    });
-        return ResponseEntity.ok().body("Successfully placed a bet!");
+    	} catch (NoSuchElementException exception) {
+            return ResponseEntity.badRequest().body("Invalid user!");
+    	}
     }
 
-    /**
-     * Validate ticket.
-     *
-     * @param ticketOdds the ticket odds
-     * @return true, if ticket is valid
-     */
-    private boolean validateTicket(final ArrayList<TicketOdds> ticketOdds) {
-        /** Minimum number of basic odds higher than minOddValue needed for valid ticket */
-        final int minBiggerOddsCount = 5;
-        final float minOddValue = (float) 1.10;
-    	float[] odds = new float[ticketOdds.size()];
-    	Long[] matches = new Long[ticketOdds.size()];
-    	boolean specialOffer = false;
-    	long specialOfferMatch = 1;
-    	int iterator = 0;
-		Instant currentTime = Instant.now();
-
-    	for (TicketOdds ticketOdd : ticketOdds) {
-			matches[iterator] = ticketOdd.getOdds().getMatch().getId();
-    		if (ticketOdd.getOdds().getType().equals("Basic")) {
-    			odds[iterator] = ticketOdd.getOdd();
-    		} else if (!specialOffer) {
-    			specialOffer = true;
-    			specialOfferMatch = ticketOdd.getOdds().getMatch().getId();
-    			odds[iterator] = (float) 1.0;
-    		} else {
-    	    	System.out.println("Invalid bet, more than one Special offer played!");
-    			return false;
-    		}
-    		if (ticketOdd.getOdds().getMatch().getMatchdate().compareTo(currentTime) < 1) {
-    	    	System.out.println("Invalid bet, too late, match already started!");
-    			return false;
-    		}
-    		iterator++;
-    	}
-
-    	int specialOfferMatchOccurrences = 0;
-    	//Number of odds bigger than minOddValue
-    	int biggerOddsCount = 0;
-    	int matchesIterator = 0;
-    	if (specialOffer) {
-    		for (Long match : matches) {
-    			if (specialOfferMatch == match) {
-    				specialOfferMatchOccurrences++;
-    			}
-    			if (odds[matchesIterator] >= minOddValue) {
-    				biggerOddsCount++;
-    			}
-    			matchesIterator++;
-    		}
-        	if (specialOfferMatchOccurrences > 1) {
-            	System.out.println("Invalid bet, played the same match in special offer and basic type!");
-            	return false;
-        	}
-        	if (biggerOddsCount < minBiggerOddsCount) {
-            	System.out.println("Invalid bet, you have to play at least "
-            	        + String.valueOf(minBiggerOddsCount) + " basic odds that are "
-            	        + String.valueOf(minOddValue) + " or bigger!");
-            	return false;
-        	}
-    	}
-
-		return true;
-    }
 }
