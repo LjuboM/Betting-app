@@ -23,7 +23,6 @@ import com.example.Betting.model.Match;
 import com.example.Betting.model.Odds;
 import com.example.Betting.model.Ticket;
 import com.example.Betting.model.TicketOdds;
-import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
 import com.example.Betting.service.TicketOddsService;
 import com.example.Betting.service.TransactionService;
@@ -343,7 +342,6 @@ public class TicketOddsControllerTests {
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 0, null, 0,  spentMoney, 0, 0, userBeforeBet, ticket);
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
@@ -357,7 +355,7 @@ public class TicketOddsControllerTests {
         given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
         given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
         given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
-        given(userService.checkMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
+        given(userService.checkEnoughMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -395,7 +393,7 @@ public class TicketOddsControllerTests {
         given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
         given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
         given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
-        given(userService.checkMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
+        given(userService.checkEnoughMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -448,7 +446,7 @@ public class TicketOddsControllerTests {
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
         given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
         given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(64f);
-        given(userService.checkMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
+        given(userService.checkEnoughMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -489,6 +487,28 @@ public class TicketOddsControllerTests {
     }
 
     /**
+     * Given array of ticket odds when playing ticket with wrong user then bad request.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void givenArrayOfTicketOdds_whenPlayingTicketWithWrongUser_thenBadRequest()
+      throws Exception {
+        float spentMoney = 10f;
+
+        ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
+        ticketOdds.add(new TicketOdds(1, null, null, (long) 2, "1"));
+
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
+          .content(asJsonString(ticketOdds))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().string("Invalid user!"));
+    }
+
+    /**
      * Given array of ticket odds when playing ticket with not enough bet money then bad request.
      *
      * @throws Exception the exception
@@ -515,7 +535,7 @@ public class TicketOddsControllerTests {
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
         given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(4f);
-        given(userService.checkMoneyInWallet(spentMoney, initialUser)).willReturn(true);
+        given(userService.checkEnoughMoneyInWallet(spentMoney, initialUser)).willReturn(true);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
@@ -581,7 +601,6 @@ public class TicketOddsControllerTests {
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
         given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);

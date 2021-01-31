@@ -25,7 +25,6 @@ public class UserService implements IUserService {
      * @return the optional user
      */
     public Optional<User> findUserById(final Long id) {
-
         return userRepository.findById(id);
     }
 
@@ -59,7 +58,7 @@ public class UserService implements IUserService {
      * @param user User who is placing a bet
      * @return the user
      */
-    public boolean checkMoneyInWallet(final float spentMoney, final User user) {
+    public boolean checkEnoughMoneyInWallet(final float spentMoney, final User user) {
         if (spentMoney > user.getMoney()) {
             return false;
         }

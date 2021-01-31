@@ -105,4 +105,44 @@ public class UserServiceTests {
         User expectedUser = userService.changeMoneyValueInWallet(initialUser, 0, false);
         assertEquals(changedUser, expectedUser);
     }
+
+    /**
+     * Given more spent Money than money in wallet return false.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void givenMoreSpentMoneyThanWalletMoney_whencheckEnoughMoneyInWallet_thenFalse()
+      throws Exception {
+        User user = new User(1, "John Doe", "Split", 24, 100, null);
+        boolean result = userService.checkEnoughMoneyInWallet(101, user);
+        assertEquals(false, result);
+    }
+
+    /**
+     * Given spent Money equal to money in wallet return true.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void givenSpentMoneyEqualToWalletMoney_whencheckEnoughMoneyInWallet_thenTrue()
+      throws Exception {
+        User user = new User(1, "John Doe", "Split", 24, 100, null);
+        boolean result = userService.checkEnoughMoneyInWallet(100, user);
+        assertEquals(true, result);
+    }
+
+    /**
+     * Given spent Money less than money in wallet return true.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void givenLessSpentMoneyThanWalletMoney_whencheckEnoughMoneyInWallet_thenTrue()
+      throws Exception {
+        User user = new User(1, "John Doe", "Split", 24, 100, null);
+        boolean result = userService.checkEnoughMoneyInWallet(99, user);
+        assertEquals(true, result);
+    }
+    
 }

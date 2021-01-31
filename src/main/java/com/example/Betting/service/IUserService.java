@@ -34,6 +34,6 @@ public interface IUserService {
      * @param user User who is placing a bet
      * @return the user
      */
-    boolean checkMoneyInWallet(float spentMoney, User user);
+    boolean checkEnoughMoneyInWallet(float spentMoney, User user);
 
 }

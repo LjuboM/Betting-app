@@ -49,7 +49,6 @@ public class OddsService implements IOddsService {
      * @return the optional Odds
      */
     public Optional<Odds> findOddsById(final Long id) {
-
         return oddsRepository.findById(id);
     }
 }

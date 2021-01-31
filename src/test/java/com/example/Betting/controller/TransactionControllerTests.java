@@ -138,6 +138,28 @@ public class TransactionControllerTests {
      * @throws Exception the exception
      */
     @Test
+    public void givenTransaction_whenSetMoneyInWalletWithWrongUser_thenBadRequest()
+      throws Exception {
+
+        User initialUser = new User(1, "John Doe", "Split", 24, 600, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 0, 0, initialUser, null);
+
+        given(userService.changeMoneyValueInWallet(initialUser, 300, true)).willReturn(initialUser);
+        given(transactionService.createTransaction(300, null, initialUser, 0)).willReturn(true);
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
+          .content(asJsonString(newTransaction))
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().string("Invalid user!"));
+    }
+
+    /**
+     * Given transaction when set money in wallet then created and transaction.
+     *
+     * @throws Exception the exception
+     */
+    @Test
     public void givenTransaction_whenSetMoneyInWallet_thenCreatedAndTransaction()
       throws Exception {
 

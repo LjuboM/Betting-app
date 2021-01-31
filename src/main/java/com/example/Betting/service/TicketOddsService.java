@@ -188,7 +188,7 @@ public class TicketOddsService implements ITicketOddsService {
      * @param money the money
      * @return taxes
      */
-    private float calculateTicketTaxes(final float money) {
+    float calculateTicketTaxes(final float money) {
         final float moneyForTenPercentageTax = 10000f;
         final float moneyForFifteenPercentageTax = 20000f;
         final float moneyForTwentyPercentageTax = 470000f;

@@ -89,7 +89,7 @@ public class TicketOddsController {
             //1L, otherwise if we had users we would get it from path variable.
             final User user = userService.findUserById(1L).get();
 
-            if (!userService.checkMoneyInWallet(spentMoney, user)) {
+            if (!userService.checkEnoughMoneyInWallet(spentMoney, user)) {
                 return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
             } else if (spentMoney < 1) {
                 return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
