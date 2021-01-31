@@ -2,7 +2,6 @@ package com.example.Betting.controller;
 
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Betting.model.Transaction;
-import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
 
@@ -62,6 +60,7 @@ public class TransactionController {
 	/**
 	 * Adds new transaction of type false.
 	 * Sets the money value in wallet.
+	 * Adding new money to wallet.
 	 *
 	 * @param transaction the transaction
 	 * @return the response entity
@@ -72,19 +71,16 @@ public class TransactionController {
 	        @Valid @RequestBody final Transaction transaction)
 	        throws URISyntaxException {
 
-		if (transaction.getMoney() < 1) {
-			return ResponseEntity
-			        .status(HttpStatus.BAD_REQUEST)
-			        .body("You have to add at least 1 HRK to your account.");
-		}
-		Optional<User> user;
-		long transactionId = transaction.getUser().getId();
-		user = userService.changeMoneyValueInWallet(transactionId, transaction.getMoney(), true);
-		Transaction newTransaction;
-		newTransaction = transactionService.createTransaction(
-		        transaction.getMoney(), user.get(), transaction.getTicket(), 0);
+		long userId = transaction.getUser().getId();
+		userService.changeMoneyValueInWallet(userId, transaction.getMoney(), true);
 
-		newTransaction.setUser(user.get());
-		return ResponseEntity.status(HttpStatus.CREATED).body(newTransaction);
+		if (transactionService.createTransaction(transaction, 0)) {
+	        return ResponseEntity.ok().body("Successfully added new money to the wallet!");
+		} else {
+	        return ResponseEntity
+	                .status(HttpStatus.BAD_REQUEST)
+	                .body("You have to add at least 1 HRK to your account.");
+		}
+
 	}
 }

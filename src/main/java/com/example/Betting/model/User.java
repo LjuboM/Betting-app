@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -50,6 +51,7 @@ public class User {
 	private int age;
 
 	/** The money. */
+	@PositiveOrZero
 	private float money;
 
 	/** The transaction. */

@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 import lombok.AllArgsConstructor;
@@ -58,9 +60,11 @@ public class Transaction {
 	private float money;
 
     /** The taxes. */
+	@Value("${transaction.taxes:0}")
     private float taxes;
 
     /** The manipulative spends. */
+	@Value("${transaction.manipulativespends:0}")
     private float manipulativespends;
 
 	/** The user. */

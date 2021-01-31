@@ -337,19 +337,17 @@ public class TicketOddsControllerTests {
       throws Exception {
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
-        float taxes = 57;
-        float manipulativeSpends = 10;
         Instant matchDate = Instant.now().plusSeconds(60);
 
         Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 0, null, 0,  spentMoney, 0, 0, userBeforeBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(spentMoney, userBeforeBet, ticket, 1)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
 
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
@@ -379,19 +377,18 @@ public class TicketOddsControllerTests {
 
         float moneyInWalletBefore = 400;
         float spentMoney = 200;
-        float taxes = 57;
-        float manipulativeSpends = 10;
+
         Instant matchDate = Instant.now().plusSeconds(60);
 
         Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1,  spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 0, null, 0,  spentMoney, 0, 0, userBeforeBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-        given(transactionService.createTransaction(spentMoney, userBeforeBet, ticket, 1)).willReturn(newTransaction);
+        given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
 
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
@@ -418,19 +415,18 @@ public class TicketOddsControllerTests {
 
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
-        float taxes = 57;
-        float manipulativeSpends = 10;
+
         Instant matchDate = Instant.now().plusSeconds(60);
 
         Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 0, null, 0, spentMoney, 0, 0, userBeforeBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(spentMoney, userBeforeBet,  ticket, 1)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
 
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
@@ -537,19 +533,18 @@ public class TicketOddsControllerTests {
 
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
-        float taxes = 57;
-        float manipulativeSpends = 10;
+
         Instant matchDate = Instant.now().plusSeconds(60);
 
         Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(spentMoney, userAfterBet,  ticket, 1)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
 
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
@@ -579,19 +574,18 @@ public class TicketOddsControllerTests {
 
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
-        float taxes = 57;
-        float manipulativeSpends = 10;
+        
         Instant matchDate = Instant.now().plusSeconds(60);
 
         Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(spentMoney, userAfterBet, ticket, 1)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
@@ -633,19 +627,18 @@ public class TicketOddsControllerTests {
 
         float moneyInWalletBefore = 200;
         float spentMoney = 200;
-        float taxes = 57;
-        float manipulativeSpends = 10;
+
         Instant matchDate = Instant.now().plusSeconds(60);
 
         Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, taxes, manipulativeSpends, userAfterBet, ticket);
+        Transaction newTransaction = new Transaction((long) 1, null, 1, spentMoney, 0, 0, userAfterBet, ticket);
 
         given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
     	given(userService.changeMoneyValueInWallet((long) 1, spentMoney, false)).willReturn(Optional.of(userAfterBet));
-    	given(transactionService.createTransaction(spentMoney, userAfterBet, ticket, 1)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 1)).willReturn(true);
 
 
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);

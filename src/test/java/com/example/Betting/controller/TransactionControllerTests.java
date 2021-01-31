@@ -145,28 +145,13 @@ public class TransactionControllerTests {
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 30, 5, initialUser, null);
 
     	given(userService.changeMoneyValueInWallet((long) 1, 300, true)).willReturn(Optional.of(initialUser));
-    	given(transactionService.createTransaction(300f, initialUser, null, 0)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 0)).willReturn(true);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
           .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isCreated())
-          .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
-          		"    \"id\": 1,\r\n" + 
-          		"    \"transactiondate\": \"2022-05-13T17:00:00Z\",\r\n" +
-          		"    \"transactiontype\": 0,\r\n" + 
-          		"    \"money\": 300.0,\r\n" + 
-                "    \"taxes\": 30.0,\r\n" + 
-                "    \"manipulativespends\": 5.0,\r\n" + 
-          		"    \"user\": {\r\n" + 
-          		"        \"id\": 1,\r\n" + 
-          		"        \"name\": \"John Doe\",\r\n" + 
-          		"        \"location\": \"Split\",\r\n" + 
-          		"        \"age\": 24,\r\n" + 
-          		"        \"money\": 600.0\r\n" + 
-          		"    },\r\n" + 
-                "    \"ticket\": null\r\n" + 
-          		"}"));
+          .andExpect(MockMvcResultMatchers.status().isOk())
+          .andExpect(MockMvcResultMatchers.content().string("Successfully added new money to the wallet!"));
     }
 
     /**
@@ -182,28 +167,13 @@ public class TransactionControllerTests {
         Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-12T17:00:00Z"), 0, 1, 0, 0, initialUser, null);
 
     	given(userService.changeMoneyValueInWallet((long) 1, 1, true)).willReturn(Optional.of(initialUser));
-    	given(transactionService.createTransaction(1f, initialUser, null, 0)).willReturn(newTransaction);
+    	given(transactionService.createTransaction(newTransaction, 0)).willReturn(true);
 
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")
           .content(asJsonString(newTransaction))
           .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isCreated())
-          .andExpect(MockMvcResultMatchers.content().json("{\r\n" + 
-          		"    \"id\": 1,\r\n" + 
-          		"    \"transactiondate\": \"2022-05-12T17:00:00Z\",\r\n" +
-          		"    \"transactiontype\": 0,\r\n" + 
-          		"    \"money\": 1,\r\n" +
-                "    \"taxes\": 0.0,\r\n" + 
-                "    \"manipulativespends\": 0.0,\r\n" + 
-          		"    \"user\": {\r\n" + 
-          		"        \"id\": 1,\r\n" + 
-          		"        \"name\": \"John Doe\",\r\n" + 
-          		"        \"location\": \"Split\",\r\n" + 
-          		"        \"age\": 24,\r\n" + 
-          		"        \"money\": 301.0\r\n" + 
-          		"    },\r\n" + 
-                "    \"ticket\": null\r\n" + 
-          		"}"));
+          .andExpect(MockMvcResultMatchers.status().isOk())
+          .andExpect(MockMvcResultMatchers.content().string("Successfully added new money to the wallet!"));
     }
 
     /**

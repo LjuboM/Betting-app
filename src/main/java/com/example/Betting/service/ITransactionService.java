@@ -2,9 +2,7 @@ package com.example.Betting.service;
 
 import java.util.Collection;
 
-import com.example.Betting.model.Ticket;
 import com.example.Betting.model.Transaction;
-import com.example.Betting.model.User;
 
 /**
  * The Interface ITransactionService.
@@ -29,11 +27,9 @@ public interface ITransactionService {
     /**
 	 * Creates the transaction.
 	 *
-	 * @param spentMoney spent money
-	 * @param user user
-	 * @param ticket ticket
+	 * @param transaction the transaction
 	 * @param transactionType transaction type
-	 * @return the transaction
+	 * @return true for successful transaction, false otherwise
 	 */
-	Transaction createTransaction(float spentMoney, User user, Ticket ticket, int transactionType);
+	boolean createTransaction(Transaction transaction, int transactionType);
 }

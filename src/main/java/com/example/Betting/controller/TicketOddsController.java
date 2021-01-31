@@ -93,10 +93,6 @@ public class TicketOddsController {
 
 		Ticket ticket = first.getTicket();
 
-		if (spentMoney < 1) {
-			return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
-		}
-
 		if (spentMoney > moneyInWallet) {
 			return ResponseEntity.badRequest().body("You don't have enough money in your wallet.");
 		}
@@ -106,8 +102,13 @@ public class TicketOddsController {
 	    ticketOdds.iterator().next();
 
 	     //Create transaction with current time of type 1.
-        Transaction transaction;
-        transaction = transactionService.createTransaction(spentMoney, user.get(), ticket, 1);
+        Transaction transaction = new Transaction();
+        transaction.setMoney(spentMoney);
+        transaction.setTicket(ticket);
+        transaction.setUser(user.get());
+        if (!transactionService.createTransaction(transaction, 1)) {
+            return ResponseEntity.badRequest().body("You have to bet at least 1 HRK");
+        }
 
         ticketOdds.iterator().forEachRemaining(ticketOdd -> {
 		//Giving same IDs of Ticket and Transaction to rest of ticket-odds pairs.

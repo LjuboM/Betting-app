@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.example.Betting.model.Ticket;
 import com.example.Betting.model.Transaction;
-import com.example.Betting.model.User;
 import com.example.Betting.repository.TransactionRepository;
 
 /**
@@ -44,25 +42,27 @@ public class TransactionService implements ITransactionService {
     /**
      * Creates the transaction.
      *
-     * @param spentMoney spent money
-     * @param user user
-     * @param ticket ticket
+     * @param transaction the transaction
      * @param transactionType transaction type
-     * @return the transaction
+     * @return true for successful transaction, false otherwise
      */
-    public Transaction createTransaction(
-            final float spentMoney, final User user, final Ticket ticket, final int transactionType) {
-
-        Transaction newTransaction = new Transaction();
+    public boolean createTransaction(final Transaction transaction, final int transactionType) {
+        //Check if the user is adding enough money.
+        if (transaction.getMoney() < 1) {
+            return false;
+        }
+        float spentMoney = transaction.getMoney();
         /** Set transaction to current time. */
-        newTransaction.setTransactiondate(Instant.now());
-        newTransaction.setTransactiontype(transactionType);
-        newTransaction.setMoney(spentMoney);
-        newTransaction.setTicket(ticket);
-        newTransaction.setUser(user);
+        transaction.setTransactiondate(Instant.now());
+        transaction.setTransactiontype(transactionType);
 
-        transactionRepository.save(newTransaction);
-        return newTransaction;
+        //If user just played new ticket
+        if (transactionType == 1) {
+            final float manipulativeSpends = 0.05f;
+            transaction.setManipulativespends(spentMoney * manipulativeSpends);
+        }
+        transactionRepository.save(transaction);
+        return true;
     }
 
 }
