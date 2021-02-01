@@ -62,7 +62,7 @@ public class OddsServiceTests {
 
         assertEquals(expectedOdds, returnedOdds);
     }
-    
+
     /**
      * When find all sorted odds then don't return odds.
      *

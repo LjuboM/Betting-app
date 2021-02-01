@@ -49,17 +49,19 @@ public class TicketOddsServiceTests {
     private boolean result;
     
     /**
-     * Given total odd and spent money when creating ticket then ok.
+     * Given total odd and spent money when creating ticket then ticket.
      *
      * @throws Exception the exception
      */
     @Test
-    public void giventotalOddAndSpentMoney_whencreateTicket_thenOk()
+    public void giventotalOddAndSpentMoney_whencreateTicket_thenTicket()
       throws Exception {
         final float totalOdd = 10;
         final float spentMoney = 10;
-        ticketOddsService.createTicket(totalOdd, spentMoney);
-        assertEquals(true, true);
+        final Ticket ticket = new Ticket((long) 0, 10, 85.5f, 0, null, null);
+        Ticket returnedTicket = ticketOddsService.createTicket(totalOdd, spentMoney);
+
+        assertEquals(ticket, returnedTicket);
     }
 
     /**
