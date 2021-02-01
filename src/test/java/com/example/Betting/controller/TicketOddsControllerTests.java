@@ -403,56 +403,25 @@ public class TicketOddsControllerTests {
     }
 
     /**
-     * Given array of ticket odds with special offer when playing ticket with enough bigger odds then ok.
+     * Given pair of ticket odds with with wrong odds when playing ticket then not ok.
      *
      * @throws Exception the exception
      */
     @Test
-    public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithEnoughBiggerOdds_thenOk()
+    public void givenPairOfTicketOddsWithWrongOdds_whenPlayingTicket_thenNotOk()
       throws Exception {
 
-        float moneyInWalletBefore = 200;
-        float spentMoney = 200;
-
-        Instant matchDate = Instant.now().plusSeconds(60);
-
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
-        
-    	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
-    	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-
-    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
-    	Match thirdMatch = new Match((long) 3, matchDate, "Rogger Federer", "Rafael Nadal", null, null);
-    	Match fourthMatch = new Match((long) 4, matchDate, "Hajduk", "Dinamo", null, null);
-    	Match fifthMatch = new Match((long) 5, matchDate, "Rijeka", "Osijek", null, null);
-    	Match sixthMatch = new Match((long) 6, matchDate, "Solin", "Kastela", null, null);
-
-    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
-    	Odds secondOdd = new Odds((long) 2, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
-    	Odds thirdOdd = new Odds((long) 3, "Basic", 2, 2, 2, 2, 3, 3, thirdMatch, null);
-    	Odds fourthOdd = new Odds((long) 4, "Basic", 2, 5, 2, 2, 2, 3, fourthMatch, null);
-    	Odds fifthOdd = new Odds((long) 5, "Basic", 2, 2, 4, 2, 3, 3, fifthMatch, null);
-    	Odds sixthOdd = new Odds((long) 6, "Basic", 2, 2, 2, 2, 3, 3, sixthMatch, null);
-
+        float spentMoney = 10;
     	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
-    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
-    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
-    	ticketOdds.add(new TicketOdds(3, ticket, thirdOdd, (long) 2, "2"));
-    	ticketOdds.add(new TicketOdds(4, ticket, fourthOdd, (long) 2, "12"));
-    	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
-    	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
+    	ticketOdds.add(new TicketOdds(1, null, null, (long) 2, "1"));
 
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
-        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(64f);
-        given(userService.checkEnoughMoneyInWallet(spentMoney, userBeforeBet)).willReturn(true);
+        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(0f);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
           .content(asJsonString(ticketOdds))
           .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isOk())
-          .andExpect(MockMvcResultMatchers.content().string("Successfully placed a bet!"));
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().string("You didn't place a valid bet."));
     }
 
     /**
@@ -542,182 +511,6 @@ public class TicketOddsControllerTests {
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().string("You have to bet at least 1 HRK"));
-    }
-
-    /**
-     * Given array of ticket odds with special offer when playing ticket with not enough bigger odds then bad request.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithNotEnoughBiggerOdds_thenBadRequest()
-      throws Exception {
-
-        float moneyInWalletBefore = 200;
-        float spentMoney = 200;
-
-        Instant matchDate = Instant.now().plusSeconds(60);
-
-        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
-        
-    	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
-    	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
-    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
-    	Odds secondOdd = new Odds((long) 1, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
-
-    	ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
-    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
-    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
-        given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
-        given(ticketOddsService.validateNewTicket(ticketOdds)).willReturn(0f);
-
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
-          .content(asJsonString(ticketOdds))
-          .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isBadRequest())
-          .andExpect(MockMvcResultMatchers.content().string("You didn't place a valid bet."));
-    }
-
-    /**
-     * Given array of ticket odds with special offer when playing ticket with more special offers then bad request.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithMoreSpecialOffers_thenBadRequest()
-      throws Exception {
-
-        float moneyInWalletBefore = 200;
-        float spentMoney = 200;
-        
-        Instant matchDate = Instant.now().plusSeconds(60);
-
-        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
-        
-    	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
-    	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-        given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
-        given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
-
-    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
-    	Match thirdMatch = new Match((long) 3, matchDate, "Rogger Federer", "Rafael Nadal", null, null);
-    	Match fourthMatch = new Match((long) 4, matchDate, "Hajduk", "Dinamo", null, null);
-    	Match fifthMatch = new Match((long) 5, matchDate, "Rijeka", "Osijek", null, null);
-    	Match sixthMatch = new Match((long) 6, matchDate, "Solin", "Kastela", null, null);
-
-    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
-    	Odds secondOdd = new Odds((long) 2, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
-    	Odds thirdOdd = new Odds((long) 3, "Special offer", 2, 2, 2, 2, 3, 3, thirdMatch, null);
-    	Odds fourthOdd = new Odds((long) 4, "Basic", 2, 5, 2, 2, 2, 3, fourthMatch, null);
-    	Odds fifthOdd = new Odds((long) 5, "Basic", 2, 2, 4, 2, 3, 3, fifthMatch, null);
-    	Odds sixthOdd = new Odds((long) 6, "Basic", 2, 2, 2, 2, 3, 3, sixthMatch, null);
-
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
-    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
-    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
-    	ticketOdds.add(new TicketOdds(3, ticket, thirdOdd, (long) 2, "2"));
-    	ticketOdds.add(new TicketOdds(4, ticket, fourthOdd, (long) 2, "12"));
-    	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
-    	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
-
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
-          .content(asJsonString(ticketOdds))
-          .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isBadRequest())
-          .andExpect(MockMvcResultMatchers.content().string("You didn't place a valid bet."));
-        }
-
-    /**
-     * Given array of ticket odds with special offer when playing ticket with same match as special offer and basic offer then bad request.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void givenArrayOfTicketOddsWithSpecialOffer_whenPlayingTicketWithSameMatchAsSpecialOfferAndBasicOffer_thenBadRequest()
-      throws Exception {
-
-        float moneyInWalletBefore = 200;
-        float spentMoney = 200;
-
-        Instant matchDate = Instant.now().plusSeconds(60);
-
-        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
-        
-    	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
-    	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(userBeforeBet));
-    	given(userService.changeMoneyValueInWallet(userBeforeBet, spentMoney, false)).willReturn(userAfterBet);
-    	given(transactionService.createTransaction(spentMoney, ticket, userAfterBet, 1)).willReturn(true);
-
-
-    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
-    	Match thirdMatch = new Match((long) 3, matchDate, "Rogger Federer", "Rafael Nadal", null, null);
-    	Match fourthMatch = new Match((long) 4, matchDate, "Hajduk", "Dinamo", null, null);
-    	Match fifthMatch = new Match((long) 5, matchDate, "Rijeka", "Osijek", null, null);
-
-    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
-    	Odds secondOdd = new Odds((long) 2, "Special Offer", 2, 2, 2, 2, 3, 3, secondMatch, null);
-    	Odds thirdOdd = new Odds((long) 3, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
-    	Odds fourthOdd = new Odds((long) 4, "Basic", 2, 5, 2, 2, 2, 3, thirdMatch, null);
-    	Odds fifthOdd = new Odds((long) 5, "Basic", 2, 2, 4, 2, 3, 3, fourthMatch, null);
-    	Odds sixthOdd = new Odds((long) 6, "Basic", 2, 2, 2, 2, 3, 3, fifthMatch, null);
-    	
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
-    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
-    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
-    	ticketOdds.add(new TicketOdds(3, ticket, thirdOdd, (long) 2, "2"));
-    	ticketOdds.add(new TicketOdds(4, ticket, fourthOdd, (long) 2, "12"));
-    	ticketOdds.add(new TicketOdds(5, ticket, fifthOdd, (long) 2, "X2"));
-    	ticketOdds.add(new TicketOdds(6, ticket, sixthOdd, (long) 2, "X2"));
-
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
-          .content(asJsonString(ticketOdds))
-          .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isBadRequest())
-          .andExpect(MockMvcResultMatchers.content().string("You didn't place a valid bet."));
-        }
-
-    /**
-     * Given array of ticket odds when playing ticket with outdate match then bad request.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void givenArrayOfTicketOdds_whenPlayingTicketWithOutdateMatch_thenBadRequest()
-      throws Exception {
-        float spentMoney = 200;
-        
-        Instant matchDate = Instant.now().minusSeconds(60);
-    	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
-
-        given(userService.findUserById((long) 1)).willReturn(Optional.of(initialUser));
-
-        Ticket ticket = new Ticket((long) 1, 4, 720, 0, null, null);
-        
-    	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
-    	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
-    	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
-    	Odds secondOdd = new Odds((long) 2, "Basic", 2, 2, 2, 2, 3, 3, secondMatch, null);
-
-    	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
-    	ticketOdds.add(new TicketOdds(1, ticket, firstOdd, (long) 2, "1"));
-    	ticketOdds.add(new TicketOdds(2, ticket, secondOdd, (long) 2, "X2"));
-
-        mvc.perform(MockMvcRequestBuilders.post("/api/ticket/{spentMoney}", spentMoney)
-          .content(asJsonString(ticketOdds))
-          .contentType(MediaType.APPLICATION_JSON))
-          .andExpect(MockMvcResultMatchers.status().isBadRequest())
-          .andExpect(MockMvcResultMatchers.content().string("You didn't place a valid bet."));
     }
 
     /**

@@ -40,7 +40,7 @@ class MyProvider extends Component {
         newTax = 4000;
         possibleGainparts = possibleGainparts - 20000;
         if(possibleGainparts >= 470000){
-          newTax = 94000;
+          newTax = 98000;
           possibleGainparts = possibleGainparts - 470000;
           if(possibleGainparts > 0){
             newTax = newTax + possibleGainparts * 0.30;

@@ -159,7 +159,7 @@ public class TicketOddsService implements ITicketOddsService {
      * @param odds the odds from DataBase
      * @return true for finding right odd and type combination in the database, otherwise false.
      */
-    private boolean compareDBOddsWithReceivedOdds(final TicketOdds ticketOdd, final Odds odds) {
+    boolean compareDBOddsWithReceivedOdds(final TicketOdds ticketOdd, final Odds odds) {
         //Allowed difference when comparing 2 float values, in this case, odd values.
         final float epsilon = 0.0001f;
         final String type = ticketOdd.getType();
@@ -197,8 +197,10 @@ public class TicketOddsService implements ITicketOddsService {
         final float twentyPercentage = 0.20f;
         final float thirtyPercentage = 0.30f;
         final float fullyTaxedTenPercentage = 1000;
+        // 3000 + 1000
         final float fullyTaxedFifteenPercentage = 4000;
-        final float fullyTaxedTwentyPercentage = 94000;
+        // 94000 + 3000 + 1000
+        final float fullyTaxedTwentyPercentage = 98000;
         float newTax = 0;
         float possibleGainparts = money;
         //if true, fully tax first 10 000
