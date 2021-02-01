@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.example.Betting.model.Odds;
 import com.example.Betting.model.Ticket;
 import com.example.Betting.model.TicketOdds;
+import com.example.Betting.model.Types;
 import com.example.Betting.repository.TicketOddsRepository;
+import com.example.Betting.utils.Constants;
 
 /**
  * The Class TicketOddsService.
@@ -87,9 +89,6 @@ public class TicketOddsService implements ITicketOddsService {
      * @return Total odd value
      */
     public float validateNewTicket(final ArrayList<TicketOdds> ticketOdds) {
-        /** Minimum number of basic odds higher than minOddValue needed for valid ticket */
-        final int minBiggerOddsCount = 5;
-        final float minOddValue = (float) 1.10;
         float totalOdd = 1;
         float[] oddValues = new float[ticketOdds.size()];
         Long[] matches = new Long[ticketOdds.size()];
@@ -132,7 +131,7 @@ public class TicketOddsService implements ITicketOddsService {
                 if (specialOfferMatch == match) {
                     specialOfferMatchOccurrences++;
                 }
-                if (oddValues[matchesIterator] >= minOddValue) {
+                if (oddValues[matchesIterator] >= Constants.BIGGER_ODD) {
                     biggerOddsCount++;
                 }
                 matchesIterator++;
@@ -141,10 +140,10 @@ public class TicketOddsService implements ITicketOddsService {
                 System.out.println("Invalid bet, played the same match in special offer and basic type!");
                 return 0f;
             }
-            if (biggerOddsCount < minBiggerOddsCount) {
+            if (biggerOddsCount < Constants.NUMBER_OF_BIGGER_ODDS) {
                 System.out.println("Invalid bet, you have to play at least "
-                        + String.valueOf(minBiggerOddsCount) + " basic odds that are "
-                        + String.valueOf(minOddValue) + " or bigger!");
+                        + String.valueOf(Constants.NUMBER_OF_BIGGER_ODDS) + " basic odds that are "
+                        + String.valueOf(Constants.BIGGER_ODD) + " or bigger!");
                 return 0f;
             }
         }
@@ -160,22 +159,21 @@ public class TicketOddsService implements ITicketOddsService {
      * @return true for finding right odd and type combination in the database, otherwise false.
      */
     boolean compareDBOddsWithReceivedOdds(final TicketOdds ticketOdd, final Odds odds) {
-        //Allowed difference when comparing 2 float values, in this case, odd values.
-        final float epsilon = 0.0001f;
         final String type = ticketOdd.getType();
         final float odd = ticketOdd.getOdd();
+        final Types types = odds.getMatch().getTypes();
 
-        if (type.equals(odds.getMatch().getTypes().getType1()) && Math.abs(odd - odds.getOdd1()) < epsilon) {
+        if (type.equals(types.getType1()) && Math.abs(odd - odds.getOdd1()) < Constants.EPSILON) {
             return true;
-        } else if (type.equals(odds.getMatch().getTypes().getType2()) && Math.abs(odd - odds.getOdd2()) < epsilon) {
+        } else if (type.equals(types.getType2()) && Math.abs(odd - odds.getOdd2()) < Constants.EPSILON) {
             return true;
-        } else if (type.equals(odds.getMatch().getTypes().getType3()) && Math.abs(odd - odds.getOdd3()) < epsilon) {
+        } else if (type.equals(types.getType3()) && Math.abs(odd - odds.getOdd3()) < Constants.EPSILON) {
             return true;
-        } else if (type.equals(odds.getMatch().getTypes().getType4()) && Math.abs(odd - odds.getOdd4()) < epsilon) {
+        } else if (type.equals(types.getType4()) && Math.abs(odd - odds.getOdd4()) < Constants.EPSILON) {
             return true;
-        } else if (type.equals(odds.getMatch().getTypes().getType5()) && Math.abs(odd - odds.getOdd5()) < epsilon) {
+        } else if (type.equals(types.getType5()) && Math.abs(odd - odds.getOdd5()) < Constants.EPSILON) {
             return true;
-        } else if (type.equals(odds.getMatch().getTypes().getType6()) && Math.abs(odd - odds.getOdd6()) < epsilon) {
+        } else if (type.equals(types.getType6()) && Math.abs(odd - odds.getOdd6()) < Constants.EPSILON) {
             return true;
         }
         return false;

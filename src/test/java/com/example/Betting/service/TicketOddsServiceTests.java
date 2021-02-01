@@ -21,6 +21,7 @@ import com.example.Betting.model.TicketOdds;
 import com.example.Betting.model.Types;
 import com.example.Betting.repository.OddsRepository;
 import com.example.Betting.repository.TicketOddsRepository;
+import com.example.Betting.utils.Constants;
 
 
 /**
@@ -74,11 +75,9 @@ public class TicketOddsServiceTests {
       throws Exception {
         result = false;
         final float possibleGain = 9000;
-        //Allowed difference when comparing two float values, in this case, odd values.
-        final float epsilon = 0.0001f;
         float taxes = ticketOddsService.calculateTicketTaxes(possibleGain);
 
-        if (Math.abs(900f - taxes) < epsilon) {
+        if (Math.abs(900f - taxes) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -94,11 +93,9 @@ public class TicketOddsServiceTests {
       throws Exception {
         result = false;
         final float possibleGain = 29000;
-        //Allowed difference when comparing two float values, in this case, odd values.
-        final float epsilon = 0.0001f;
         float taxes = ticketOddsService.calculateTicketTaxes(possibleGain);
 
-        if (Math.abs(3850f - taxes) < epsilon) {
+        if (Math.abs(3850f - taxes) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -114,11 +111,9 @@ public class TicketOddsServiceTests {
       throws Exception {
         result = false;
         final float possibleGain = 49000;
-        //Allowed difference when comparing two float values, in this case, odd values.
-        final float epsilon = 0.0001f;
         float taxes = ticketOddsService.calculateTicketTaxes(possibleGain);
 
-        if (Math.abs(7800f - taxes) < epsilon) {
+        if (Math.abs(7800f - taxes) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -134,11 +129,9 @@ public class TicketOddsServiceTests {
       throws Exception {
         result = false;
         final float possibleGain = 510000;
-        //Allowed difference when comparing two float values, in this case, odd values.
-        final float epsilon = 0.0001f;
         float taxes = ticketOddsService.calculateTicketTaxes(possibleGain);
 
-        if (Math.abs(101000f - taxes) < epsilon) {
+        if (Math.abs(101000f - taxes) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -154,11 +147,9 @@ public class TicketOddsServiceTests {
       throws Exception {
         result = false;
         final float possibleGain = 500000;
-        //Allowed difference when comparing two float values, in this case, odd values.
-        final float epsilon = 0.0001f;
         float taxes = ticketOddsService.calculateTicketTaxes(possibleGain);
 
-        if (Math.abs(98000f - taxes) < epsilon) {
+        if (Math.abs(98000f - taxes) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -194,9 +185,7 @@ public class TicketOddsServiceTests {
         
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
         
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(4f - totalOdd) < epsilon) {
+        if (Math.abs(4f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -227,9 +216,7 @@ public class TicketOddsServiceTests {
  
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(2f - totalOdd) < epsilon) {
+        if (Math.abs(2f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -286,9 +273,7 @@ public class TicketOddsServiceTests {
 
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(144f - totalOdd) < epsilon) {
+        if (Math.abs(144f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -343,9 +328,7 @@ public class TicketOddsServiceTests {
 
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(0f - totalOdd) < epsilon) {
+        if (Math.abs(0f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -400,9 +383,7 @@ public class TicketOddsServiceTests {
 
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(0f - totalOdd) < epsilon) {
+        if (Math.abs(0f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -456,9 +437,7 @@ public class TicketOddsServiceTests {
 
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(0f - totalOdd) < epsilon) {
+        if (Math.abs(0f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -519,9 +498,7 @@ public class TicketOddsServiceTests {
 
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(0f - totalOdd) < epsilon) {
+        if (Math.abs(0f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
@@ -549,9 +526,7 @@ public class TicketOddsServiceTests {
 
         float totalOdd = ticketOddsService.validateNewTicket(ticketOdds);
 
-        //Allowed difference when comparing two float values, in this case, total odd values.
-        final float epsilon = 0.0001f;
-        if (Math.abs(0f - totalOdd) < epsilon) {
+        if (Math.abs(0f - totalOdd) < Constants.EPSILON) {
             result = true;
         }
         assertEquals(true, result);
