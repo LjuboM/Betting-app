@@ -60,7 +60,7 @@ class Tickets extends Component {
                     <thead className={"ticketView"} onClick={this.showPairs.bind(this, transactionInfo.ticket.id)}>
                         <tr>
                             <td className={"noselect"}><b># {transactionInfo.ticket.id}</b></td>
-                            <td className={"noselect"}><b>{transactionInfo.transactiondate}</b></td>
+                            <td className={"noselect"}><b>{new Date(transactionInfo.transactiondate * 1000).toLocaleDateString("en-GB")} {new Date(transactionInfo.transactiondate * 1000).toLocaleTimeString("en-GB")}</b></td>
                             <td className={"noselect"}></td>
                             <td className={"noselect"}>Possible Gain: <b>{transactionInfo.ticket.possiblegain} HRK</b></td>
                             <td className={"noselect"}>Bet: <b>{transactionInfo.money} HRK</b></td>
@@ -73,7 +73,7 @@ class Tickets extends Component {
                             <th scope="row" ></th>
                             <td>{ticketOddWithSportType.odds.match.home}</td>
                             <td>{ticketOddWithSportType.odds.match.away}</td>
-                            <td>{ticketOddWithSportType.odds.match.matchdate}</td>
+                            <td>{new Date(ticketOddWithSportType.odds.match.matchdate * 1000).toLocaleDateString("en-GB")} {new Date(ticketOddWithSportType.odds.match.matchdate * 1000).toLocaleTimeString("en-GB")}</td>
                             <td>{ticketOddWithSportType.type}</td>
                             <td>{ticketOddWithSportType.odd}</td>
                         </tr>
@@ -86,5 +86,5 @@ class Tickets extends Component {
         );
     }
 }
- 
+
 export default Tickets;

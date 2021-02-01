@@ -92,7 +92,7 @@ class OddsOffer extends Component {
                                     <tr style={{color:"blue"}} key={specialOfferOdd.id} className={value.isPairSelected(specialOfferOdd.id) === true ? 'selectedPair' : ''}>
                                         <td>{specialOfferOdd.match.home}</td>
                                         <td>{specialOfferOdd.match.away}</td>
-                                        <td>{specialOfferOdd.match.matchdate}</td>
+                                        <td>{new Date(specialOfferOdd.match.matchdate * 1000).toLocaleDateString("en-GB")} {new Date(specialOfferOdd.match.matchdate * 1000).toLocaleTimeString("en-GB")}</td>
                                         <td className={`${specialOfferOdd.odd1 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(specialOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(specialOfferOdd.odd1, TypesPerSport.type1, specialOfferOdd)}>
                                             {specialOfferOdd.odd1}
@@ -126,7 +126,7 @@ class OddsOffer extends Component {
                                     <tr key={basicOfferOdd.id} className={value.isPairSelected(basicOfferOdd.id) === true ? 'selectedPair' : ''}>
                                         <td>{basicOfferOdd.match.home}</td>
                                         <td>{basicOfferOdd.match.away}</td>
-                                        <td>{basicOfferOdd.match.matchdate}</td>
+                                        <td>{new Date(basicOfferOdd.match.matchdate * 1000).toLocaleDateString("en-GB")} {new Date(basicOfferOdd.match.matchdate * 1000).toLocaleTimeString("en-GB")}</td>
                                         <td className={`${basicOfferOdd.odd1 === "" ? ' ' : 'oddsOfferFakeButton'}  ${value.isOddTypeOfPairSelected(basicOfferOdd.id, TypesPerSport.type1) === true ? 'selectedTypeOfPair ' : ''}`}
                                             onClick={ () => value.modifyPair(basicOfferOdd.odd1, TypesPerSport.type1, basicOfferOdd)}>
                                                 {basicOfferOdd.odd1}

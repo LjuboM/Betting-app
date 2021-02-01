@@ -21,7 +21,7 @@ class MyProvider extends Component {
       isHidden: true,
       alertMessage : '',
       popUpSeen : false,
-      matchAlreadyStartedMessage : ''
+      invalidBet : ''
      }
      this.finalizeNewTicket = this.finalizeNewTicket.bind(this);
      this.refreshTicket = this.refreshTicket.bind(this);
@@ -74,11 +74,11 @@ class MyProvider extends Component {
             this.updateMoneyValue(this.state.money, false)
             this.refreshTicket();
           } else {
-                  this.setState({ matchAlreadyStartedMessage : 'Invalid bet, check if any match already started!' })
+                  this.setState({ invalidBet : 'Invalid bet!' })
           }
         })
         .catch((error) => {
-          this.setState({ matchAlreadyStartedMessage : 'Invalid bet, check if any match already started!' })
+          this.setState({ invalidBet : 'Invalid bet!' })
         });
   }
 
@@ -105,7 +105,7 @@ class MyProvider extends Component {
   }
 
   refreshTicket(){
-    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, tax: 0, money: '', isHidden: true, alertMessage: '', popUpSeen: false, matchAlreadyStartedMessage : ''})
+    this.setState({ NewTicket: [], totalOdd: 1, possibleGain: 0, tax: 0, money: '', isHidden: true, alertMessage: '', popUpSeen: false, invalidBet : ''})
   }
 
   fetchUser = () => {
@@ -274,6 +274,9 @@ class MyProvider extends Component {
                     else if( this.state.NewTicket.filter(pair => pair.odds.type === "Special offer").length === 1 && this.state.NewTicket.filter(pair => pair.odds.type === "Basic" && pair.odd >= 1.10).length < 5){
                       this.setState({isHidden : false, alertMessage : 'With Special offer you have to combine 5 Basic offers with Odd >= 1.10!'});
                     }
+                    else if(this.state.NewTicket.filter(pair => ((pair.odds.match.matchdate * 1000) < Date.now())).length > 0){
+                      this.setState({isHidden : false, alertMessage : 'Match already started, remove it from ticket!'});
+                    }
                     else{
                       this.setState({
                         popUpSeen: true
@@ -283,7 +286,7 @@ class MyProvider extends Component {
                   removePopUp: () =>{
                       this.setState({
                         popUpSeen: false,
-                        matchAlreadyStartedMessage : ''
+                        invalidBet : ''
                     });
                   }
               }}>

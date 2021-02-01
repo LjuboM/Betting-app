@@ -56,8 +56,8 @@ public class TransactionControllerTests {
       throws Exception {
 
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-15T17:00:00Z"), 0, 300, 30, 5, null, null));
-    	transactions.add(new Transaction((long) 2, Instant.parse("2022-05-16T17:00:00Z"), 1, 40, 10, 4, null, null));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2025-02-15T17:00:00Z"), 0, 300, 30, 5, null, null));
+    	transactions.add(new Transaction((long) 2, Instant.parse("2025-02-15T17:00:00Z"), 1, 40, 10, 4, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -66,7 +66,7 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.content().json("[\r\n" + 
                   "    {\r\n" + 
                   "        \"id\": 1,\r\n" + 
-                  "        \"transactiondate\": \"2022-05-15T17:00:00Z\",\r\n" + 
+                  "        \"transactiondate\": 1739638800.000000000,\r\n" + 
                   "        \"transactiontype\": 0,\r\n" + 
                   "        \"money\": 300.0,\r\n" + 
                   "        \"taxes\": 30.0,\r\n" + 
@@ -76,9 +76,11 @@ public class TransactionControllerTests {
                   "    },\r\n" + 
                   "    {\r\n" + 
                   "        \"id\": 2,\r\n" + 
-                  "        \"transactiondate\": \"2022-05-16T17:00:00Z\",\r\n" + 
+                  "        \"transactiondate\": 1739638800.000000000,\r\n" + 
                   "        \"transactiontype\": 1,\r\n" + 
                   "        \"money\": 40.0,\r\n" + 
+                  "        \"taxes\": 10.0,\r\n" + 
+                  "        \"manipulativespends\": 4.0,\r\n" + 
                   "        \"user\": null,\r\n" + 
                   "        \"ticket\": null\r\n" + 
                   "    }\r\n" + 
@@ -104,7 +106,7 @@ public class TransactionControllerTests {
           .andExpect(MockMvcResultMatchers.content().json("[\r\n" + 
                   "    {\r\n" + 
                   "        \"id\": 1,\r\n" + 
-                  "        \"transactiondate\": \"2022-05-14T17:00:00Z\",\r\n" + 
+                  "        \"transactiondate\": 1652547600.000000000,\r\n" + 
                   "        \"transactiontype\": 0,\r\n" + 
                   "        \"money\": 300.0,\r\n" + 
                   "        \"taxes\": 30.0,\r\n" + 

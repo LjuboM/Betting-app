@@ -56,7 +56,7 @@ class Transactions extends Component {
                 <tbody key={transaction.id} className={transaction.transactiontype}>
                     <tr>
                         <th scope="row" >{transaction.id}</th>
-                        <td>{transaction.transactiondate}</td>
+                        <td>{new Date(transaction.transactiondate * 1000).toLocaleDateString("en-GB")} {new Date(transaction.transactiondate * 1000).toLocaleTimeString("en-GB")}</td>
                         <td>{transaction.transactiontype}</td>
                         <td>{transaction.money}</td>
                     </tr>
