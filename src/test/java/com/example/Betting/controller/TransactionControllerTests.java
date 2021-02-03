@@ -23,6 +23,7 @@ import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
+import com.example.Betting.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -56,8 +57,8 @@ public class TransactionControllerTests {
       throws Exception {
 
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2025-02-15T17:00:00Z"), 0, 300, 30, 5, null, null));
-    	transactions.add(new Transaction((long) 2, Instant.parse("2025-02-15T17:00:00Z"), 1, 40, 10, 4, null, null));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2025-02-15T17:00:00Z"), Constants.TYPE_ADDING, 300, 30, 5, null, null));
+    	transactions.add(new Transaction((long) 2, Instant.parse("2025-02-15T17:00:00Z"), Constants.TYPE_TICKET_PAYMENT, 40, 10, 4, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -97,7 +98,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	Collection<Transaction> transactions = new ArrayList<Transaction>();
-    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-14T17:00:00Z"), 0, 300, 30, 5, null, null));
+    	transactions.add(new Transaction((long) 1, Instant.parse("2022-05-14T17:00:00Z"), Constants.TYPE_ADDING, 300, 30, 5, null, null));
     	given(transactionService.findAllTransactions()).willReturn(transactions);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/transactions")
@@ -144,7 +145,7 @@ public class TransactionControllerTests {
       throws Exception {
 
         User initialUser = new User(1, "John Doe", "Split", 24, 600, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), Constants.TYPE_ADDING, 300, 0, 0, initialUser, null);
 
         given(userService.changeMoneyValueInWallet(initialUser, 300, true)).willReturn(initialUser);
         given(transactionService.createTransaction(300, null, initialUser, 0)).willReturn(true);
@@ -166,7 +167,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 600, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), 0, 300, 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-13T17:00:00Z"), Constants.TYPE_ADDING, 300, 0, 0, initialUser, null);
 
     	given(userService.changeMoneyValueInWallet(initialUser, 300, true)).willReturn(initialUser);
     	given(transactionService.createTransaction(300, null, initialUser, 0)).willReturn(true);
@@ -189,7 +190,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 301, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-12T17:00:00Z"), 0, 1, 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-12T17:00:00Z"), Constants.TYPE_ADDING, 1, 0, 0, initialUser, null);
 
     	given(userService.changeMoneyValueInWallet(initialUser, 1, true)).willReturn(initialUser);
     	given(transactionService.createTransaction(1, null, initialUser, 0)).willReturn(true);
@@ -212,7 +213,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-11T17:00:00Z"), 0, 0, 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-11T17:00:00Z"), Constants.TYPE_ADDING, 0, 0, 0, initialUser, null);
 
         given(userService.findUserById(1L)).willReturn(Optional.of(initialUser));
 
@@ -233,7 +234,7 @@ public class TransactionControllerTests {
       throws Exception {
 
     	User initialUser = new User(1, "John Doe", "Split", 24, 300, null);
-        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-10T17:00:00Z"), 0, 0, 0, 0, initialUser, null);
+        Transaction newTransaction = new Transaction((long) 1, Instant.parse("2022-05-10T17:00:00Z"), Constants.TYPE_ADDING, 0, 0, 0, initialUser, null);
         given(userService.findUserById(1L)).willReturn(Optional.of(initialUser));
         
     	mvc.perform(MockMvcRequestBuilders.post("/api/transaction")

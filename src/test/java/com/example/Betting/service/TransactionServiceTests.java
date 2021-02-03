@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.example.Betting.model.Ticket;
 import com.example.Betting.model.User;
 import com.example.Betting.repository.TransactionRepository;
+import com.example.Betting.utils.Constants;
 
 /**
  * The Class TransactionServiceTests.
@@ -41,7 +42,7 @@ public class TransactionServiceTests {
         float money = 1f;
         int transactionType = 0;
         User user = new User(1, "John Doe", "Split", 24, 500, null);
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         result = transactionService.createTransaction(money, ticket, user, transactionType);
 
         assertEquals(true, result);
@@ -60,7 +61,7 @@ public class TransactionServiceTests {
         float money = 0.9f;
         int transactionType = 0;
         User user = new User(1, "John Doe", "Split", 24, 500, null);
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         result = transactionService.createTransaction(money, ticket, user, transactionType);
 
         assertEquals(false, result);
@@ -79,7 +80,7 @@ public class TransactionServiceTests {
         float money = 1f;
         int transactionType = 1;
         User user = new User(1, "John Doe", "Split", 24, 500, null);
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         result = transactionService.createTransaction(money, ticket, user, transactionType);
 
         assertEquals(true, result);

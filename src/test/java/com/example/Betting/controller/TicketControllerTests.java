@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.Betting.model.Ticket;
 import com.example.Betting.service.TicketService;
+import com.example.Betting.utils.Constants;
 
 /**
  * The Class TicketControllerTests.
@@ -45,8 +46,8 @@ public class TicketControllerTests {
       throws Exception {
         
     	Collection<Ticket> ticket = new ArrayList<Ticket>();
-    	ticket.add(new Ticket((long) 2, 4, 360, 0, null, null));
-    	ticket.add(new Ticket((long) 1, 2, 180, 0, null, null));
+    	ticket.add(new Ticket((long) 2, 4, 360, Constants.STATUS_WAITING, null, null));
+    	ticket.add(new Ticket((long) 1, 2, 180, Constants.STATUS_WAITING, null, null));
     	given(ticketService.findAllTickets()).willReturn(ticket);
 
         mvc.perform(MockMvcRequestBuilders.get("/api/tickets")
@@ -78,7 +79,7 @@ public class TicketControllerTests {
       throws Exception {
 
     	Collection<Ticket> ticket = new ArrayList<Ticket>();
-    	ticket.add(new Ticket((long) 1, 4, 360, 0, null, null));
+    	ticket.add(new Ticket((long) 1, 4, 360, Constants.STATUS_WAITING, null, null));
 
     	given(ticketService.findAllTickets()).willReturn(ticket);
 

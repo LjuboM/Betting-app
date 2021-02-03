@@ -11,6 +11,7 @@ import com.example.Betting.model.Ticket;
 import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
 import com.example.Betting.repository.TransactionRepository;
+import com.example.Betting.utils.Constants;
 
 /**
  * The Class TransactionService.
@@ -66,7 +67,7 @@ public class TransactionService implements ITransactionService {
         transaction.setTicket(ticket);
 
         //If user just played new ticket
-        if (transactionType == 1) {
+        if (transactionType == Constants.TYPE_TICKET_PAYMENT) {
             final float manipulativeSpends = 0.05f;
             transaction.setManipulativespends(spentMoney * manipulativeSpends);
         }

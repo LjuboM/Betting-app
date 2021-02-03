@@ -72,7 +72,7 @@ public class TicketOddsService implements ITicketOddsService {
 	    final float withoutManipulativeSpends = 0.95f;
 	    Ticket ticket = new Ticket();
 	    // Status 0 -> Waiting for results.
-	    ticket.setStatus(0);
+	    ticket.setStatus(Constants.STATUS_WAITING);
 	    ticket.setTotalodd(totalOdd);
 	    float possibleGainWithoutTaxes = withoutManipulativeSpends * totalOdd * spentMoney;
 	    float taxes = calculateTicketTaxes(possibleGainWithoutTaxes);

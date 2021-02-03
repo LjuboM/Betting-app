@@ -27,6 +27,7 @@ import com.example.Betting.model.User;
 import com.example.Betting.service.TicketOddsService;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
+import com.example.Betting.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -63,7 +64,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenArrayOfTicketOdds()
       throws Exception {
 
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, Constants.STATUS_WAITING, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
 
@@ -134,7 +135,7 @@ public class TicketOddsControllerTests {
     public void whenGetTicketOdds_thenTicketOdds()
       throws Exception {
 
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, Constants.STATUS_WAITING, null, null);
     	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
@@ -199,7 +200,7 @@ public class TicketOddsControllerTests {
 
     	long ticketId = 1;
 
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, Constants.STATUS_WAITING, null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Odds secondOdd = new Odds((long) 1, "Basic", 2, 2, 2, 2, 3, 3, null, null);
 
@@ -272,7 +273,7 @@ public class TicketOddsControllerTests {
         throws Exception {
 
     	long ticketId = 1;
-    	Ticket ticket = new Ticket((long) 1, 4, 360, 0, null, null);
+    	Ticket ticket = new Ticket((long) 1, 4, 360, Constants.STATUS_WAITING, null, null);
     	Odds odd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, null, null);
     	Collection<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
     	ticketOdds.add(new TicketOdds(1, ticket, odd, (long) 2, "1"));
@@ -338,7 +339,7 @@ public class TicketOddsControllerTests {
         float spentMoney = 200;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
@@ -378,7 +379,7 @@ public class TicketOddsControllerTests {
 
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         
     	User userBeforeBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore, null);
     	User userAfterBet = new User(1, "John Doe", "Split", 24, moneyInWalletBefore - spentMoney, null);
@@ -435,7 +436,7 @@ public class TicketOddsControllerTests {
         float spentMoney = 631.578947f;
         Instant matchDate = Instant.now().plusSeconds(60);
     	User initialUser = new User(1, "John Doe", "Split", 24, 500, null);
-        Ticket ticket = new Ticket((long) 1, 2, 900, 0, null, null);   
+        Ticket ticket = new Ticket((long) 1, 2, 900, Constants.STATUS_WAITING, null, null);   
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);
     	Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
@@ -491,7 +492,7 @@ public class TicketOddsControllerTests {
 
 
         //0.9499f mimics betting just bellow 1 HRK
-        Ticket ticket = new Ticket((long) 1, 2f, 1.423575f, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 2f, 1.423575f, Constants.STATUS_WAITING, null, null);
         
     	Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
     	Match secondMatch = new Match((long) 2, matchDate, "Jug", "Mladost", null, null);

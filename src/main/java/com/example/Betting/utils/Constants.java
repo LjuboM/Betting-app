@@ -23,6 +23,25 @@ public final class Constants {
     public static final float EPSILON = 0.00001f;
 
     /**
+     * Ticket Status is waiting for match results.
+     * This is first state of Ticket when it's created.
+     * It's changed when at least one match bet is not correct
+     * or when ticket is not valid because of cheating... etc.
+     */
+    public static final int STATUS_WAITING = 0;
+
+    /**
+     * Transaction type is Adding money to wallet.
+     */
+    public static final int TYPE_ADDING = 0;
+
+    /**
+     * Transaction type is ticket payment.
+     * Occurs when user plays new ticket.
+     */
+    public static final int TYPE_TICKET_PAYMENT = 1;
+
+    /**
      * Constructor.
      */
     private Constants() {

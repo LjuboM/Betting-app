@@ -21,6 +21,7 @@ import com.example.Betting.model.User;
 import com.example.Betting.service.TicketOddsService;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
+import com.example.Betting.utils.Constants;
 
 /**
  * The Class TicketOddsController.
@@ -97,8 +98,8 @@ public class TicketOddsController {
 
             Ticket ticket = ticketOddsService.createTicket(totalOdd, spentMoney);
 
-            //Create transaction with current time of type 1
-            transactionService.createTransaction(spentMoney, ticket, user, 1);
+            //Create transaction with current time of type Constants.TYPE_TICKET_PAYMENT
+            transactionService.createTransaction(spentMoney, ticket, user, Constants.TYPE_TICKET_PAYMENT);
             //Adding all new ticket odd pairs
             ticketOdds.iterator().forEachRemaining(ticketOdd -> {
                 //Attaching new ticket to ticket odd pairs

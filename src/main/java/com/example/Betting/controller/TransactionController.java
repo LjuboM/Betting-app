@@ -20,6 +20,7 @@ import com.example.Betting.model.Transaction;
 import com.example.Betting.model.User;
 import com.example.Betting.service.TransactionService;
 import com.example.Betting.service.UserService;
+import com.example.Betting.utils.Constants;
 
 /**
  * The Class TransactionController.
@@ -60,7 +61,7 @@ public class TransactionController {
     }
 
 	/**
-	 * Adds new transaction of type false.
+	 * Adds new transaction of type Constants.TYPE_ADDING (adding money).
 	 * Sets the money value in wallet.
 	 * Adding new money to wallet.
 	 *
@@ -78,7 +79,7 @@ public class TransactionController {
 	        final User user = userService.findUserById(1L).get();
 	        userService.changeMoneyValueInWallet(user, transaction.getMoney(), true);
 
-	        if (transactionService.createTransaction(transaction.getMoney(), null, user,  0)) {
+	        if (transactionService.createTransaction(transaction.getMoney(), null, user,  Constants.TYPE_ADDING)) {
 	            return ResponseEntity.ok().body("Successfully added new money to the wallet!");
 	        } else {
 	            return ResponseEntity

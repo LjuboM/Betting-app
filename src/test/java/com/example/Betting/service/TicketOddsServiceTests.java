@@ -59,7 +59,7 @@ public class TicketOddsServiceTests {
       throws Exception {
         final float totalOdd = 10;
         final float spentMoney = 10;
-        final Ticket ticket = new Ticket((long) 0, 10, 85.5f, 0, null, null);
+        final Ticket ticket = new Ticket((long) 0, 10, 85.5f, Constants.STATUS_WAITING, null, null);
         Ticket returnedTicket = ticketOddsService.createTicket(totalOdd, spentMoney);
 
         assertEquals(ticket, returnedTicket);
@@ -166,7 +166,7 @@ public class TicketOddsServiceTests {
         result = false;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
         Types secondTypes = new Types((long) 2, "Basketball", "1X", "X2", ">=200p", "<200p", "1H10", "2H10", null);
@@ -202,7 +202,7 @@ public class TicketOddsServiceTests {
         result = false;
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
 
@@ -234,7 +234,7 @@ public class TicketOddsServiceTests {
 
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
         Types secondTypes = new Types((long) 2, "Basketball", "1X", "X2", ">=200p", "<200p", "1H10", "2H10", null);
@@ -291,7 +291,7 @@ public class TicketOddsServiceTests {
 
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
         Types thirdTypes = new Types((long) 3, "Tennis", "1", "2", ">23.5g", "<23.5g", ">=2.5h", "<2.5h", null);
@@ -346,7 +346,7 @@ public class TicketOddsServiceTests {
 
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
         Types thirdTypes = new Types((long) 3, "Tennis", "1", "2", ">23.5g", "<23.5g", ">=2.5h", "<2.5h", null);
@@ -401,7 +401,7 @@ public class TicketOddsServiceTests {
 
         Instant matchDate = Instant.now().plusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
         Types thirdTypes = new Types((long) 3, "Tennis", "1", "2", ">23.5g", "<23.5g", ">=2.5h", "<2.5h", null);
@@ -516,7 +516,7 @@ public class TicketOddsServiceTests {
 
         Instant matchDate = Instant.now().minusSeconds(60);
 
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", null, null);
         Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
         ArrayList<TicketOdds> ticketOdds = new ArrayList<TicketOdds>();
@@ -545,7 +545,7 @@ public class TicketOddsServiceTests {
         Instant matchDate = Instant.now().minusSeconds(60);
 
         Types firstTypes = new Types((long) 1, "Football", "1", "X", "2", "1X", "X2", "12", null);
-        Ticket ticket = new Ticket((long) 1, 4, 684, 0, null, null);
+        Ticket ticket = new Ticket((long) 1, 4, 684, Constants.STATUS_WAITING, null, null);
         Match firstMatch = new Match((long) 1, matchDate, "FC Barcelona", "C.F. Real Madrid", firstTypes, null);
         Odds firstOdd = new Odds((long) 1, "Basic", 2, 3, 2, 4, 2, 4, firstMatch, null);
         TicketOdds ticketOdd = new TicketOdds(1, ticket, firstOdd, (long) 2, "1");
